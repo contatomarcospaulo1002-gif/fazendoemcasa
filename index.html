@@ -95,12 +95,16 @@
         <p>Duas páginas reais do guia:</p>
         <div class="sample-grid">
           <figure class="sample-card">
-            <img src="img/guia-p08.webp" width="900" height="1272" loading="lazy" alt="Página 8 do guia 28 dias em casa: Semana 1, Aprender os movimentos, com as 5 sessões, voltas e repetições">
-            <figcaption><strong>Página 8, Semana 1, Aprender os movimentos:</strong> as 5 sessões da semana, com voltas e repetições, e como ajustar ao teu nível.</figcaption>
+            <button type="button" class="sample-zoom" data-lightbox-src="img/guia-p08-lg.webp" data-lightbox-alt="Página 8 do guia 28 dias em casa: Semana 1, Aprender os movimentos, ampliada" aria-label="Ampliar página 8 do guia">
+              <img src="img/guia-p08.webp" width="900" height="1272" loading="eager" alt="Página 8 do guia 28 dias em casa: Semana 1, Aprender os movimentos, com as 5 sessões, voltas e repetições">
+            </button>
+            <figcaption><strong>Página 8, Semana 1, Aprender os movimentos:</strong> as 5 sessões da semana, com voltas e repetições, e como ajustar ao teu nível. <span class="zoom-hint">Toca para ampliar</span></figcaption>
           </figure>
           <figure class="sample-card">
-            <img src="img/guia-p13.webp" width="900" height="1272" loading="lazy" alt="Página 13 do guia 28 dias em casa: Calendário das 4 semanas com espaço O meu compromisso">
-            <figcaption><strong>Página 13, Calendário das 4 semanas:</strong> para assinalares cada sessão concluída, com o espaço "O meu compromisso".</figcaption>
+            <button type="button" class="sample-zoom" data-lightbox-src="img/guia-p13-lg.webp" data-lightbox-alt="Página 13 do guia 28 dias em casa: Calendário das 4 semanas, ampliada" aria-label="Ampliar página 13 do guia">
+              <img src="img/guia-p13.webp" width="900" height="1272" loading="eager" alt="Página 13 do guia 28 dias em casa: Calendário das 4 semanas com espaço O meu compromisso">
+            </button>
+            <figcaption><strong>Página 13, Calendário das 4 semanas:</strong> para assinalares cada sessão concluída, com o espaço "O meu compromisso". <span class="zoom-hint">Toca para ampliar</span></figcaption>
           </figure>
         </div>
       </div>
@@ -228,6 +232,14 @@
       <p class="seller">© 2026 fazendoemcasa.com · Marcos Paulo de Souza Esteves. Todos os direitos reservados.</p>
     </div>
   </footer>
+  
+  <div id="image-lightbox" class="lightbox" hidden aria-hidden="true" role="dialog" aria-label="Imagem ampliada">
+    <button type="button" class="lightbox-close" aria-label="Fechar">Fechar</button>
+    <div class="lightbox-stage">
+      <img class="lightbox-img" alt="">
+    </div>
+  </div>
+
   <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Definições de cookies" aria-hidden="false">
     <div class="cookie-inner">
       <p class="cookie-text">Usamos cookies de medição (Pixel da Meta) para perceber a eficácia dos anúncios. Podes aceitar ou recusar. Detalhes na <a href="privacidade.html">Política de Privacidade</a>.</p>
@@ -238,6 +250,7 @@
     </div>
   </div>
   <script src="cookies.js" defer></script>
+  <script src="lightbox.js" defer></script>
   <script src="utm.js" defer></script>
 </body>
 </html>

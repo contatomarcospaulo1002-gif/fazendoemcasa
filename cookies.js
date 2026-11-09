@@ -50,10 +50,48 @@
     });
   }
 
+  function isTrackCommand(cmd) {
+    return cmd === "track" || cmd === "trackCustom" || cmd === "trackSingle" || cmd === "trackSingleCustom";
+  }
+
+  function guardFbq() {
+    if (typeof window.fbq !== "function") return;
+    if (window.fbq.__consentGuarded) return;
+    var orig = window.fbq;
+    function guarded() {
+      var cmd = arguments[0];
+      if (!trackingAllowed && isTrackCommand(cmd)) {
+        return;
+      }
+      if (!trackingAllowed && cmd === "consent" && arguments[1] === "grant") {
+        return;
+      }
+      return orig.apply(this, arguments);
+    }
+    var k;
+    for (k in orig) {
+      if (Object.prototype.hasOwnProperty.call(orig, k)) {
+        guarded[k] = orig[k];
+      }
+    }
+    guarded.callMethod = function () {
+      return guarded.apply(null, arguments);
+    };
+    guarded.queue = orig.queue || [];
+    guarded.push = guarded;
+    guarded.loaded = orig.loaded;
+    guarded.version = orig.version;
+    guarded.__consentGuarded = true;
+    window.fbq = guarded;
+    if (window._fbq) window._fbq = guarded;
+  }
+
   function revokeTracking() {
     trackingAllowed = false;
     try {
       if (typeof fbq === "function") {
+        // ensure guard is on so later auto track is dropped
+        guardFbq();
         fbq("consent", "revoke");
       }
     } catch (e) {}
@@ -64,6 +102,7 @@
     trackingAllowed = true;
     if (pixelLoaded) {
       try {
+        guardFbq();
         if (typeof fbq === "function") {
           fbq("consent", "grant");
           fbq("track", "PageView");
@@ -85,9 +124,14 @@
       t = b.createElement(e);
       t.async = !0;
       t.src = v;
+      t.onload = function () {
+        // Guard AFTER Meta has replaced/enhanced the stub
+        guardFbq();
+      };
       s = b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t, s);
     })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    fbq("set", "autoConfig", false, PIXEL_ID);
     fbq("init", PIXEL_ID);
     fbq("track", "PageView");
   }
@@ -114,25 +158,44 @@
       loadPixel();
     });
   }
+
+  function onRefuseCapture(ev) {
+    trackingAllowed = false;
+    setConsent("refused");
+    revokeTracking();
+    hideBanner();
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+  }
   if (btnRefuse) {
-    btnRefuse.addEventListener("click", function () {
-      setConsent("refused");
-      hideBanner();
-      revokeTracking();
-    });
+    btnRefuse.addEventListener("click", onRefuseCapture, true);
+  }
+  if (banner) {
+    banner.addEventListener(
+      "click",
+      function (ev) {
+        var t = ev.target;
+        if (t && (t.id === "cookie-refuse" || (t.closest && t.closest("#cookie-refuse")))) {
+          onRefuseCapture(ev);
+        }
+      },
+      true
+    );
   }
   settingsLinks.forEach(function (el) {
-    el.addEventListener("click", function (ev) {
-      ev.preventDefault();
-      showBanner();
-    });
+    el.addEventListener(
+      "click",
+      function (ev) {
+        ev.preventDefault();
+        showBanner();
+      },
+      true
+    );
   });
 
-  // InitiateCheckout on data-checkout clicks (only with consent)
   document.querySelectorAll("a[data-checkout]").forEach(function (link) {
     link.addEventListener("click", function (ev) {
       if (!window.hasTrackingConsent || !window.hasTrackingConsent()) {
-        return; // navigate normally, no pixel
+        return;
       }
       if (typeof fbq !== "function") {
         return;
@@ -148,7 +211,6 @@
       try {
         fbq("track", "InitiateCheckout");
       } catch (e) {}
-      // Prefer sendBeacon-style delay so /tr can leave before navigation
       setTimeout(go, 500);
     });
   });

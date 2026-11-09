@@ -417,3 +417,73 @@ body {
   display: block;
   margin-bottom: 0.25rem;
 }
+
+.sample-zoom {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.sample-zoom img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.zoom-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  flex-direction: column;
+}
+
+.lightbox[hidden] {
+  display: none !important;
+}
+
+.lightbox-close {
+  align-self: flex-end;
+  margin: 0.75rem 0.75rem 0;
+  appearance: none;
+  border: 1px solid #aaa;
+  background: transparent;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.lightbox-stage {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y pinch-zoom;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0.75rem;
+}
+
+.lightbox-img {
+  max-width: none;
+  width: min(100%, 1600px);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  background: #111;
+}
