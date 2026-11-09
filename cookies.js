@@ -6,6 +6,7 @@
   var btnRefuse = document.getElementById("cookie-refuse");
   var settingsLinks = document.querySelectorAll("a[data-cookie-settings]");
   var pixelLoaded = false;
+  var trackingAllowed = false;
 
   function getConsent() {
     try { return localStorage.getItem(KEY); } catch (e) { return null; }
@@ -25,8 +26,51 @@
       banner.setAttribute("aria-hidden", "true");
     }
   }
+
+  function deleteMetaCookies() {
+    var names = ["_fbp", "_fbc"];
+    var hostname = location.hostname;
+    var domains = ["", hostname];
+    if (hostname.indexOf(".") !== -1) {
+      domains.push("." + hostname);
+      var parts = hostname.split(".");
+      if (parts.length >= 2) {
+        domains.push("." + parts.slice(-2).join("."));
+      }
+    }
+    names.forEach(function (name) {
+      domains.forEach(function (domain) {
+        var base = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; Max-Age=0";
+        if (domain) {
+          document.cookie = base + "; domain=" + domain;
+        } else {
+          document.cookie = base;
+        }
+      });
+    });
+  }
+
+  function revokeTracking() {
+    trackingAllowed = false;
+    try {
+      if (typeof fbq === "function") {
+        fbq("consent", "revoke");
+      }
+    } catch (e) {}
+    deleteMetaCookies();
+  }
+
   function loadPixel() {
-    if (pixelLoaded) return;
+    trackingAllowed = true;
+    if (pixelLoaded) {
+      try {
+        if (typeof fbq === "function") {
+          fbq("consent", "grant");
+          fbq("track", "PageView");
+        }
+      } catch (e) {}
+      return;
+    }
     pixelLoaded = true;
     !(function (f, b, e, v, n, t, s) {
       if (f.fbq) return;
@@ -48,12 +92,17 @@
     fbq("track", "PageView");
   }
 
+  window.hasTrackingConsent = function () {
+    return trackingAllowed && getConsent() === "accepted";
+  };
+
   var consent = getConsent();
   if (consent === "accepted") {
     hideBanner();
     loadPixel();
   } else if (consent === "refused") {
     hideBanner();
+    trackingAllowed = false;
   } else {
     showBanner();
   }
@@ -69,12 +118,38 @@
     btnRefuse.addEventListener("click", function () {
       setConsent("refused");
       hideBanner();
+      revokeTracking();
     });
   }
   settingsLinks.forEach(function (el) {
     el.addEventListener("click", function (ev) {
       ev.preventDefault();
       showBanner();
+    });
+  });
+
+  // InitiateCheckout on data-checkout clicks (only with consent)
+  document.querySelectorAll("a[data-checkout]").forEach(function (link) {
+    link.addEventListener("click", function (ev) {
+      if (!window.hasTrackingConsent || !window.hasTrackingConsent()) {
+        return; // navigate normally, no pixel
+      }
+      if (typeof fbq !== "function") {
+        return;
+      }
+      ev.preventDefault();
+      var href = link.href;
+      var navigated = false;
+      function go() {
+        if (navigated) return;
+        navigated = true;
+        window.location.href = href;
+      }
+      try {
+        fbq("track", "InitiateCheckout");
+      } catch (e) {}
+      // Prefer sendBeacon-style delay so /tr can leave before navigation
+      setTimeout(go, 500);
     });
   });
 })();

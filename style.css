@@ -378,3 +378,42 @@ li strong {
 body {
   padding-bottom: 0;
 }
+
+.sample-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 1rem 0 0;
+}
+
+@media (min-width: 720px) {
+  .sample-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sample-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.sample-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #eee;
+}
+
+.sample-card figcaption {
+  padding: 0.85rem 1rem 1rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.sample-card strong {
+  color: var(--ink);
+  display: block;
+  margin-bottom: 0.25rem;
+}
