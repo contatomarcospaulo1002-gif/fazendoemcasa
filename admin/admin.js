@@ -17,6 +17,8 @@
 
   var els = {};
   var SITE_PUBLIC = "https://fazendoemcasa.com";
+  var STATIC_STORAGE_KEY = "fazendoemcasa-admin-draft";
+  var STATIC_PENDING_KEY = "fazendoemcasa-admin-pending";
   var previewObjectUrl = null;
 
   function $(id) {
@@ -194,7 +196,7 @@
     var hint =
       state.php && state.authenticated
         ? "Escolhe o ficheiro, clica <strong>Salvar foto</strong>, depois <strong>Guardar e aplicar</strong> no topo."
-        : "No site hospedado: <strong>Salvar foto</strong> descarrega o .webp (mete em <code>img/cms/</code> no projeto). <strong>Guardar JSON</strong> e <strong>Guardar e aplicar</strong> descarregam ficheiros — envia ao Git para publicar.";
+        : "No site hospedado: <strong>Salvar foto</strong> guarda no navegador (sem descarga). Quando quiseres publicar, usa <strong>Descarregar para Git</strong> no topo.";
     html += '<p class="field-hint editor-field-actions-hint">' + hint + "</p>";
     return html;
   }
@@ -308,10 +310,8 @@
         if (file && state.php && state.authenticated) {
           setStatus("Foto guardada (img/cms + JSON). Clica «Guardar e aplicar» no topo para o index.", "ok");
         } else if (file && !state.php) {
-          setStatus(
-            "1 ficheiro descarregado (.webp). Depois clica «Guardar JSON» e «Guardar e aplicar» (um de cada vez). Ou pede ao assistente para publicar.",
-            "ok"
-          );
+          saveToBrowserStorage();
+          setStatus("Foto guardada neste navegador. «Descarregar para Git» só quando fores publicar.", "ok");
         } else if (!file) {
           setStatus(state.php ? "Rótulos guardados no JSON." : "content.json descarregado.", "ok");
         }
@@ -813,8 +813,16 @@
       hint.textContent = phpHintMessage();
     }
     if (btnLar) btnLar.classList.remove("hidden");
+    if (!state.php) {
+      var bs = $("btn-save");
+      var ba = $("btn-apply");
+      var bp = $("btn-publish");
+      if (bs) bs.textContent = "Guardar no navegador";
+      if (ba) ba.textContent = "Aplicar (pré-visualização)";
+      if (bp) bp.textContent = "Descarregar para Git";
+    }
     if (isPublicAdminHost()) {
-      setStatus("Site hospedado: ao salvar, o browser descarrega ficheiros (não é erro)", "");
+      setStatus("Hospedagem estática: Salvar = memória do browser; descargas só em «Descarregar para Git»", "");
     }
   }
 
@@ -1186,8 +1194,6 @@
     var publicPath = staticImagePath(fieldId);
     if (!state.content._pendingImages) state.content._pendingImages = {};
     state.content._pendingImages[fieldId] = pack.dataUrl;
-    var fileName = publicPath.split("/").pop() || "foto.webp";
-    downloadBlobFile(pack.blob, fileName);
     return Promise.resolve(publicPath);
   }
 
@@ -1273,7 +1279,50 @@
     return payload;
   }
 
-  function saveContent() {
+  function saveToBrowserStorage() {
+    try {
+      localStorage.setItem(STATIC_STORAGE_KEY, JSON.stringify(contentPayloadForDisk()));
+      if (state.content._pendingImages) {
+        localStorage.setItem(STATIC_PENDING_KEY, JSON.stringify(state.content._pendingImages));
+      } else {
+        localStorage.removeItem(STATIC_PENDING_KEY);
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function loadFromBrowserStorage() {
+    try {
+      var raw = localStorage.getItem(STATIC_STORAGE_KEY);
+      if (!raw) return false;
+      var parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === "object") {
+        state.content = Object.assign({}, state.content, parsed);
+      }
+      var pend = localStorage.getItem(STATIC_PENDING_KEY);
+      if (pend) {
+        state.content._pendingImages = JSON.parse(pend);
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function dataUrlToBlob(dataUrl) {
+    var parts = String(dataUrl).split(",");
+    var mime = parts[0].match(/:(.*?);/)[1];
+    var bin = atob(parts[1]);
+    var len = bin.length;
+    var arr = new Uint8Array(len);
+    for (var i = 0; i < len; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+  }
+
+  function saveContent(options) {
+    options = options || {};
     var payload = contentPayloadForDisk();
     if (state.php && state.authenticated) {
       return api("save-content.php", { method: "POST", body: { content: payload } })
@@ -1285,10 +1334,53 @@
           setStatus(e.message, "warn");
         });
     }
+    if (!options.forceDownload && saveToBrowserStorage()) {
+      state.dirty = false;
+      setStatus("Guardado neste navegador — sem descarga", "ok");
+      return Promise.resolve();
+    }
     downloadJson("content.json", payload);
     state.dirty = false;
-    setStatus("JSON descarregado", "ok");
+    setStatus("content.json descarregado", "ok");
     return Promise.resolve();
+  }
+
+  function downloadExportForGit() {
+    setStatus("A descarregar ficheiros para o Git…", "warn");
+    var pending = state.content._pendingImages || {};
+    var ids = Object.keys(pending);
+    var chain = Promise.resolve();
+    ids.forEach(function (fieldId, index) {
+      chain = chain.then(function () {
+        return new Promise(function (resolve) {
+          setTimeout(function () {
+            var blob = dataUrlToBlob(pending[fieldId]);
+            downloadBlobFile(blob, staticImagePath(fieldId).split("/").pop());
+            resolve();
+          }, index * 900);
+        });
+      });
+    });
+    return chain
+      .then(function () {
+        return new Promise(function (resolve) {
+          setTimeout(resolve, 400);
+        });
+      })
+      .then(function () {
+        return saveContent({ forceDownload: true });
+      })
+      .then(function () {
+        return new Promise(function (resolve) {
+          setTimeout(resolve, 500);
+        });
+      })
+      .then(function () {
+        return applyToSite({ forceDownload: true });
+      })
+      .then(function () {
+        setStatus("Descargas concluídas — envia ao repositório ou pede ao assistente «publica».", "ok");
+      });
   }
 
   function flushPendingImages() {
@@ -1305,7 +1397,8 @@
     });
   }
 
-  function applyToSite() {
+  function applyToSite(options) {
+    options = options || {};
     var run = state.dirty && state.php && state.authenticated ? saveContent() : Promise.resolve();
     return run
       .then(flushPendingImages)
@@ -1330,15 +1423,26 @@
               setStatus(e.message, "warn");
             });
         }
+        saveToBrowserStorage();
+        if (!options.forceDownload) {
+          state.dirty = false;
+          setStatus("Aplicado na pré-visualização (sem descarga)", "ok");
+          return;
+        }
         downloadText("index.html", serialized);
-        setStatus("index.html descarregado — substitui na raiz do projeto", "ok");
+        setStatus("index.html descarregado", "ok");
       });
   }
 
   function publishAll() {
+    if (!state.php) {
+      return downloadExportForGit();
+    }
     setStatus("A guardar e aplicar…", "");
     return saveContent()
-      .then(applyToSite)
+      .then(function () {
+        return applyToSite();
+      })
       .catch(function (e) {
         setStatus(e.message || "Erro", "warn");
       });
@@ -1426,6 +1530,7 @@
       .then(function (parts) {
         state.map = parts[0];
         state.content = parts[1] || {};
+        if (!state.php) loadFromBrowserStorage();
         syncFromIndex();
         if (!state.activeFieldId && state.map.groups[0] && state.map.groups[0].fields[0]) {
           selectField(state.map.groups[0].fields[0].id);
