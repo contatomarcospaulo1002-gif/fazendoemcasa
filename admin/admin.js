@@ -298,6 +298,10 @@
 
     return work
       .then(function () {
+        if (file && !state.php) {
+          markDirty();
+          return null;
+        }
         return saveContent();
       })
       .then(function () {
@@ -305,7 +309,7 @@
           setStatus("Foto guardada (img/cms + JSON). Clica «Guardar e aplicar» no topo para o index.", "ok");
         } else if (file && !state.php) {
           setStatus(
-            "Concluído — verifica a pasta Descargas: ficheiro .webp + content.json. Depois «Guardar e aplicar» (index.html) e envia ao Git, ou pede ao assistente para publicar.",
+            "1 ficheiro descarregado (.webp). Depois clica «Guardar JSON» e «Guardar e aplicar» (um de cada vez). Ou pede ao assistente para publicar.",
             "ok"
           );
         } else if (!file) {
