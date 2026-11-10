@@ -89,6 +89,27 @@
           "type": "text"
         },
         {
+          "id": "hero.stat.1",
+          "label": "Etiqueta resumo 1",
+          "where": "Chips verdes sob o lead",
+          "selector": "#hero .hero-stats li:nth-child(1)",
+          "type": "text"
+        },
+        {
+          "id": "hero.stat.2",
+          "label": "Etiqueta resumo 2",
+          "where": "Chips verdes sob o lead",
+          "selector": "#hero .hero-stats li:nth-child(2)",
+          "type": "text"
+        },
+        {
+          "id": "hero.stat.3",
+          "label": "Etiqueta resumo 3",
+          "where": "Chips verdes sob o lead",
+          "selector": "#hero .hero-stats li:nth-child(3)",
+          "type": "text"
+        },
+        {
           "id": "hero.point.1",
           "label": "Bullet 1",
           "where": "Lista com vistos — 1.º item",

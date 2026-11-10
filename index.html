@@ -49,12 +49,17 @@
   <main id="conteudo">
 
     <!-- ============ 2. HERO ============ -->
-    <section class="hero" id="hero">
+    <section class="hero hero-v2" id="hero">
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Guia em PDF · 15 páginas</p>
           <h1>Transforma 4 semanas num plano que já está escrito.</h1>
           <p class="lead">28 dias em casa: 20 sessões em 4 semanas, 5 por semana. Três níveis, sessões de 20 a 30 minutos e exercícios para fazer em casa, sem pesos nem máquinas.</p>
+          <ul class="hero-stats" aria-label="Resumo do programa">
+            <li>20 sessões</li>
+            <li>4 semanas</li>
+            <li>3 níveis</li>
+          </ul>
 
           <ul class="hero-points">
             <li><span class="tick" aria-hidden="true"></span>4 semanas de treino organizado, com a sessão do dia já decidida</li>
@@ -64,7 +69,7 @@
           </ul>
 
           <div class="cta-row">
-            <a class="btn" data-checkout href="https://pay.kiwify.com/5NJmQkR">Quero o guia 28 dias em casa por 14,90&nbsp;€</a>
+            <a class="btn btn-hero" data-checkout href="https://pay.kiwify.com/5NJmQkR">Quero o guia 28 dias em casa por 14,90&nbsp;€</a>
           </div>
 
           <ul class="trust-row">
@@ -650,8 +655,16 @@
       </div>
     </div>
   </div>
+  <aside class="sticky-cta" id="sticky-cta" hidden aria-label="Comprar agora">
+    <div class="sticky-cta-inner">
+      <p class="sticky-cta-price">14,90&nbsp;€ <span>pagamento único</span></p>
+      <a class="btn btn-sm" data-checkout href="https://pay.kiwify.com/5NJmQkR">Quero o guia</a>
+    </div>
+  </aside>
+
   <script src="cookies.js" defer></script>
   <script src="lightbox.js" defer></script>
+  <script src="sticky-cta.js" defer></script>
   <script src="utm.js" defer></script>
 </body>
 </html>
