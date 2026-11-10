@@ -1,0 +1,61 @@
+﻿name: Deploy produção
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: none
+
+concurrency:
+  group: deploy-fazendoemcasa
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: SSH git pull VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Permitir somente a branch main
+        run: |
+          set -euo pipefail
+          if [ "${GITHUB_REF}" != "refs/heads/main" ]; then
+            exit 1
+          fi
+
+      - name: Instalar OpenSSH
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends openssh-client
+
+      - name: Configurar chave SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "${DEPLOY_SSH_KEY}"
+          install -m 700 -d "${HOME}/.ssh"
+          key_file="${HOME}/.ssh/deploy_key"
+          umask 077
+          printf '%s\n' "${DEPLOY_SSH_KEY}" | tr -d '\r' > "${key_file}"
+          chmod 600 "${key_file}"
+
+      - name: Deploy no servidor
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          host="${DEPLOY_HOST:-129.121.35.178}"
+          port="${DEPLOY_PORT:-22022}"
+          user="${DEPLOY_USER:-root}"
+          remote_path="${DEPLOY_PATH:-/home/elbasoftcom/fazendoemcasa_www}"
+          ssh-keyscan -T 20 -p "${port}" -H "${host}" >> "${HOME}/.ssh/known_hosts" 2>/dev/null || true
+          ssh -i "${HOME}/.ssh/deploy_key" -p "${port}" -o BatchMode=yes "${user}@${host}" \
+            "cd ${remote_path} && sudo -u elbasoftcom git fetch origin && sudo -u elbasoftcom git reset --hard origin/main && find . -path ./.git -prune -o -user root -type f ! -name 'config.local.php' -exec chown elbasoftcom:elbasoftcom {} + && find . -path ./.git -prune -o -user root -type d -exec chown elbasoftcom:elbasoftcom {} + && git log -1 --oneline"
