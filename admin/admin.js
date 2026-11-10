@@ -851,17 +851,13 @@
     api("session.php")
       .then(function (res) {
         state.php = !!res.php;
-        if (res.authenticated) {
+        var pinRequired = res.pinRequired !== false;
+        if (res.authenticated || !pinRequired) {
           state.authenticated = true;
           showApp();
+          if (!state.php) $("php-hint").classList.remove("hidden");
           bootstrapApp();
           return;
-        }
-        if (!res.php) {
-          state.authenticated = true;
-          showApp();
-          $("php-hint").classList.remove("hidden");
-          bootstrapApp();
         }
       })
       .catch(function () {

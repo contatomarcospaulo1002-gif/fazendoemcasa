@@ -24,7 +24,7 @@ No Laragon (PHP ativo): `http://fazendoemcasa.test/admin/` (ou o virtual host qu
 4. **Guardar JSON** → grava `admin/content.json`.
 5. **Aplicar ao index.html** → atualiza a landing (cria backup `index.html.bak.*`).
 
-PIN inicial: `2828`. Copia `admin/config.example.php` para `admin/config.local.php` e altera o PIN (`config.local.php` não vai para o Git).
+PIN inicial: `2828` (só se `require_pin` for `true`). Para abrir direto no Laragon: em `config.local.php` usa `'require_pin' => false` (`config.local.php` não vai para o Git).
 
 Em GitHub Pages o painel é só leitura/exportação (sem PHP): descarrega JSON e `index.html` e faz commit manual.
 
