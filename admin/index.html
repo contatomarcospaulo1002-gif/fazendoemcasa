@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Painel — 28 dias em casa</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div id="login-screen" class="login-wrap">
+    <div class="login-card">
+      <h1>Painel administrativo</h1>
+      <p>Configura textos e imagens da página inicial. PIN padrão no Laragon: <code>2828</code> (altera em <code>admin/config.local.php</code>).</p>
+      <form id="login-form">
+        <label for="pin">PIN</label>
+        <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="current-password" required>
+        <button type="submit">Entrar</button>
+        <p id="login-err" class="login-err" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="side-head">
+        <h1>Página inicial</h1>
+        <p>Menu: o quê muda e onde aparece</p>
+      </div>
+      <div class="tabs-main" role="tablist">
+        <button type="button" class="active" data-tab="editar">Editar</button>
+        <button type="button" data-tab="guia">Guia de configuração</button>
+        <button type="button" data-tab="preview">Pré-visualizar</button>
+      </div>
+      <div id="menu-groups" class="menu-groups"></div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div>
+          <span id="save-status" class="status-pill">Pronto</span>
+          <span id="php-hint" class="status-pill warn hidden">Modo ficheiros: sem PHP, usa exportar/descarregar.</span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn ghost" id="btn-open-site">Abrir site</button>
+          <button type="button" class="btn" id="btn-save">Guardar JSON</button>
+          <button type="button" class="btn primary" id="btn-apply">Aplicar ao index.html</button>
+        </div>
+      </header>
+
+      <div class="panel-body">
+        <div id="panel-editor"></div>
+        <div id="panel-guia" class="hidden"></div>
+        <div id="panel-preview" class="hidden">
+          <p class="guide-intro">Pré-visualização com as alterações em memória (ainda não gravadas no disco até «Aplicar»).</p>
+          <button type="button" class="btn" id="btn-preview-refresh">Atualizar pré-visualização</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js" defer></script>
+</body>
+</html>

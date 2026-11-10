@@ -1,0 +1,625 @@
+{
+  "version": 1,
+  "page": "index.html",
+  "pageTitle": "Página inicial (landing)",
+  "groups": [
+    {
+      "id": "seo",
+      "title": "SEO e separador do browser",
+      "where": "Etiqueta &lt;title&gt; e meta descrição (não visível no corpo)",
+      "fields": [
+        {
+          "id": "seo.title",
+          "label": "Título da página",
+          "where": "Separador do browser / resultado Google",
+          "selector": "title",
+          "type": "text"
+        },
+        {
+          "id": "seo.description",
+          "label": "Meta descrição",
+          "where": "Resumo em motores de busca",
+          "selector": "meta[name=\"description\"]",
+          "type": "attr",
+          "attribute": "content"
+        }
+      ]
+    },
+    {
+      "id": "cabecalho",
+      "title": "Cabeçalho fixo",
+      "where": "Topo em todas as secções — marca, menu e botão",
+      "fields": [
+        {
+          "id": "header.brand.mark",
+          "label": "Marca — número",
+          "where": "Logo «28»",
+          "selector": ".site-header .brand-mark",
+          "type": "text"
+        },
+        {
+          "id": "header.brand.text",
+          "label": "Marca — texto",
+          "where": "Ao lado do 28",
+          "selector": ".site-header .brand-text",
+          "type": "text"
+        },
+        {
+          "id": "header.cta.text",
+          "label": "Botão do topo — texto",
+          "where": "Canto direito do cabeçalho",
+          "selector": ".header-cta",
+          "type": "text"
+        },
+        {
+          "id": "header.cta.href",
+          "label": "Botão do topo — link Kiwify",
+          "where": "URL de checkout",
+          "selector": ".header-cta",
+          "type": "attr",
+          "attribute": "href"
+        }
+      ]
+    },
+    {
+      "id": "hero",
+      "title": "Hero — abertura",
+      "where": "Primeira dobra: texto à esquerda, fotos à direita",
+      "fields": [
+        {
+          "id": "hero.eyebrow",
+          "label": "Linha superior (eyebrow)",
+          "where": "Acima do H1",
+          "selector": "#hero .eyebrow",
+          "type": "html",
+          "hint": "Mantém o span.dot se quiseres o ponto verde."
+        },
+        {
+          "id": "hero.h1",
+          "label": "Título principal (H1)",
+          "where": "Manchete grande da abertura",
+          "selector": "#hero .hero-copy h1",
+          "type": "text"
+        },
+        {
+          "id": "hero.lead",
+          "label": "Texto de apoio",
+          "where": "Parágrafo sob o H1",
+          "selector": "#hero .lead",
+          "type": "text"
+        },
+        {
+          "id": "hero.point.1",
+          "label": "Bullet 1",
+          "where": "Lista com vistos — 1.º item",
+          "selector": "#hero .hero-points li:nth-child(1)",
+          "type": "html"
+        },
+        {
+          "id": "hero.point.2",
+          "label": "Bullet 2",
+          "where": "Lista com vistos — 2.º item",
+          "selector": "#hero .hero-points li:nth-child(2)",
+          "type": "html"
+        },
+        {
+          "id": "hero.point.3",
+          "label": "Bullet 3",
+          "where": "Lista com vistos — 3.º item",
+          "selector": "#hero .hero-points li:nth-child(3)",
+          "type": "html"
+        },
+        {
+          "id": "hero.point.4",
+          "label": "Bullet 4",
+          "where": "Lista com vistos — 4.º item",
+          "selector": "#hero .hero-points li:nth-child(4)",
+          "type": "html"
+        },
+        {
+          "id": "hero.cta.text",
+          "label": "Botão principal — texto",
+          "where": "CTA verde no hero",
+          "selector": "#hero .cta-row .btn",
+          "type": "html"
+        },
+        {
+          "id": "hero.cta.href",
+          "label": "Botão principal — link",
+          "where": "URL Kiwify do CTA",
+          "selector": "#hero .cta-row .btn",
+          "type": "attr",
+          "attribute": "href"
+        },
+        {
+          "id": "hero.trust.1",
+          "label": "Confiança — linha 1",
+          "where": "Sob o botão",
+          "selector": "#hero .trust-row li:nth-child(1)",
+          "type": "html"
+        },
+        {
+          "id": "hero.trust.2",
+          "label": "Confiança — linha 2",
+          "where": "Sob o botão",
+          "selector": "#hero .trust-row li:nth-child(2)",
+          "type": "text"
+        },
+        {
+          "id": "hero.trust.3",
+          "label": "Confiança — linha 3",
+          "where": "Sob o botão",
+          "selector": "#hero .trust-row li:nth-child(3)",
+          "type": "text"
+        },
+        {
+          "id": "hero.photo.hero",
+          "label": "Fotografia grande (placeholder)",
+          "where": "Retângulo tracejado em cima à direita",
+          "selector": "#hero [data-photo=\"hero\"]",
+          "type": "image-slot"
+        },
+        {
+          "id": "hero.pill.1",
+          "label": "Etiqueta «4 semanas»",
+          "where": "Pills sobre a foto",
+          "selector": "#hero .hero-badges .pill:nth-child(1)",
+          "type": "text"
+        },
+        {
+          "id": "hero.pill.2",
+          "label": "Etiqueta «3 níveis»",
+          "where": "Pills sobre a foto",
+          "selector": "#hero .hero-badges .pill:nth-child(2)",
+          "type": "text"
+        },
+        {
+          "id": "hero.pill.3",
+          "label": "Etiqueta «Sem pesos»",
+          "where": "Pills sobre a foto",
+          "selector": "#hero .hero-badges .pill:nth-child(3)",
+          "type": "text"
+        },
+        {
+          "id": "hero.guia.thumb",
+          "label": "Miniatura página 8 do guia",
+          "where": "Figura do PDF abaixo da foto",
+          "selector": "#hero .hero-page img",
+          "type": "image",
+          "lightboxSelector": "#hero .hero-page .thumb-zoom"
+        },
+        {
+          "id": "hero.guia.caption",
+          "label": "Legenda da miniatura",
+          "where": "Texto sob a página 8",
+          "selector": "#hero .hero-page figcaption",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "programa",
+      "title": "Secção «O programa»",
+      "where": "Abaixo do hero — grelha de benefícios",
+      "fields": [
+        {
+          "id": "programa.kicker",
+          "label": "Rótulo da secção",
+          "where": "Texto pequeno acima do H2",
+          "selector": "#programa .kicker",
+          "type": "text"
+        },
+        {
+          "id": "programa.h2",
+          "label": "Título da secção",
+          "where": "H2 «O que é…»",
+          "selector": "#programa .section-head h2",
+          "type": "text"
+        },
+        {
+          "id": "programa.lead",
+          "label": "Introdução",
+          "where": "Parágrafo sob o H2",
+          "selector": "#programa .section-lead",
+          "type": "text"
+        },
+        {
+          "id": "programa.photo",
+          "label": "Fotografia sala de casa",
+          "where": "Bloco imagem + texto «Não precisas de ginásio…»",
+          "selector": "#programa [data-photo=\"programa\"]",
+          "type": "image-slot"
+        },
+        {
+          "id": "programa.split.h3",
+          "label": "Título do bloco lateral",
+          "where": "H3 ao lado da foto",
+          "selector": "#programa .split-text h3",
+          "type": "text"
+        },
+        {
+          "id": "programa.split.p1",
+          "label": "Parágrafo 1",
+          "where": "Texto ao lado da foto",
+          "selector": "#programa .split-text p:nth-of-type(1)",
+          "type": "text"
+        },
+        {
+          "id": "programa.split.p2",
+          "label": "Parágrafo 2",
+          "where": "Formato PDF",
+          "selector": "#programa .split-text p:nth-of-type(2)",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "como-funciona",
+      "title": "Como funcionam as 4 semanas",
+      "where": "Meio da página — calendário e passos",
+      "fields": [
+        {
+          "id": "como.kicker",
+          "label": "Rótulo",
+          "where": "Acima do H2",
+          "selector": "#como-funciona .kicker",
+          "type": "text"
+        },
+        {
+          "id": "como.h2",
+          "label": "Título",
+          "where": "H2 principal",
+          "selector": "#como-funciona .section-head h2",
+          "type": "text"
+        },
+        {
+          "id": "como.lead",
+          "label": "Introdução",
+          "where": "Sob o título",
+          "selector": "#como-funciona .section-lead",
+          "type": "text"
+        },
+        {
+          "id": "como.calendario.img",
+          "label": "Imagem página 13",
+          "where": "Figura do calendário",
+          "selector": "#como-funciona .how-media img",
+          "type": "image"
+        },
+        {
+          "id": "como.calendario.caption",
+          "label": "Legenda página 13",
+          "where": "Sob a imagem",
+          "selector": "#como-funciona .how-media figcaption",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "incluido",
+      "title": "O que vais receber",
+      "where": "Secção escura com lista e amostras",
+      "fields": [
+        {
+          "id": "incluido.h2",
+          "label": "Título",
+          "where": "H2 da secção escura",
+          "selector": "#incluido .section-head h2",
+          "type": "text"
+        },
+        {
+          "id": "incluido.lead",
+          "label": "Introdução",
+          "where": "Sob o título",
+          "selector": "#incluido .section-lead",
+          "type": "text"
+        },
+        {
+          "id": "incluido.sample.h3",
+          "label": "Título amostra",
+          "where": "«Vê o interior antes…»",
+          "selector": "#amostra .sample-head h3",
+          "type": "text"
+        },
+        {
+          "id": "incluido.sample.p",
+          "label": "Texto amostra",
+          "where": "Sob o título da amostra",
+          "selector": "#amostra .sample-head p",
+          "type": "text"
+        },
+        {
+          "id": "incluido.sample.p08",
+          "label": "Miniatura amostra página 8",
+          "where": "Primeira carta ampliável",
+          "selector": "#amostra .sample-grid .sample-card:nth-child(1) img",
+          "type": "image",
+          "lightboxSelector": "#amostra .sample-grid .sample-card:nth-child(1) .sample-zoom"
+        },
+        {
+          "id": "incluido.sample.p13",
+          "label": "Miniatura amostra página 13",
+          "where": "Segunda carta ampliável",
+          "selector": "#amostra .sample-grid .sample-card:nth-child(2) img",
+          "type": "image",
+          "lightboxSelector": "#amostra .sample-grid .sample-card:nth-child(2) .sample-zoom"
+        }
+      ]
+    },
+    {
+      "id": "depoimentos",
+      "title": "Depoimentos / testemunhos",
+      "where": "Secção «Quem já seguiu o guia» — antes da oferta",
+      "fields": [
+        {
+          "id": "depoimentos.kicker",
+          "label": "Rótulo da secção",
+          "where": "Texto pequeno «Testemunhos»",
+          "selector": "#depoimentos .kicker",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.h2",
+          "label": "Título da secção",
+          "where": "H2 «Quem já seguiu o guia»",
+          "selector": "#depoimentos .section-head h2",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.empty.title",
+          "label": "Título do aviso (sem depoimentos)",
+          "where": "Caixa central quando ainda não há testemunhos",
+          "selector": "#depoimentos .empty-title",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.empty.text",
+          "label": "Texto explicativo do vazio",
+          "where": "Parágrafo por baixo do título do aviso",
+          "selector": "#depoimentos .testimonial-empty p:nth-of-type(2)",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "faq",
+      "title": "Perguntas frequentes (FAQ)",
+      "where": "Secção de dúvidas antes da chamada final",
+      "fields": [
+        {
+          "id": "faq.kicker",
+          "label": "Rótulo da secção",
+          "where": "Texto «Dúvidas»",
+          "selector": "#faq .kicker",
+          "type": "text"
+        },
+        {
+          "id": "faq.h2",
+          "label": "Título da secção",
+          "where": "H2 «Perguntas frequentes»",
+          "selector": "#faq .section-head h2",
+          "type": "text"
+        },
+        {
+          "id": "faq.q01",
+          "label": "Pergunta 1 — título",
+          "where": "1.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(1) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a01",
+          "label": "Pergunta 1 — resposta",
+          "where": "Corpo do 1.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(1) .faq-body p",
+          "type": "html"
+        },
+        {
+          "id": "faq.q02",
+          "label": "Pergunta 2 — título",
+          "where": "2.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(2) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a02",
+          "label": "Pergunta 2 — resposta",
+          "where": "Corpo do 2.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(2) .faq-body p",
+          "type": "html"
+        },
+        {
+          "id": "faq.q03",
+          "label": "Pergunta 3 — título",
+          "where": "3.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(3) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a03",
+          "label": "Pergunta 3 — resposta",
+          "where": "Corpo do 3.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(3) .faq-body p",
+          "type": "html"
+        },
+        {
+          "id": "faq.q04",
+          "label": "Pergunta 4 — título",
+          "where": "4.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(4) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a04",
+          "label": "Pergunta 4 — resposta",
+          "where": "Corpo do 4.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(4) .faq-body p",
+          "type": "html"
+        },
+        {
+          "id": "faq.q05",
+          "label": "Pergunta 5 — título",
+          "where": "5.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(5) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a05",
+          "label": "Pergunta 5 — resposta",
+          "where": "Corpo do 5.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(5) .faq-body p",
+          "type": "html"
+        },
+        {
+          "id": "faq.q06",
+          "label": "Pergunta 6 — título",
+          "where": "6.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(6) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a06",
+          "label": "Pergunta 6 — resposta",
+          "where": "Corpo do 6.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(6) .faq-body p",
+          "type": "html"
+        },
+        {
+          "id": "faq.q07",
+          "label": "Pergunta 7 — título",
+          "where": "7.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(7) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a07",
+          "label": "Pergunta 7 — resposta",
+          "where": "Corpo do 7.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(7) .faq-body p",
+          "type": "html"
+        },
+        {
+          "id": "faq.q08",
+          "label": "Pergunta 8 — título",
+          "where": "8.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(8) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a08",
+          "label": "Pergunta 8 — resposta",
+          "where": "Corpo do 8.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(8) .faq-body p",
+          "type": "html"
+        },
+        {
+          "id": "faq.q09",
+          "label": "Pergunta 9 — título",
+          "where": "9.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(9) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a09",
+          "label": "Pergunta 9 — resposta",
+          "where": "Corpo do 9.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(9) .faq-body p",
+          "type": "html"
+        },
+        {
+          "id": "faq.q10",
+          "label": "Pergunta 10 — título",
+          "where": "10.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(10) summary span",
+          "type": "text"
+        },
+        {
+          "id": "faq.a10",
+          "label": "Pergunta 10 — resposta",
+          "where": "Corpo do 10.º acordeão",
+          "selector": "#faq .faq-list details:nth-child(10) .faq-body p",
+          "type": "html"
+        }
+      ]
+    },
+    {
+      "id": "oferta",
+      "title": "Oferta e preço",
+      "where": "Cartão de compra com 14,90 €",
+      "fields": [
+        {
+          "id": "oferta.h2",
+          "label": "Nome do produto",
+          "where": "Título no cartão",
+          "selector": "#oferta .offer-head h2",
+          "type": "text"
+        },
+        {
+          "id": "oferta.sub",
+          "label": "Subtítulo",
+          "where": "Sob o nome",
+          "selector": "#oferta .offer-sub",
+          "type": "text"
+        },
+        {
+          "id": "oferta.preco",
+          "label": "Preço visível",
+          "where": "Valor grande",
+          "selector": "#oferta .price-value",
+          "type": "html"
+        },
+        {
+          "id": "oferta.cta.text",
+          "label": "Botão compra — texto",
+          "where": "Botão no cartão",
+          "selector": "#oferta .offer-buy .btn",
+          "type": "html"
+        },
+        {
+          "id": "oferta.cta.href",
+          "label": "Botão compra — link",
+          "where": "URL Kiwify",
+          "selector": "#oferta .offer-buy .btn",
+          "type": "attr",
+          "attribute": "href"
+        }
+      ]
+    },
+    {
+      "id": "cta-final",
+      "title": "Chamada final",
+      "where": "Última faixa antes do rodapé",
+      "fields": [
+        {
+          "id": "final.h2",
+          "label": "Título",
+          "where": "H2 verde no fim",
+          "selector": ".final-cta h2",
+          "type": "text"
+        },
+        {
+          "id": "final.sub",
+          "label": "Subtexto",
+          "where": "Parágrafo sob o H2",
+          "selector": ".final-cta .sub",
+          "type": "text"
+        },
+        {
+          "id": "final.cta.text",
+          "label": "Botão — texto",
+          "where": "CTA grande",
+          "selector": ".final-cta .btn",
+          "type": "html"
+        },
+        {
+          "id": "final.cta.href",
+          "label": "Botão — link",
+          "where": "URL Kiwify",
+          "selector": ".final-cta .btn",
+          "type": "attr",
+          "attribute": "href"
+        }
+      ]
+    }
+  ]
+}

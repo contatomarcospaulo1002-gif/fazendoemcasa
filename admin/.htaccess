@@ -1,0 +1,3 @@
+<IfModule mod_authz_core.c>
+  # Em produção (GitHub Pages) esta pasta não corre PHP; o .htaccess é ignorado.
+</IfModule>

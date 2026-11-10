@@ -537,6 +537,26 @@ p:last-child { margin-bottom: 0; }
 .photo-slot[data-ratio="1:1"] { --ratio: 1 / 1; }
 .photo-slot-sm .slot-note { font-size: .68rem; }
 
+.photo-slot.has-photo {
+  padding: 0;
+  border-style: solid;
+  border-color: rgba(31, 92, 69, .25);
+  background: #111;
+}
+.photo-slot.has-photo .slot-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.photo-slot.has-photo .slot-tag,
+.photo-slot.has-photo .slot-note {
+  z-index: 1;
+  position: relative;
+}
+
 @media (min-width: 860px) {
   .hero-grid { grid-template-columns: 1.06fr .94fr; }
   .hero-visual { padding-right: .5rem; }
