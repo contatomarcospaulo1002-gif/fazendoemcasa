@@ -305,7 +305,7 @@
           setStatus("Foto guardada (img/cms + JSON). Clica «Guardar e aplicar» no topo para o index.", "ok");
         } else if (file && !state.php) {
           setStatus(
-            "Descarregaste o WebP + content.json. Coloca a imagem em img/cms/, o index após «Guardar e aplicar», e faz push ao repositório.",
+            "Concluído — verifica a pasta Descargas: ficheiro .webp + content.json. Depois «Guardar e aplicar» (index.html) e envia ao Git, ou pede ao assistente para publicar.",
             "ok"
           );
         } else if (!file) {
@@ -810,7 +810,7 @@
     }
     if (btnLar) btnLar.classList.remove("hidden");
     if (isPublicAdminHost()) {
-      setStatus("Modo hospedagem — grava por descargas (sem PHP no servidor)", "warn");
+      setStatus("Site hospedado: ao salvar, o browser descarrega ficheiros (não é erro)", "");
     }
   }
 
