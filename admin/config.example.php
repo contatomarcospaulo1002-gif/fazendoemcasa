@@ -8,4 +8,13 @@
 return [
     'pin' => '2828',
     'require_pin' => true,
+  /** Ativar MySQL (VPS ou Docker). No GitHub Pages deixa false. */
+    'use_database' => false,
+    'db' => [
+        'host' => '127.0.0.1',
+        'port' => 3306,
+        'name' => 'fazendoemcasa',
+        'user' => 'fazendoemcasa',
+        'pass' => '',
+    ],
 ];

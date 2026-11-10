@@ -10,8 +10,10 @@ $configPath = $root . '/config.local.php';
 if (!is_file($configPath)) {
     $configPath = $root . '/config.example.php';
 }
-/** @var array{pin?:string,require_pin?:bool} $config */
+/** @var array{pin?:string,require_pin?:bool,use_database?:bool,db?:array} $config */
 $config = require $configPath;
+
+require_once __DIR__ . '/database.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();

@@ -12,4 +12,6 @@ admin_json([
     'authenticated' => !empty($_SESSION['admin_ok']),
     'php' => true,
     'pinRequired' => admin_pin_required(),
+    'database' => admin_db_connected(),
+    'useDatabase' => admin_use_database(),
 ]);

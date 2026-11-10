@@ -8,6 +8,7 @@
     activeGroupId: null,
     activeFieldId: null,
     php: false,
+    database: false,
     authenticated: false,
     dirty: false,
     indexDoc: null,
@@ -862,7 +863,11 @@
         hint.textContent = "";
       }
       if (btnLar) btnLar.classList.add("hidden");
-      setStatus("Laragon (PHP) — podes gravar fotos", "ok");
+      if (state.database) {
+        setStatus("PHP + MySQL — gravação no servidor", "ok");
+      } else {
+        setStatus("Laragon (PHP) — podes gravar fotos", "ok");
+      }
       return;
     }
     if (hint) {
@@ -1577,14 +1582,23 @@
       });
   }
 
+  function loadContentPayload() {
+    if (state.php && state.authenticated) {
+      return api("content.php").then(function (res) {
+        return res.content || {};
+      });
+    }
+    return fetch("content.json").then(function (r) {
+      return r.json();
+    });
+  }
+
   function bootstrapApp() {
     Promise.all([
       fetch("site-map.json").then(function (r) {
         return r.json();
       }),
-      fetch("content.json").then(function (r) {
-        return r.json();
-      }),
+      loadContentPayload(),
       loadIndexDoc(),
     ])
       .then(function (parts) {
@@ -1658,6 +1672,7 @@
     api("session.php")
       .then(function (res) {
         state.php = !!res.php;
+        state.database = !!res.database;
         var pinRequired = res.pinRequired !== false;
         if (res.authenticated || !pinRequired) {
           state.authenticated = true;

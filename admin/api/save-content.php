@@ -25,8 +25,20 @@ if ($json === false) {
     admin_json(['ok' => false, 'error' => 'Não foi possível serializar o conteúdo.'], 500);
 }
 
+$dbOk = true;
+if (admin_db_connected()) {
+    $dbOk = cms_save_document_to_db($content, 'admin');
+    if (!$dbOk) {
+        admin_json(['ok' => false, 'error' => 'Não foi possível gravar na base de dados.'], 500);
+    }
+}
+
 if (file_put_contents($paths['content'], $json) === false) {
     admin_json(['ok' => false, 'error' => 'Não foi possível gravar content.json.'], 500);
 }
 
-admin_json(['ok' => true, 'path' => 'admin/content.json']);
+admin_json([
+    'ok' => true,
+    'path' => 'admin/content.json',
+    'database' => admin_db_connected(),
+]);

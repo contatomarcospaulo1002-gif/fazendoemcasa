@@ -1,0 +1,17 @@
+<?php
+/**
+ * Copia para: /var/www/fazendoemcasa/admin/config.local.php
+ * NUNCA commits este ficheiro com senhas reais.
+ */
+return [
+    'pin' => '2828',
+    'require_pin' => false,
+    'use_database' => true,
+    'db' => [
+        'host' => '127.0.0.1',
+        'port' => 3306,
+        'name' => 'fazendoemcasa',
+        'user' => 'fazendoemcasa',
+        'pass' => 'ALTERAR_SENHA_FORTE_AQUI',
+    ],
+];

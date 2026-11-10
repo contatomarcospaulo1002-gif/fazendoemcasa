@@ -1,0 +1,42 @@
+-- Executar na VPS como root MySQL:
+--   mysql -u root -p < 01-mysql-schema.sql
+-- Altera a palavra-passe em baixo antes de correr em produção.
+
+CREATE DATABASE IF NOT EXISTS fazendoemcasa
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+CREATE USER IF NOT EXISTS 'fazendoemcasa'@'localhost' IDENTIFIED BY 'ALTERAR_SENHA_FORTE_AQUI';
+GRANT ALL PRIVILEGES ON fazendoemcasa.* TO 'fazendoemcasa'@'localhost';
+FLUSH PRIVILEGES;
+
+USE fazendoemcasa;
+
+CREATE TABLE IF NOT EXISTS cms_content (
+  id TINYINT UNSIGNED NOT NULL PRIMARY KEY,
+  document JSON NOT NULL,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS cms_revisions (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  document JSON NOT NULL,
+  source VARCHAR(32) NOT NULL DEFAULT 'admin',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_revisions_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS cms_media (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  field_id VARCHAR(120) NOT NULL,
+  path VARCHAR(255) NOT NULL,
+  bytes INT UNSIGNED NOT NULL DEFAULT 0,
+  mime VARCHAR(64) NOT NULL DEFAULT 'image/webp',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_media_field (field_id),
+  INDEX idx_media_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO cms_content (id, document)
+VALUES (1, JSON_OBJECT())
+ON DUPLICATE KEY UPDATE id = id;

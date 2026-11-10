@@ -46,4 +46,5 @@ if (file_put_contents($full, $raw) === false) {
 }
 
 $publicPath = 'img/cms/' . $filename;
+cms_log_media($fieldId, $publicPath, strlen($raw), 'image/webp');
 admin_json(['ok' => true, 'path' => $publicPath, 'bytes' => strlen($raw)]);
