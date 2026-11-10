@@ -144,11 +144,17 @@
           '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Ainda não aplicaste ao index — <strong>Guardar e aplicar</strong>.</p>';
       }
 
+      if (!state.php && fieldHasPendingImage(field.id)) {
+        rows =
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> <strong>Nova foto</strong> só neste browser — falta publicar no Git para substituir no site.</p>' +
+          rows;
+      }
+
       if (fileOnline) {
         rows +=
-          '<p class="live-row live-ok"><span class="live-dot" aria-hidden="true"></span> <strong>No ar</strong> em <a href="' +
+          '<p class="live-row live-ok"><span class="live-dot" aria-hidden="true"></span> <strong>No ar agora</strong> em <a href="' +
           escapeAttr(SITE_PUBLIC + "/" + src.replace(/^\//, "")) +
-          '" target="_blank" rel="noopener">fazendoemcasa.com</a></p>';
+          '" target="_blank" rel="noopener">fazendoemcasa.com</a> (pode ser a versão anterior)</p>';
       } else if (fileLocal && onIndex) {
         rows +=
           '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Ainda não está no site público — faz <strong>git push</strong> depois de aplicar.</p>';
@@ -202,6 +208,29 @@
   function hasBlobPreview() {
     var prev = $("img-prev");
     return !!(prev && prev.src && prev.src.indexOf("blob:") === 0);
+  }
+
+  function fieldHasPendingImage(fieldId) {
+    return !!(state.content._pendingImages && state.content._pendingImages[fieldId]);
+  }
+
+  function restorePendingPreview(field) {
+    if (!field || !isImageField(field)) return;
+    var dataUrl = state.content._pendingImages && state.content._pendingImages[field.id];
+    if (!dataUrl) return;
+    var prev = $("img-prev");
+    var empty = $("img-prev-empty");
+    if (!prev) return;
+    prev.src = dataUrl;
+    prev.removeAttribute("hidden");
+    prev.classList.remove("hidden");
+    if (empty) empty.classList.add("hidden");
+    var cap = $("img-prev-caption");
+    if (cap) {
+      cap.classList.remove("hidden");
+      cap.textContent =
+        "Versão nova (guardada no navegador). No site público ainda pode aparecer a imagem antiga até «Descarregar para Git» ou pedires publicação.";
+    }
   }
 
   function imageUploadBannerHtml() {
@@ -1056,7 +1085,10 @@
     revokePreviewObjectUrl();
     mount.innerHTML = html;
     bindEditor(field);
-    if (isImageField(field)) refreshImageLiveStatus(field);
+    if (isImageField(field)) {
+      restorePendingPreview(field);
+      refreshImageLiveStatus(field);
+    }
   }
 
   function imageEditorHtml(field, val) {
