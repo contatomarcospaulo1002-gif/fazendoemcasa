@@ -90,7 +90,7 @@
     if (!src) {
       if (hasBlobPreview()) {
         box.innerHTML =
-          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Pré-visualização local — clica <strong>Salvar foto</strong> (no Laragon).</p>';
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Pré-visualização local — clica <strong>Salvar foto</strong>.</p>';
       } else {
         box.innerHTML =
           '<p class="live-row live-none"><span class="live-dot" aria-hidden="true"></span> Ainda não há foto neste campo.</p>';
@@ -191,8 +191,11 @@
       (canRemove ? "" : " disabled") +
       ">Remover foto</button>";
     html += "</div>";
-    html +=
-      '<p class="field-hint editor-field-actions-hint">Escolhe o ficheiro, vê a pré-visualização e clica <strong>Salvar foto</strong> (precisa Laragon). Depois <strong>Guardar e aplicar</strong> no topo para o index.html.</p>';
+    var hint =
+      state.php && state.authenticated
+        ? "Escolhe o ficheiro, clica <strong>Salvar foto</strong>, depois <strong>Guardar e aplicar</strong> no topo."
+        : "No site hospedado: <strong>Salvar foto</strong> descarrega o .webp (mete em <code>img/cms/</code> no projeto). <strong>Guardar JSON</strong> e <strong>Guardar e aplicar</strong> descarregam ficheiros — envia ao Git para publicar.";
+    html += '<p class="field-hint editor-field-actions-hint">' + hint + "</p>";
     return html;
   }
 
@@ -300,8 +303,13 @@
       .then(function () {
         if (file && state.php && state.authenticated) {
           setStatus("Foto guardada (img/cms + JSON). Clica «Guardar e aplicar» no topo para o index.", "ok");
+        } else if (file && !state.php) {
+          setStatus(
+            "Descarregaste o WebP + content.json. Coloca a imagem em img/cms/, o index após «Guardar e aplicar», e faz push ao repositório.",
+            "ok"
+          );
         } else if (!file) {
-          setStatus("Rótulos guardados no JSON.", "ok");
+          setStatus(state.php ? "Rótulos guardados no JSON." : "content.json descarregado.", "ok");
         }
         renderEditor();
       })
@@ -750,6 +758,62 @@
     pill.className = "status-pill " + (kind || "");
   }
 
+  function localAdminUrl() {
+    return "http://fazendoemcasa.test/admin/";
+  }
+
+  function isPublicAdminHost() {
+    var h = (window.location.hostname || "").toLowerCase();
+    return (
+      h === "fazendoemcasa.com" ||
+      h === "www.fazendoemcasa.com" ||
+      h.indexOf("github.io") !== -1
+    );
+  }
+
+  function isLocalTestHost() {
+    var h = window.location.hostname || "";
+    return /\.test$/i.test(h) || h === "localhost" || h === "127.0.0.1";
+  }
+
+  function phpHintMessage() {
+    if (isPublicAdminHost()) {
+      return (
+        "Hospedagem GitHub Pages: o servidor não corre PHP. Podes editar aqui — «Salvar foto» descarrega o WebP e o content.json; depois «Guardar e aplicar» descarrega o index.html. Envia tudo ao Git (push) para ficar no ar. Laragon opcional: " +
+        localAdminUrl()
+      );
+    }
+    if (isLocalTestHost()) {
+      return (
+        "PHP não responde neste URL. No Laragon: Menu → caminho www\\fazendoemcasa → «Criar virtual host» (fazendoemcasa.test), reinicia Apache e volta a " +
+        localAdminUrl()
+      );
+    }
+    return "Sem PHP: abre " + localAdminUrl() + " no Laragon.";
+  }
+
+  function updatePhpUi() {
+    var hint = $("php-hint");
+    var btnLar = $("btn-open-laragon-admin");
+    if (state.php) {
+      if (hint) {
+        hint.classList.add("hidden");
+        hint.textContent = "";
+      }
+      if (btnLar) btnLar.classList.add("hidden");
+      setStatus("Laragon (PHP) — podes gravar fotos", "ok");
+      return;
+    }
+    if (hint) {
+      hint.classList.remove("hidden");
+      hint.textContent = phpHintMessage();
+    }
+    if (btnLar) btnLar.classList.remove("hidden");
+    if (isPublicAdminHost()) {
+      setStatus("Modo hospedagem — grava por descargas (sem PHP no servidor)", "warn");
+    }
+  }
+
   function markDirty() {
     state.dirty = true;
     setStatus("Alterações por guardar", "warn");
@@ -1115,9 +1179,12 @@
         return res.path;
       });
     }
-    return Promise.reject(
-      new Error("Sem PHP no servidor. Abre http://fazendoemcasa.test/admin no Laragon.")
-    );
+    var publicPath = staticImagePath(fieldId);
+    if (!state.content._pendingImages) state.content._pendingImages = {};
+    state.content._pendingImages[fieldId] = pack.dataUrl;
+    var fileName = publicPath.split("/").pop() || "foto.webp";
+    downloadBlobFile(pack.blob, fileName);
+    return Promise.resolve(publicPath);
   }
 
   function renderGuide() {
@@ -1196,8 +1263,14 @@
     });
   }
 
-  function saveContent() {
+  function contentPayloadForDisk() {
     var payload = Object.assign({}, state.content);
+    if (payload._pendingImages) delete payload._pendingImages;
+    return payload;
+  }
+
+  function saveContent() {
+    var payload = contentPayloadForDisk();
     if (state.php && state.authenticated) {
       return api("save-content.php", { method: "POST", body: { content: payload } })
         .then(function () {
@@ -1277,11 +1350,21 @@
 
   function downloadText(name, text) {
     var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    downloadBlobFile(blob, name);
+  }
+
+  function downloadBlobFile(blob, filename) {
     var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = name;
+    var url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = filename;
     a.click();
-    URL.revokeObjectURL(a.href);
+    URL.revokeObjectURL(url);
+  }
+
+  function staticImagePath(fieldId) {
+    var safe = String(fieldId).replace(/[^a-z0-9._-]/gi, "");
+    return "img/cms/" + safe + ".webp";
   }
 
   function switchTab(tab) {
@@ -1362,6 +1445,12 @@
     $("btn-open-site").addEventListener("click", function () {
       window.open("../index.html", "_blank");
     });
+    var btnLar = $("btn-open-laragon-admin");
+    if (btnLar) {
+      btnLar.addEventListener("click", function () {
+        window.location.href = localAdminUrl();
+      });
+    }
 
     document.querySelectorAll(".tabs-main button").forEach(function (b) {
       b.addEventListener("click", function () {
@@ -1404,21 +1493,16 @@
         if (res.authenticated || !pinRequired) {
           state.authenticated = true;
           showApp();
-        if (!state.php) {
-          $("php-hint").classList.remove("hidden");
-          $("php-hint").textContent =
-            "Estás sem PHP: upload não grava. Usa http://fazendoemcasa.test/admin no Laragon.";
+          updatePhpUi();
+          bootstrapApp();
+          return;
         }
-        bootstrapApp();
-        return;
-      }
       })
       .catch(function () {
+        state.php = false;
         state.authenticated = true;
         showApp();
-        $("php-hint").classList.remove("hidden");
-        $("php-hint").textContent =
-          "Estás sem PHP: upload não grava. Usa http://fazendoemcasa.test/admin no Laragon.";
+        updatePhpUi();
         bootstrapApp();
       });
   }
