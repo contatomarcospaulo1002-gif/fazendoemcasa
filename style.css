@@ -1451,6 +1451,7 @@ p.seller:last-child { margin-bottom: 0; }
   cursor: pointer;
 }
 .lightbox-close:hover { background: rgba(255, 255, 255, .16); border-color: rgba(255, 255, 255, .6); }
+.lightbox[hidden] { display: none !important; }
 
 .cookie-banner {
   position: fixed;
