@@ -1,0 +1,9 @@
+# SO / editor
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+*~
+
+# Cursor / IDE (opcional local)
+.cursor/
