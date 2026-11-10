@@ -16,9 +16,148 @@
   };
 
   var els = {};
+  var SITE_PUBLIC = "https://fazendoemcasa.com";
+  var previewObjectUrl = null;
 
   function $(id) {
     return document.getElementById(id);
+  }
+
+  function imageSrcFromValue(val) {
+    if (!val) return "";
+    if (typeof val === "object") return (val.src || "").trim();
+    return String(val).trim();
+  }
+
+  function revokePreviewObjectUrl() {
+    if (previewObjectUrl) {
+      URL.revokeObjectURL(previewObjectUrl);
+      previewObjectUrl = null;
+    }
+  }
+
+  function probeAssetUrl(url) {
+    return new Promise(function (resolve) {
+      var img = new Image();
+      var timer = setTimeout(function () {
+        resolve(false);
+      }, 15000);
+      img.onload = function () {
+        clearTimeout(timer);
+        resolve(true);
+      };
+      img.onerror = function () {
+        clearTimeout(timer);
+        resolve(false);
+      };
+      img.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    });
+  }
+
+  function mediaPreviewSection(src) {
+    var has = !!src;
+    var html = '<div class="media-preview-box">';
+    html += '<p class="media-preview-title">Pré-visualização</p>';
+    html += '<div class="media-preview-frame">';
+    html +=
+      '<img class="img-preview' +
+      (has ? "" : " hidden") +
+      '" id="img-prev" src="' +
+      (has ? "../" + escapeAttr(src) : "") +
+      '" alt="">';
+    html +=
+      '<p class="media-preview-empty' +
+      (has ? " hidden" : "") +
+      '" id="img-prev-empty">Sem fotografia — escolhe um ficheiro abaixo.</p>';
+    html += "</div>";
+    html += '<div class="img-live-status" id="img-live-status" role="status" aria-live="polite">';
+    html += '<p class="live-row live-pending"><span class="live-dot" aria-hidden="true"></span> A verificar…</p>';
+    html += "</div>";
+    if (has) {
+      html +=
+        '<p class="media-preview-links"><a href="../' +
+        escapeAttr(src) +
+        '" target="_blank" rel="noopener">Abrir ficheiro local</a></p>';
+    }
+    html += "</div>";
+    return html;
+  }
+
+  function refreshImageLiveStatus(field) {
+    var box = $("img-live-status");
+    if (!box) return;
+    var src = imageSrcFromValue(state.content[field.id]);
+    if (!src) {
+      box.innerHTML =
+        '<p class="live-row live-none"><span class="live-dot" aria-hidden="true"></span> Ainda não há foto neste campo.</p>';
+      return;
+    }
+    box.innerHTML =
+      '<p class="live-row live-pending"><span class="live-dot" aria-hidden="true"></span> A verificar publicação…</p>';
+
+    Promise.all([
+      loadIndexDoc(),
+      probeAssetUrl("../" + src),
+      probeAssetUrl(SITE_PUBLIC + "/" + src.replace(/^\//, "")),
+    ]).then(function (parts) {
+      if (!box.parentNode || state.activeFieldId !== field.id) return;
+      var doc = parts[0];
+      var fileLocal = parts[1];
+      var fileOnline = parts[2];
+      var indexSrc = imageSrcFromValue(readField(doc, field));
+      var onIndex = indexSrc === src;
+      var rows = "";
+
+      if (fileLocal) {
+        rows +=
+          '<p class="live-row live-ok"><span class="live-dot" aria-hidden="true"></span> Ficheiro no projeto <code>' +
+          escapeHtml(src) +
+          "</code></p>";
+      } else {
+        rows +=
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Ficheiro não encontrado em <code>' +
+          escapeHtml(src) +
+          "</code> (upload no Laragon?)</p>";
+      }
+
+      if (onIndex) {
+        rows +=
+          '<p class="live-row live-ok"><span class="live-dot" aria-hidden="true"></span> Está no <strong>index.html</strong> (site local / pré-visualização).</p>';
+      } else if (indexSrc) {
+        rows +=
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> O index ainda tem outra imagem — clica <strong>Guardar e aplicar</strong>.</p>';
+      } else {
+        rows +=
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Ainda não aplicaste ao index — <strong>Guardar e aplicar</strong>.</p>';
+      }
+
+      if (fileOnline) {
+        rows +=
+          '<p class="live-row live-ok"><span class="live-dot" aria-hidden="true"></span> <strong>No ar</strong> em <a href="' +
+          escapeAttr(SITE_PUBLIC + "/" + src.replace(/^\//, "")) +
+          '" target="_blank" rel="noopener">fazendoemcasa.com</a></p>';
+      } else if (fileLocal && onIndex) {
+        rows +=
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Ainda não está no site público — faz <strong>git push</strong> depois de aplicar.</p>';
+      } else {
+        rows +=
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Não está em fazendoemcasa.com (normal até aplicares e publicares).</p>';
+      }
+
+      box.innerHTML = rows;
+    });
+  }
+
+  function showLocalFilePreview(file) {
+    var prev = $("img-prev");
+    var empty = $("img-prev-empty");
+    if (!prev || !file) return;
+    revokePreviewObjectUrl();
+    previewObjectUrl = URL.createObjectURL(file);
+    prev.src = previewObjectUrl;
+    prev.removeAttribute("hidden");
+    prev.classList.remove("hidden");
+    if (empty) empty.classList.add("hidden");
   }
 
   function allFields() {
@@ -632,14 +771,16 @@
     }
 
     html += "</div>";
+    revokePreviewObjectUrl();
     mount.innerHTML = html;
     bindEditor(field);
+    if (isImageField(field)) refreshImageLiveStatus(field);
   }
 
   function imageEditorHtml(field, val) {
-    var html = "<div class=\"field img-tools\">";
+    var html = mediaPreviewSection(val.src || "");
+    html += "<div class=\"field img-tools\">";
     html += "<label><strong>1.</strong> Carregar imagem (JPG, PNG ou WebP)</label>";
-    if (val.src) html += "<img class=\"img-preview\" id=\"img-prev\" src=\"../" + escapeAttr(val.src) + "\" alt=\"\">";
     html += "<div class=\"img-controls\">";
     html += "<input type=\"file\" id=\"img-file\" accept=\"image/*\">";
     html += "<label>Largura máx. <input type=\"range\" id=\"img-max\" min=\"600\" max=\"2000\" step=\"50\" value=\"1400\"></label>";
@@ -659,9 +800,9 @@
   }
 
   function imageSlotEditorHtml(field, val) {
-    var html = "<div class=\"field img-tools\">";
+    var html = mediaPreviewSection(val.src || "");
+    html += "<div class=\"field img-tools\">";
     html += "<label><strong>1.</strong> Carregar fotografia (JPG, PNG ou WebP)</label>";
-    if (val.src) html += "<img class=\"img-preview\" id=\"img-prev\" src=\"../" + escapeAttr(val.src) + "\" alt=\"\">";
     html += "<div class=\"img-controls\">";
     html += "<input type=\"file\" id=\"img-file\" accept=\"image/*\">";
     html += "<label>Largura máx. <input type=\"range\" id=\"img-max\" min=\"600\" max=\"1600\" step=\"50\" value=\"1200\"></label>";
@@ -732,6 +873,7 @@
     imgFile.addEventListener("change", function () {
       var file = imgFile.files && imgFile.files[0];
       if (!file) return;
+      showLocalFilePreview(file);
       var maxW = maxR ? parseInt(maxR.value, 10) : 1400;
       var q = qR ? parseFloat(qR.value) : 0.82;
       var info = $("img-size-info");
@@ -781,6 +923,7 @@
             }
             setStatus("Upload precisa do Laragon (fazendoemcasa.test/admin), não do site no GitHub.", "warn");
             renderEditor();
+            refreshImageLiveStatus(field);
           });
         })
         .catch(function (err) {
@@ -960,6 +1103,8 @@
                   ")",
                 "ok"
               );
+              var f = state.activeFieldId ? fieldById(state.activeFieldId) : null;
+              if (f && isImageField(f)) refreshImageLiveStatus(f);
             })
             .catch(function (e) {
               setStatus(e.message, "warn");
