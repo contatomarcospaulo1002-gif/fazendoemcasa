@@ -72,6 +72,10 @@
       (has ? " hidden" : "") +
       '" id="img-prev-empty">Sem fotografia — escolhe um ficheiro abaixo.</p>';
     html += "</div>";
+    html +=
+      '<p class="media-preview-caption hidden" id="img-prev-caption"></p>';
+    html +=
+      '<p class="media-preview-tip">Mostra o <strong>teu ficheiro</strong> escolhido — o painel <strong>não faz captura de ecrã</strong>. Prefere foto só da pessoa (sem texto, logótipo ou moldura do site).</p>';
     html += '<div class="img-live-status" id="img-live-status" role="status" aria-live="polite">';
     html += '<p class="live-row live-pending"><span class="live-dot" aria-hidden="true"></span> A verificar…</p>';
     html += "</div>";
@@ -86,6 +90,7 @@
   }
 
   function refreshImageLiveStatus(field) {
+    if (!field) return;
     var box = $("img-live-status");
     if (!box) return;
     var src = imageSrcFromValue(state.content[field.id]);
@@ -169,6 +174,7 @@
   function showLocalFilePreview(file) {
     var prev = $("img-prev");
     var empty = $("img-prev-empty");
+    var cap = $("img-prev-caption");
     if (!prev || !file) return;
     revokePreviewObjectUrl();
     previewObjectUrl = URL.createObjectURL(file);
@@ -176,11 +182,33 @@
     prev.removeAttribute("hidden");
     prev.classList.remove("hidden");
     if (empty) empty.classList.add("hidden");
+    if (cap) {
+      cap.classList.remove("hidden");
+      cap.textContent =
+        "Ficheiro: " +
+        file.name +
+        " (" +
+        Math.round(file.size / 1024) +
+        " KB) — é este ficheiro que será convertido para WebP.";
+      if (/captura|screenshot|print|ecr[aã]|tela|mockup|canva|post/i.test(file.name)) {
+        cap.textContent +=
+          " Parece arte/captura: no site ficará igual; para o hero, usa só a fotografia da pessoa.";
+      }
+    }
+    var fld = state.activeFieldId ? fieldById(state.activeFieldId) : null;
+    if (fld) refreshImageLiveStatus(fld);
   }
 
   function hasBlobPreview() {
     var prev = $("img-prev");
     return !!(prev && prev.src && prev.src.indexOf("blob:") === 0);
+  }
+
+  function imageUploadBannerHtml() {
+    if (state.php && state.authenticated) {
+      return '<p class="upload-banner"><strong>Upload:</strong> escolhe uma <strong>fotografia</strong> (não captura de ecrã) e clica <strong>Salvar foto</strong>.</p>';
+    }
+    return '<p class="upload-banner"><strong>Upload:</strong> escolhe a fotografia no disco do teu PC. A pré-visualização mostra esse ficheiro — depois <strong>Salvar foto</strong>.</p>';
   }
 
   function imageFieldActionsHtml(hasSavedSrc) {
@@ -998,13 +1026,13 @@
 
     if (field.type === "image") {
       val = val && typeof val === "object" ? val : { src: "", alt: "", lightbox: "" };
-      html += '<p class="upload-banner"><strong>Upload:</strong> escolhe o ficheiro e clica <strong>Salvar foto</strong> neste painel (Laragon).</p>';
+      html += imageUploadBannerHtml();
       html += imageEditorHtml(field, val);
     }
 
     if (field.type === "image-slot") {
       val = val && typeof val === "object" ? val : { src: "", label: "", note: "" };
-      html += '<p class="upload-banner"><strong>Upload:</strong> escolhe o ficheiro e clica <strong>Salvar foto</strong> neste painel (Laragon).</p>';
+      html += imageUploadBannerHtml();
       html += imageSlotEditorHtml(field, val);
     }
 

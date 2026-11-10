@@ -337,11 +337,26 @@ a { color: var(--adm-accent); }
   gap: .65rem;
 }
 .media-preview-box {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  overflow: hidden;
   margin-bottom: 1rem;
   padding: .85rem;
   border: 1px solid var(--adm-border);
   border-radius: var(--adm-radius);
   background: #121814;
+}
+.media-preview-caption {
+  margin: .45rem 0 0;
+  font-size: .78rem;
+  color: var(--adm-accent);
+}
+.media-preview-tip {
+  margin: .35rem 0 .5rem;
+  font-size: .76rem;
+  color: var(--adm-muted);
+  line-height: 1.4;
 }
 .media-preview-title {
   margin: 0 0 .55rem;
@@ -360,6 +375,7 @@ a { color: var(--adm-accent); }
   border-radius: 8px;
   border: 1px dashed var(--adm-border);
   background: #0c100e;
+  overflow: hidden;
 }
 .media-preview-empty {
   margin: 0;
