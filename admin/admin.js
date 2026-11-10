@@ -11,6 +11,8 @@
     authenticated: false,
     dirty: false,
     indexDoc: null,
+    menuFilter: "all",
+    openGroups: {},
   };
 
   var els = {};
@@ -41,6 +43,24 @@
       "image-slot": "Foto (slot)",
     };
     return map[type] || type;
+  }
+
+  function isImageField(field) {
+    return field.type === "image" || field.type === "image-slot";
+  }
+
+  function fieldPassesFilter(field) {
+    if (state.menuFilter === "images") return isImageField(field);
+    return true;
+  }
+
+  function setGroupOpen(groupId, open) {
+    state.openGroups[groupId] = !!open;
+  }
+
+  function toggleGroup(groupId) {
+    setGroupOpen(groupId, !state.openGroups[groupId]);
+    renderMenu();
   }
 
   function api(path, options) {
@@ -348,31 +368,45 @@
     if (!wrap || !state.map) return;
     wrap.innerHTML = "";
     state.map.groups.forEach(function (group) {
+      var visibleFields = (group.fields || []).filter(fieldPassesFilter);
+      if (!visibleFields.length) return;
+
       var g = document.createElement("div");
       g.className = "menu-group";
+      if (state.openGroups[group.id]) g.classList.add("is-open");
 
       var head = document.createElement("button");
       head.type = "button";
+      head.className = "menu-group-toggle";
+      head.setAttribute("aria-expanded", state.openGroups[group.id] ? "true" : "false");
+      var countLabel = visibleFields.length + (state.menuFilter === "images" ? " img" : " campos");
       head.innerHTML =
+        '<span class="menu-chevron" aria-hidden="true">▶</span>' +
+        '<span class="menu-group-label">' +
         group.title +
         '<span class="where">' +
         (group.where || "") +
+        "</span></span>" +
+        '<span class="menu-count">' +
+        countLabel +
         "</span>";
       head.addEventListener("click", function () {
-        state.activeGroupId = group.id;
-        if (group.fields && group.fields[0]) selectField(group.fields[0].id);
+        toggleGroup(group.id);
       });
       g.appendChild(head);
 
       var list = document.createElement("div");
       list.className = "menu-fields";
-      (group.fields || []).forEach(function (field) {
+      visibleFields.forEach(function (field) {
         var b = document.createElement("button");
         b.type = "button";
         b.dataset.fieldId = field.id;
         if (state.activeFieldId === field.id) b.classList.add("active");
+        var tagClass = isImageField(field) ? "type-tag is-img" : "type-tag";
         b.innerHTML =
-          '<span class="type-tag">' +
+          '<span class="' +
+          tagClass +
+          '">' +
           typeLabel(field.type) +
           "</span>" +
           field.label +
@@ -380,6 +414,7 @@
           (field.where || "—") +
           "</span>";
         b.addEventListener("click", function () {
+          setGroupOpen(group.id, true);
           selectField(field.id);
         });
         list.appendChild(b);
@@ -398,6 +433,7 @@
           return f.id === fieldId;
         })) {
           state.activeGroupId = g.id;
+          setGroupOpen(g.id, true);
           return true;
         }
         return false;
@@ -413,7 +449,9 @@
     if (!mount) return;
     var field = state.activeFieldId ? fieldById(state.activeFieldId) : null;
     if (!field) {
-      mount.innerHTML = "<p class=\"guide-intro\">Escolhe um campo no menu à esquerda. Cada item indica <strong>o quê</strong> e <strong>onde</strong> no site será alterado.</p>";
+      mount.innerHTML =
+        "<p class=\"guide-intro\">Escolhe uma <strong>secção</strong> no menu (▶ abre e fecha).</p>" +
+        "<p class=\"guide-intro\">Upload: <strong>Só imagens</strong> → <strong>Galeria de fotos</strong> ou <strong>Hero</strong> → campo com etiqueta verde <strong>IMAGEM</strong>.</p>";
       return;
     }
 
@@ -446,11 +484,13 @@
 
     if (field.type === "image") {
       val = val && typeof val === "object" ? val : { src: "", alt: "", lightbox: "" };
+      html += '<p class="upload-banner"><strong>Upload aqui:</strong> botão «Escolher ficheiro» abaixo. Depois <strong>Guardar JSON</strong> e <strong>Aplicar ao index.html</strong>.</p>';
       html += imageEditorHtml(field, val);
     }
 
     if (field.type === "image-slot") {
       val = val && typeof val === "object" ? val : { src: "", label: "", note: "" };
+      html += '<p class="upload-banner"><strong>Upload da fotografia:</strong> escolhe o ficheiro abaixo (comprime para WebP).</p>';
       html += imageSlotEditorHtml(field, val);
     }
 
@@ -461,7 +501,7 @@
 
   function imageEditorHtml(field, val) {
     var html = "<div class=\"field img-tools\">";
-    html += "<label>Imagem atual</label>";
+    html += "<label><strong>1.</strong> Carregar imagem (JPG, PNG ou WebP)</label>";
     if (val.src) html += "<img class=\"img-preview\" id=\"img-prev\" src=\"../" + escapeAttr(val.src) + "\" alt=\"\">";
     html += "<div class=\"img-controls\">";
     html += "<input type=\"file\" id=\"img-file\" accept=\"image/*\">";
@@ -483,7 +523,7 @@
 
   function imageSlotEditorHtml(field, val) {
     var html = "<div class=\"field img-tools\">";
-    html += "<label>Fotografia no retângulo tracejado</label>";
+    html += "<label><strong>1.</strong> Carregar fotografia (JPG, PNG ou WebP)</label>";
     if (val.src) html += "<img class=\"img-preview\" id=\"img-prev\" src=\"../" + escapeAttr(val.src) + "\" alt=\"\">";
     html += "<div class=\"img-controls\">";
     html += "<input type=\"file\" id=\"img-file\" accept=\"image/*\">";
@@ -622,34 +662,41 @@
   function renderGuide() {
     var mount = $("panel-guia");
     if (!mount || !state.map) return;
-    var rows = "";
+    var sections = "";
     state.map.groups.forEach(function (g) {
+      var rows = "";
       (g.fields || []).forEach(function (f) {
         rows +=
           "<tr><td>" +
-          escapeHtml(g.title) +
-          "</td><td>" +
           escapeHtml(f.label) +
           "</td><td>" +
           typeLabel(f.type) +
           "</td><td>" +
           escapeHtml(f.where || "") +
           "</td><td><code>" +
-          escapeHtml(f.selector) +
-          "</code></td><td><code>" +
           escapeHtml(f.id) +
           "</code></td></tr>";
       });
+      sections +=
+        "<details class=\"guide-section\"><summary>" +
+        escapeHtml(g.title) +
+        " <span class=\"guide-section-meta\">(" +
+        (g.fields || []).length +
+        " campos)</span></summary>" +
+        "<p class=\"guide-section-where\">" +
+        escapeHtml(g.where || "") +
+        "</p>" +
+        "<div class=\"guide-table-wrap\"><table class=\"guide\"><thead><tr><th>O quê</th><th>Tipo</th><th>Onde</th><th>ID</th></tr></thead><tbody>" +
+        rows +
+        "</tbody></table></div></details>";
     });
     mount.innerHTML =
       "<div class=\"guide-intro\">" +
-      "<p>Esta guia é o <strong>mapeamento completo</strong> da página inicial. Cada linha corresponde a um campo editável no menu «Editar».</p>" +
-      "<ol><li>Edita textos e imagens na aba Editar.</li><li>Guarda o JSON (Laragon grava em <code>admin/content.json</code>).</li><li>Clica «Aplicar ao index.html» para o site público usar os valores.</li><li>Faz commit e push para publicar no GitHub Pages.</li></ol>" +
-      (state.php ? "" : "<p><strong>Sem PHP:</strong> podes exportar JSON e descarregar o <code>index.html</code> gerado pelo navegador.</p>") +
+      "<p>Para <strong>upload de imagens</strong>, usa a aba <strong>Editar</strong> → filtro <strong>Só imagens</strong> (não esta guia).</p>" +
+      "<ol><li>Edita na aba Editar.</li><li>Guardar JSON → Aplicar ao index.html.</li><li>Commit e push para publicar.</li></ol>" +
+      (state.php ? "" : "<p><strong>Sem PHP:</strong> exporta JSON e index.html pelo navegador.</p>") +
       "</div>" +
-      "<div class=\"guide-table-wrap\"><table class=\"guide\"><thead><tr><th>Secção</th><th>O quê</th><th>Tipo</th><th>Onde aparece</th><th>Seletor CSS</th><th>ID interno</th></tr></thead><tbody>" +
-      rows +
-      "</tbody></table></div>";
+      sections;
   }
 
   function renderPreview() {
@@ -835,6 +882,21 @@
     document.querySelectorAll(".tabs-main button").forEach(function (b) {
       b.addEventListener("click", function () {
         switchTab(b.dataset.tab);
+      });
+    });
+
+    document.querySelectorAll("[data-menu-filter]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.menuFilter = btn.getAttribute("data-menu-filter") || "all";
+        document.querySelectorAll("[data-menu-filter]").forEach(function (b) {
+          b.classList.toggle("active", b === btn);
+        });
+        if (state.menuFilter === "images") {
+          setGroupOpen("galeria-fotos", true);
+          setGroupOpen("galeria-comentarios", true);
+          setGroupOpen("hero", true);
+        }
+        renderMenu();
       });
     });
   }
