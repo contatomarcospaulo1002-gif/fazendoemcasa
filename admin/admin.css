@@ -226,6 +226,10 @@ a { color: var(--adm-accent); }
   background: rgba(62, 207, 142, .22);
   color: #9dffd0;
 }
+.type-tag.is-vid {
+  background: rgba(100, 160, 255, .22);
+  color: #b8d4ff;
+}
 .upload-banner {
   margin: 0 0 1rem;
   padding: .85rem 1rem;

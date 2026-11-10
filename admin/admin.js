@@ -41,6 +41,8 @@
       attr: "Atributo",
       image: "Imagem",
       "image-slot": "Foto (slot)",
+      "video-embed": "Vídeo embed",
+      "video-file": "Vídeo MP4",
     };
     return map[type] || type;
   }
@@ -49,9 +51,68 @@
     return field.type === "image" || field.type === "image-slot";
   }
 
+  function isVideoField(field) {
+    return field.type === "video-embed" || field.type === "video-file";
+  }
+
   function fieldPassesFilter(field) {
     if (state.menuFilter === "images") return isImageField(field);
+    if (state.menuFilter === "videos") return isVideoField(field);
     return true;
+  }
+
+  function allowedEmbedHost(url) {
+    try {
+      var u = new URL(url);
+      var h = u.hostname.toLowerCase().replace(/^www\./, "");
+      if (h === "youtu.be" || h.indexOf("youtube.com") !== -1 || h.indexOf("youtube-nocookie.com") !== -1) return true;
+      if (h.indexOf("facebook.com") !== -1 || h === "fb.watch") return true;
+      if (h.indexOf("vimeo.com") !== -1) return true;
+    } catch (e) {}
+    return false;
+  }
+
+  function sanitizeVideoEmbed(raw) {
+    raw = (raw || "").trim();
+    if (!raw) return "";
+    var iframe = raw.match(/<iframe[\s\S]*?<\/iframe>/i);
+    if (iframe) {
+      var srcMatch = iframe[0].match(/\ssrc=["']([^"']+)["']/i);
+      if (srcMatch && allowedEmbedHost(srcMatch[1])) {
+        return (
+          '<iframe src="' +
+          escapeAttr(srcMatch[1]) +
+          '" title="Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>'
+        );
+      }
+      return "";
+    }
+    var yt = raw.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/i);
+    if (yt) {
+      var yUrl = "https://www.youtube-nocookie.com/embed/" + yt[1];
+      return (
+        '<iframe src="' +
+        yUrl +
+        '" title="Vídeo YouTube" allowfullscreen loading="lazy"></iframe>'
+      );
+    }
+    var vm = raw.match(/vimeo\.com\/(\d+)/i);
+    if (vm) {
+      var vUrl = "https://player.vimeo.com/video/" + vm[1];
+      return (
+        '<iframe src="' +
+        vUrl +
+        '" title="Vídeo Vimeo" allowfullscreen loading="lazy"></iframe>'
+      );
+    }
+    if (allowedEmbedHost(raw)) {
+      return (
+        '<iframe src="' +
+        escapeAttr(raw) +
+        '" title="Vídeo" allowfullscreen loading="lazy"></iframe>'
+      );
+    }
+    return "";
   }
 
   function setGroupOpen(groupId, open) {
@@ -104,6 +165,12 @@
         note: note ? (note.textContent || "").trim() : "",
       };
     }
+    if (field.type === "video-embed") {
+      return (el.innerHTML || "").trim();
+    }
+    if (field.type === "video-file") {
+      return el.getAttribute("src") || "";
+    }
     return null;
   }
 
@@ -145,7 +212,58 @@
       applyImageSlot(el, value || {});
       return true;
     }
+    if (field.type === "video-embed") {
+      el.innerHTML = sanitizeVideoEmbed(value || "");
+      return true;
+    }
+    if (field.type === "video-file") {
+      if (value) {
+        el.setAttribute("src", value);
+        el.removeAttribute("hidden");
+      } else {
+        el.removeAttribute("src");
+        el.setAttribute("hidden", "");
+      }
+      return true;
+    }
     return false;
+  }
+
+  function applyVideoBlocks(doc) {
+    [
+      { block: "como-video-block", prefix: "video.como" },
+      { block: "hero-video-block", prefix: "video.hero" },
+    ].forEach(function (cfg) {
+      var block = doc.getElementById(cfg.block);
+      if (!block) return;
+      var embedRaw = state.content[cfg.prefix + ".embed"] || "";
+      var mp4 = (state.content[cfg.prefix + ".mp4"] || "").trim();
+      var embed = sanitizeVideoEmbed(embedRaw);
+      var slot = block.querySelector(".video-embed-slot");
+      var vid = block.querySelector(".video-native");
+      if (mp4) {
+        if (slot) slot.innerHTML = "";
+        if (vid) {
+          vid.setAttribute("src", mp4);
+          vid.removeAttribute("hidden");
+        }
+        block.removeAttribute("hidden");
+      } else if (embed) {
+        if (slot) slot.innerHTML = embed;
+        if (vid) {
+          vid.removeAttribute("src");
+          vid.setAttribute("hidden", "");
+        }
+        block.removeAttribute("hidden");
+      } else {
+        if (slot) slot.innerHTML = "";
+        if (vid) {
+          vid.removeAttribute("src");
+          vid.setAttribute("hidden", "");
+        }
+        block.setAttribute("hidden", "");
+      }
+    });
   }
 
   function applyImageSlot(el, val) {
@@ -282,6 +400,7 @@
       applyField(doc, field, state.content[field.id]);
     });
     applyCommentSlides(doc);
+    applyVideoBlocks(doc);
     updateDepoimentosVisibility(doc);
     updateGaleriasVisibility(doc);
   }
@@ -402,7 +521,9 @@
         b.type = "button";
         b.dataset.fieldId = field.id;
         if (state.activeFieldId === field.id) b.classList.add("active");
-        var tagClass = isImageField(field) ? "type-tag is-img" : "type-tag";
+        var tagClass = "type-tag";
+        if (isImageField(field)) tagClass += " is-img";
+        if (isVideoField(field)) tagClass += " is-vid";
         b.innerHTML =
           '<span class="' +
           tagClass +
@@ -494,6 +615,22 @@
       html += imageSlotEditorHtml(field, val);
     }
 
+    if (field.type === "video-embed") {
+      html += '<p class="upload-banner"><strong>Recomendado:</strong> no Facebook/YouTube, «Incorporar» → copia o <strong>código iframe</strong> e cola abaixo. Mais leve do que upload.</p>';
+      html += "<div class=\"field\"><label for=\"f-val\">Código embed (iframe) ou URL</label>";
+      html += "<textarea id=\"f-val\" rows=\"8\" placeholder=\"&lt;iframe src=&quot;...&quot; ...&gt;&lt;/iframe&gt;\">" + escapeHtml(String(val || "")) + "</textarea>";
+      if (field.hint) html += "<p class=\"field-hint\">" + escapeHtml(field.hint) + "</p>";
+      html += "</div>";
+    }
+
+    if (field.type === "video-file") {
+      html += '<p class="upload-banner"><strong>Alternativa:</strong> MP4 curto (máx. 12 MB). Se tiveres embed, usa o outro campo.</p>';
+      html += "<div class=\"field img-tools\"><label for=\"vid-file\">Carregar MP4</label>";
+      html += "<input type=\"file\" id=\"vid-file\" accept=\"video/mp4\">";
+      if (val) html += "<p class=\"field-hint\">Atual: <code>" + escapeHtml(String(val)) + "</code></p>";
+      html += '<p class="field-hint" id="vid-size-info"></p></div>';
+    }
+
     html += "</div>";
     mount.innerHTML = html;
     bindEditor(field);
@@ -549,6 +686,36 @@
         state.content[field.id] = simple.value;
         markDirty();
       });
+    }
+    var vidFile = $("vid-file");
+    if (vidFile) {
+      vidFile.addEventListener("change", function () {
+        var file = vidFile.files && vidFile.files[0];
+        if (!file) return;
+        var info = $("vid-size-info");
+        if (file.size > 12 * 1024 * 1024) {
+          if (info) info.textContent = "Ficheiro demasiado grande. Usa embed.";
+          return;
+        }
+        var fr = new FileReader();
+        fr.onload = function () {
+          var dataUrl = fr.result;
+          var upload = state.php && state.authenticated
+            ? api("upload-video.php", { method: "POST", body: { fieldId: field.id, dataUrl: dataUrl } })
+            : Promise.reject(new Error("Sem PHP"));
+          upload
+            .then(function (res) {
+              state.content[field.id] = res.path;
+              markDirty();
+              renderEditor();
+            })
+            .catch(function () {
+              if (info) info.textContent = "Grava só com Laragon/PHP ou usa embed.";
+            });
+        };
+        fr.readAsDataURL(file);
+      });
+      return;
     }
     var imgFile = $("img-file");
     if (!imgFile) return;
@@ -895,6 +1062,9 @@
           setGroupOpen("galeria-fotos", true);
           setGroupOpen("galeria-comentarios", true);
           setGroupOpen("hero", true);
+        }
+        if (state.menuFilter === "videos") {
+          setGroupOpen("videos", true);
         }
         renderMenu();
       });

@@ -30,6 +30,8 @@ Em GitHub Pages o painel é só leitura/exportação (sem PHP): descarrega JSON 
 
 **Galerias (opcionais):** secções «Galeria de fotos» (Antes/Depois, até 6 slides) e «Galeria de comentários» (captura ou texto). Ficam ocultas no site até carregares conteúdo no admin. Carrossel com swipe + avanço automático (`carousel.js`).
 
+**Vídeos:** no admin, filtro **Vídeos**. O sítio recomendado é **Como funciona** (vídeo explicativo); opcional no **Hero**. Prefere **embed** (código iframe do Facebook/YouTube/Vimeo). Upload **MP4** só para clipes até 12 MB (`video/cms/`).
+
 O site público em produção continua estático; não expõe o painel na mesma URL do Pages unless commits incluem `/admin`.
 
 ## Cursor
