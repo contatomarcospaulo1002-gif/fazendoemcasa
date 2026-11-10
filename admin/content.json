@@ -134,17 +134,17 @@
     "gallery.comments.cta.text": "Quero começar o plano",
     "gallery.comments.cta.href": "https://pay.kiwify.com/5NJmQkR",
     "gallery.photos.s1.before": {
-        "src": "",
-        "alt": ""
+        "src": "img/gallery-demo/antes-1.svg",
+        "alt": "Exemplo: fotografia antes (substituir no painel admin)"
     },
     "gallery.photos.s1.after": {
-        "src": "",
-        "alt": ""
+        "src": "img/gallery-demo/depois-1.svg",
+        "alt": "Exemplo: fotografia depois (substituir no painel admin)"
     },
-    "gallery.photos.s1.caption": "",
+    "gallery.photos.s1.caption": "Exemplo de slide — troca por fotos autorizadas no admin (slide 1).",
     "gallery.comments.s1.image": {
-        "src": "",
-        "alt": ""
+        "src": "img/gallery-demo/comentario-1.svg",
+        "alt": "Exemplo de mensagem autorizada (substituir no painel admin)"
     },
     "gallery.comments.s1.text": "",
     "gallery.photos.s2.before": {
