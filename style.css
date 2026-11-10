@@ -1139,6 +1139,73 @@ p:last-child { margin-bottom: 0; }
 .empty-title { font-weight: 700; color: var(--ink); margin-bottom: .35rem; font-size: .98rem; }
 .testimonial-empty p:last-child { color: var(--muted); font-size: .92rem; max-width: 34rem; margin-inline: auto; }
 
+.testimonial-grid {
+  display: grid;
+  gap: 1.1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px) {
+  .testimonial-grid { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+}
+
+.testimonial-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.35rem 1.25rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid rgba(31, 92, 69, .14);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.testimonial-card::before {
+  content: "“";
+  position: absolute;
+  right: 1rem;
+  top: .35rem;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: rgba(31, 92, 69, .12);
+  font-weight: 800;
+  pointer-events: none;
+}
+.testimonial-quote {
+  margin: 0;
+  font-size: .94rem;
+  line-height: 1.55;
+  color: var(--ink);
+  flex: 1;
+}
+.testimonial-foot {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-top: auto;
+  padding-top: .65rem;
+  border-top: 1px solid var(--line);
+}
+.testimonial-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-soft);
+  flex-shrink: 0;
+}
+.testimonial-name {
+  margin: 0;
+  font-size: .88rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+.testimonial-meta {
+  margin: .12rem 0 0;
+  font-size: .78rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
 /* ------------------------------------------------------------------ oferta */
 .offer-section { padding-top: clamp(2rem, 5vw, 4rem); }
 

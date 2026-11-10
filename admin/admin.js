@@ -104,7 +104,13 @@
     }
     if (field.type === "image") {
       if (!value || typeof value !== "object") return false;
-      if (value.src) el.setAttribute("src", value.src);
+      if (value.src) {
+        el.setAttribute("src", value.src);
+        el.removeAttribute("hidden");
+      } else {
+        el.removeAttribute("src");
+        el.setAttribute("hidden", "");
+      }
       if (value.alt !== undefined) el.setAttribute("alt", value.alt || "");
       if (field.lightboxSelector && value.lightbox) {
         var lb = doc.querySelector(field.lightboxSelector);
@@ -148,11 +154,39 @@
     if (note && val.note !== undefined) note.textContent = val.note;
   }
 
+  function updateDepoimentosVisibility(doc) {
+    var hasAny = false;
+    [1, 2, 3].forEach(function (i) {
+      var quoteId = "depoimentos.card" + i + ".quote";
+      var quote = (state.content[quoteId] || "").trim();
+      var card = doc.querySelector('#depoimentos .testimonial-card[data-index="' + i + '"]');
+      if (card) {
+        if (quote) {
+          card.removeAttribute("hidden");
+          hasAny = true;
+        } else {
+          card.setAttribute("hidden", "");
+        }
+      }
+    });
+    var empty = doc.querySelector("#testimonial-empty");
+    var grid = doc.querySelector("#testimonial-grid");
+    if (empty) {
+      if (hasAny) empty.setAttribute("hidden", "");
+      else empty.removeAttribute("hidden");
+    }
+    if (grid) {
+      if (hasAny) grid.removeAttribute("hidden");
+      else grid.setAttribute("hidden", "");
+    }
+  }
+
   function applyAllToDoc(doc) {
     allFields().forEach(function (field) {
       if (state.content[field.id] === undefined) return;
       applyField(doc, field, state.content[field.id]);
     });
+    updateDepoimentosVisibility(doc);
   }
 
   function loadIndexDoc() {

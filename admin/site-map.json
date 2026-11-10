@@ -378,6 +378,90 @@
           "where": "Parágrafo por baixo do título do aviso",
           "selector": "#depoimentos .testimonial-empty p:nth-of-type(2)",
           "type": "text"
+        },
+        {
+          "id": "depoimentos.card1.quote",
+          "label": "Depoimento 1 — texto",
+          "where": "Cartão 1 (só aparece se preencheres)",
+          "selector": "#depoimentos .testimonial-card[data-index=\"1\"] .testimonial-quote",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.card1.name",
+          "label": "Depoimento 1 — nome",
+          "where": "Rodapé do cartão 1",
+          "selector": "#depoimentos .testimonial-card[data-index=\"1\"] .testimonial-name",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.card1.meta",
+          "label": "Depoimento 1 — detalhe",
+          "where": "Ex.: cidade, nível ou «leitora autorizada»",
+          "selector": "#depoimentos .testimonial-card[data-index=\"1\"] .testimonial-meta",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.card1.photo",
+          "label": "Depoimento 1 — foto",
+          "where": "Avatar circular (opcional)",
+          "selector": "#depoimentos .testimonial-card[data-index=\"1\"] .testimonial-avatar",
+          "type": "image"
+        },
+        {
+          "id": "depoimentos.card2.quote",
+          "label": "Depoimento 2 — texto",
+          "where": "Cartão 2",
+          "selector": "#depoimentos .testimonial-card[data-index=\"2\"] .testimonial-quote",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.card2.name",
+          "label": "Depoimento 2 — nome",
+          "where": "Rodapé do cartão 2",
+          "selector": "#depoimentos .testimonial-card[data-index=\"2\"] .testimonial-name",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.card2.meta",
+          "label": "Depoimento 2 — detalhe",
+          "where": "Linha secundária do cartão 2",
+          "selector": "#depoimentos .testimonial-card[data-index=\"2\"] .testimonial-meta",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.card2.photo",
+          "label": "Depoimento 2 — foto",
+          "where": "Avatar do cartão 2",
+          "selector": "#depoimentos .testimonial-card[data-index=\"2\"] .testimonial-avatar",
+          "type": "image"
+        },
+        {
+          "id": "depoimentos.card3.quote",
+          "label": "Depoimento 3 — texto",
+          "where": "Cartão 3",
+          "selector": "#depoimentos .testimonial-card[data-index=\"3\"] .testimonial-quote",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.card3.name",
+          "label": "Depoimento 3 — nome",
+          "where": "Rodapé do cartão 3",
+          "selector": "#depoimentos .testimonial-card[data-index=\"3\"] .testimonial-name",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.card3.meta",
+          "label": "Depoimento 3 — detalhe",
+          "where": "Linha secundária do cartão 3",
+          "selector": "#depoimentos .testimonial-card[data-index=\"3\"] .testimonial-meta",
+          "type": "text"
+        },
+        {
+          "id": "depoimentos.card3.photo",
+          "label": "Depoimento 3 — foto",
+          "where": "Avatar do cartão 3",
+          "selector": "#depoimentos .testimonial-card[data-index=\"3\"] .testimonial-avatar",
+          "type": "image"
         }
       ]
     },
