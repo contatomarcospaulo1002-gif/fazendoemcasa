@@ -1708,6 +1708,177 @@ p.seller:last-child { margin-bottom: 0; }
 @keyframes slideUp { from { transform: translateY(14px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
 @keyframes popIn { from { transform: scale(.92); opacity: 0 } to { transform: scale(1); opacity: 1 } }
 
+/* ------------------------------------------------------------------ galerias / carrossel */
+.section-head-center { text-align: center; margin-inline: auto; max-width: 40rem; }
+.heading-accent { color: #9fd6b8; }
+.gallery-section .section-lead { max-width: 36rem; margin-inline: auto; }
+.gallery-disclaimer {
+  margin: 1rem auto 0;
+  max-width: 36rem;
+  text-align: center;
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--on-dark-muted);
+}
+.gallery-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+.gallery-cta .btn { min-width: min(100%, 22rem); }
+
+.carousel {
+  position: relative;
+  margin-top: 1.5rem;
+}
+.carousel-viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: .5rem 0 1rem;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+}
+.carousel-viewport::-webkit-scrollbar { display: none; }
+.carousel-track {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(.85rem, 3vw, 1.25rem);
+  padding: 0 clamp(8vw, 12vw, 14vw);
+}
+.carousel-slide {
+  flex: 0 0 min(86vw, 440px);
+  scroll-snap-align: center;
+  transition: transform .32s ease, opacity .32s ease;
+  opacity: .42;
+  transform: scale(.94);
+}
+.carousel-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+.carousel-btn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .25);
+  background: rgba(16, 36, 28, .75);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.carousel-btn:hover { background: var(--accent); border-color: transparent; }
+.carousel-prev { left: .25rem; }
+.carousel-next { right: .25rem; }
+@media (min-width: 720px) {
+  .carousel-btn { display: grid; place-items: center; }
+  .carousel-slide { flex-basis: min(72vw, 480px); }
+}
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: .4rem;
+  margin-top: .35rem;
+}
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, .25);
+  cursor: pointer;
+  transition: width .2s ease, background .2s ease;
+}
+.carousel-dot.is-active {
+  width: 22px;
+  background: #9fd6b8;
+}
+
+.ba-slide {
+  background: #f4f1ea;
+  border-radius: var(--radius-lg);
+  padding: .75rem .75rem 1rem;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .35);
+}
+.ba-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+.ba-fig {
+  position: relative;
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #d8d2c8;
+  aspect-ratio: 3 / 4;
+}
+.ba-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ba-tag {
+  position: absolute;
+  left: .45rem;
+  top: .45rem;
+  z-index: 1;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: .28rem .55rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+}
+.ba-tag-after { background: #2d6b52; }
+.ba-caption {
+  margin: .65rem .15rem 0;
+  font-size: .78rem;
+  line-height: 1.45;
+  color: #4a524c;
+  text-align: center;
+  min-height: 0;
+}
+.ba-caption:empty { display: none; }
+
+.comment-slide .comment-frame {
+  background: #fff;
+  border-radius: 18px;
+  padding: .65rem;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, .38);
+  border: 1px solid rgba(255, 255, 255, .12);
+}
+.comment-img {
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 520px);
+  object-fit: contain;
+  border-radius: 12px;
+  margin: 0 auto;
+}
+.comment-fallback {
+  margin: 0;
+  padding: 1rem;
+  font-size: .9rem;
+  line-height: 1.5;
+  color: var(--ink);
+  border-left: 3px solid var(--accent);
+  background: #f7f4ef;
+  border-radius: 10px;
+}
+.gallery-comments { background: linear-gradient(180deg, var(--dark) 0%, #0a1612 100%); }
+
 
 /* ------------------------------------------------------------------ responsivo fino */
 @media (max-width: 899px) {

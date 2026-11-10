@@ -76,15 +76,24 @@
     "depoimentos.card1.quote": "",
     "depoimentos.card1.name": "",
     "depoimentos.card1.meta": "",
-    "depoimentos.card1.photo": { "src": "", "alt": "" },
+    "depoimentos.card1.photo": {
+        "src": "",
+        "alt": ""
+    },
     "depoimentos.card2.quote": "",
     "depoimentos.card2.name": "",
     "depoimentos.card2.meta": "",
-    "depoimentos.card2.photo": { "src": "", "alt": "" },
+    "depoimentos.card2.photo": {
+        "src": "",
+        "alt": ""
+    },
     "depoimentos.card3.quote": "",
     "depoimentos.card3.name": "",
     "depoimentos.card3.meta": "",
-    "depoimentos.card3.photo": { "src": "", "alt": "" },
+    "depoimentos.card3.photo": {
+        "src": "",
+        "alt": ""
+    },
     "faq.kicker": "Dúvidas",
     "faq.h2": "Perguntas frequentes",
     "faq.q01": "Como recebo o guia?",
@@ -115,5 +124,97 @@
     "final.h2": "Começa hoje o teu 28 Dias em Casa",
     "final.sub": "4 semanas escritas. A sessão 1 já está na página 8. Sem procurar exercícios, sem pesos, sem sair de casa.",
     "final.cta.text": "Quero o guia 28 dias em casa por 14,90 €",
-    "final.cta.href": "https://pay.kiwify.com/5NJmQkR"
+    "final.cta.href": "https://pay.kiwify.com/5NJmQkR",
+    "gallery.photos.title": "Algumas histórias <span class=\"heading-accent\">no programa</span>",
+    "gallery.photos.lead": "Fotografias autorizadas pelas pessoas que aparecem. Desliza para o lado — o carrossel também avança sozinho.",
+    "gallery.photos.cta.text": "Quero o guia 28 dias em casa por 14,90 €",
+    "gallery.photos.cta.href": "https://pay.kiwify.com/5NJmQkR",
+    "gallery.comments.title": "O que dizem <span class=\"heading-accent\">sobre o guia</span>",
+    "gallery.comments.lead": "Capturas ou textos autorizados. Desliza com o dedo no telemóvel.",
+    "gallery.comments.cta.text": "Quero começar o plano",
+    "gallery.comments.cta.href": "https://pay.kiwify.com/5NJmQkR",
+    "gallery.photos.s1.before": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s1.after": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s1.caption": "",
+    "gallery.comments.s1.image": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.comments.s1.text": "",
+    "gallery.photos.s2.before": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s2.after": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s2.caption": "",
+    "gallery.comments.s2.image": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.comments.s2.text": "",
+    "gallery.photos.s3.before": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s3.after": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s3.caption": "",
+    "gallery.comments.s3.image": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.comments.s3.text": "",
+    "gallery.photos.s4.before": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s4.after": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s4.caption": "",
+    "gallery.comments.s4.image": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.comments.s4.text": "",
+    "gallery.photos.s5.before": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s5.after": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s5.caption": "",
+    "gallery.comments.s5.image": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.comments.s5.text": "",
+    "gallery.photos.s6.before": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s6.after": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.photos.s6.caption": "",
+    "gallery.comments.s6.image": {
+        "src": "",
+        "alt": ""
+    },
+    "gallery.comments.s6.text": ""
 }

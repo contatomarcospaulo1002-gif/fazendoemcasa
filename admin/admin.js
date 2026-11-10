@@ -154,6 +154,81 @@
     if (note && val.note !== undefined) note.textContent = val.note;
   }
 
+  function slideHasPhotoContent(i) {
+    var b = state.content["gallery.photos.s" + i + ".before"];
+    var a = state.content["gallery.photos.s" + i + ".after"];
+    return (b && b.src) || (a && a.src);
+  }
+
+  function slideHasCommentContent(i) {
+    var img = state.content["gallery.comments.s" + i + ".image"];
+    var txt = (state.content["gallery.comments.s" + i + ".text"] || "").trim();
+    return (img && img.src) || !!txt;
+  }
+
+  function applyCommentSlides(doc) {
+    var i;
+    for (i = 1; i <= 6; i++) {
+      var slide = doc.querySelector('#galeria-comentarios .comment-slide[data-index="' + i + '"]');
+      if (!slide) continue;
+      var imgEl = slide.querySelector(".comment-img");
+      var fb = slide.querySelector(".comment-fallback");
+      var imgVal = state.content["gallery.comments.s" + i + ".image"];
+      var txt = (state.content["gallery.comments.s" + i + ".text"] || "").trim();
+      if (imgEl && imgVal && imgVal.src) {
+        applyField(doc, { type: "image", selector: '#galeria-comentarios .comment-slide[data-index="' + i + '"] .comment-img' }, imgVal);
+      }
+      if (fb) {
+        if (txt && !(imgVal && imgVal.src)) {
+          fb.textContent = txt;
+          fb.removeAttribute("hidden");
+          if (imgEl) imgEl.setAttribute("hidden", "");
+        } else if (txt && imgVal && imgVal.src) {
+          fb.setAttribute("hidden", "");
+        } else if (!txt) {
+          fb.textContent = "";
+          if (!(imgVal && imgVal.src)) fb.setAttribute("hidden", "");
+        }
+      }
+    }
+  }
+
+  function updateGaleriasVisibility(doc) {
+    var anyPhotos = false;
+    var anyComments = false;
+    var i;
+    for (i = 1; i <= 6; i++) {
+      var pSlide = doc.querySelector('#galeria-fotos .ba-slide[data-index="' + i + '"]');
+      if (pSlide) {
+        if (slideHasPhotoContent(i)) {
+          pSlide.removeAttribute("hidden");
+          anyPhotos = true;
+        } else {
+          pSlide.setAttribute("hidden", "");
+        }
+      }
+      var cSlide = doc.querySelector('#galeria-comentarios .comment-slide[data-index="' + i + '"]');
+      if (cSlide) {
+        if (slideHasCommentContent(i)) {
+          cSlide.removeAttribute("hidden");
+          anyComments = true;
+        } else {
+          cSlide.setAttribute("hidden", "");
+        }
+      }
+    }
+    var secP = doc.getElementById("galeria-fotos");
+    var secC = doc.getElementById("galeria-comentarios");
+    if (secP) {
+      if (anyPhotos) secP.removeAttribute("hidden");
+      else secP.setAttribute("hidden", "");
+    }
+    if (secC) {
+      if (anyComments) secC.removeAttribute("hidden");
+      else secC.setAttribute("hidden", "");
+    }
+  }
+
   function updateDepoimentosVisibility(doc) {
     var hasAny = false;
     [1, 2, 3].forEach(function (i) {
@@ -186,7 +261,9 @@
       if (state.content[field.id] === undefined) return;
       applyField(doc, field, state.content[field.id]);
     });
+    applyCommentSlides(doc);
     updateDepoimentosVisibility(doc);
+    updateGaleriasVisibility(doc);
   }
 
   function loadIndexDoc() {

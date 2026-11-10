@@ -28,6 +28,8 @@ PIN inicial: `2828`. Copia `admin/config.example.php` para `admin/config.local.p
 
 Em GitHub Pages o painel é só leitura/exportação (sem PHP): descarrega JSON e `index.html` e faz commit manual.
 
+**Galerias (opcionais):** secções «Galeria de fotos» (Antes/Depois, até 6 slides) e «Galeria de comentários» (captura ou texto). Ficam ocultas no site até carregares conteúdo no admin. Carrossel com swipe + avanço automático (`carousel.js`).
+
 O site público em produção continua estático; não expõe o painel na mesma URL do Pages unless commits incluem `/admin`.
 
 ## Cursor
