@@ -773,11 +773,19 @@
               state.content[field.id] = slot;
             }
             markDirty();
+            if (state.php && state.authenticated) {
+              return saveContent().then(function () {
+                setStatus("Foto em img/cms + JSON guardado. Clica «Aplicar» ou «Guardar e aplicar». Depois git push para o site público.", "ok");
+                renderEditor();
+              });
+            }
+            setStatus("Upload precisa do Laragon (fazendoemcasa.test/admin), não do site no GitHub.", "warn");
             renderEditor();
           });
         })
         .catch(function (err) {
           if (info) info.textContent = err.message || "Erro";
+          setStatus(err.message || "Erro no upload", "warn");
         });
     });
 
@@ -821,9 +829,9 @@
         return res.path;
       });
     }
-    state.content._pendingImages = state.content._pendingImages || {};
-    state.content._pendingImages[fieldId] = pack.dataUrl;
-    return Promise.resolve("img/cms/" + fieldId + ".webp");
+    return Promise.reject(
+      new Error("Sem PHP no servidor. Abre http://fazendoemcasa.test/admin no Laragon.")
+    );
   }
 
   function renderGuide() {
@@ -917,6 +925,7 @@
     downloadJson("content.json", payload);
     state.dirty = false;
     setStatus("JSON descarregado", "ok");
+    return Promise.resolve();
   }
 
   function flushPendingImages() {
@@ -934,23 +943,39 @@
   }
 
   function applyToSite() {
-    return flushPendingImages()
+    var run = state.dirty && state.php && state.authenticated ? saveContent() : Promise.resolve();
+    return run
+      .then(flushPendingImages)
       .then(loadIndexDoc)
       .then(function (doc) {
-      applyAllToDoc(doc);
-      pendingImagesToDoc(doc);
-      var serialized = serializeDoc(doc);
-      if (state.php && state.authenticated) {
-        return api("apply-index.php", { method: "POST", body: { html: serialized } })
-          .then(function (res) {
-            setStatus("index.html atualizado (backup: " + (res.backup || "—") + ")", "ok");
-          })
-          .catch(function (e) {
-            setStatus(e.message, "warn");
-          });
-      }
-      downloadText("index.html", serialized);
-      setStatus("index.html descarregado — substitui na raiz do projeto", "ok");
+        applyAllToDoc(doc);
+        pendingImagesToDoc(doc);
+        var serialized = serializeDoc(doc);
+        if (state.php && state.authenticated) {
+          return api("apply-index.php", { method: "POST", body: { html: serialized } })
+            .then(function (res) {
+              setStatus(
+                "Site local atualizado. Faz commit + push para aparecer em fazendoemcasa.com (backup: " +
+                  (res.backup || "—") +
+                  ")",
+                "ok"
+              );
+            })
+            .catch(function (e) {
+              setStatus(e.message, "warn");
+            });
+        }
+        downloadText("index.html", serialized);
+        setStatus("index.html descarregado — substitui na raiz do projeto", "ok");
+      });
+  }
+
+  function publishAll() {
+    setStatus("A guardar e aplicar…", "");
+    return saveContent()
+      .then(applyToSite)
+      .catch(function (e) {
+        setStatus(e.message || "Erro", "warn");
       });
   }
 
@@ -1039,8 +1064,12 @@
         setStatus("Erro ao carregar: " + e.message, "warn");
       });
 
-    $("btn-save").addEventListener("click", saveContent);
+    $("btn-save").addEventListener("click", function () {
+      saveContent();
+    });
     $("btn-apply").addEventListener("click", applyToSite);
+    var btnPub = $("btn-publish");
+    if (btnPub) btnPub.addEventListener("click", publishAll);
     $("btn-preview-refresh").addEventListener("click", renderPreview);
     $("btn-open-site").addEventListener("click", function () {
       window.open("../index.html", "_blank");
@@ -1087,15 +1116,21 @@
         if (res.authenticated || !pinRequired) {
           state.authenticated = true;
           showApp();
-          if (!state.php) $("php-hint").classList.remove("hidden");
-          bootstrapApp();
-          return;
+        if (!state.php) {
+          $("php-hint").classList.remove("hidden");
+          $("php-hint").textContent =
+            "Estás sem PHP: upload não grava. Usa http://fazendoemcasa.test/admin no Laragon.";
         }
+        bootstrapApp();
+        return;
+      }
       })
       .catch(function () {
         state.authenticated = true;
         showApp();
         $("php-hint").classList.remove("hidden");
+        $("php-hint").textContent =
+          "Estás sem PHP: upload não grava. Usa http://fazendoemcasa.test/admin no Laragon.";
         bootstrapApp();
       });
   }
