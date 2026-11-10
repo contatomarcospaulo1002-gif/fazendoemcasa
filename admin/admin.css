@@ -265,7 +265,31 @@ a { color: var(--adm-accent); }
   cursor: pointer;
 }
 .btn.primary { background: var(--adm-accent); border-color: transparent; color: #052012; }
+.btn.danger {
+  border-color: rgba(255, 120, 120, .35);
+  background: rgba(255, 80, 80, .12);
+  color: #ffb8b8;
+}
+.btn.danger:hover:not(:disabled) {
+  border-color: rgba(255, 140, 140, .55);
+  background: rgba(255, 80, 80, .2);
+}
+.btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
 .btn.ghost:hover { border-color: rgba(255,255,255,.2); }
+.editor-field-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .85rem;
+  padding-top: .85rem;
+  border-top: 1px solid var(--adm-border);
+}
+.editor-field-actions-hint {
+  margin-top: .5rem !important;
+}
 .status-pill {
   font-size: .72rem;
   color: var(--adm-muted);

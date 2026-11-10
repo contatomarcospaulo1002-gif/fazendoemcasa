@@ -88,8 +88,14 @@
     if (!box) return;
     var src = imageSrcFromValue(state.content[field.id]);
     if (!src) {
-      box.innerHTML =
-        '<p class="live-row live-none"><span class="live-dot" aria-hidden="true"></span> Ainda não há foto neste campo.</p>';
+      if (hasBlobPreview()) {
+        box.innerHTML =
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Pré-visualização local — clica <strong>Salvar foto</strong> (no Laragon).</p>';
+      } else {
+        box.innerHTML =
+          '<p class="live-row live-none"><span class="live-dot" aria-hidden="true"></span> Ainda não há foto neste campo.</p>';
+      }
+      updateRemovePhotoButton();
       return;
     }
     box.innerHTML =
@@ -145,7 +151,17 @@
       }
 
       box.innerHTML = rows;
+      updateRemovePhotoButton();
     });
+  }
+
+  function updateRemovePhotoButton() {
+    var btn = $("btn-field-remove-photo");
+    if (!btn) return;
+    var field = state.activeFieldId ? fieldById(state.activeFieldId) : null;
+    if (!field || !isImageField(field)) return;
+    var canRemove = !!imageSrcFromValue(state.content[field.id]) || hasBlobPreview();
+    btn.disabled = !canRemove;
   }
 
   function showLocalFilePreview(file) {
@@ -158,6 +174,168 @@
     prev.removeAttribute("hidden");
     prev.classList.remove("hidden");
     if (empty) empty.classList.add("hidden");
+  }
+
+  function hasBlobPreview() {
+    var prev = $("img-prev");
+    return !!(prev && prev.src && prev.src.indexOf("blob:") === 0);
+  }
+
+  function imageFieldActionsHtml(hasSavedSrc) {
+    var canRemove = hasSavedSrc || hasBlobPreview();
+    var html = '<div class="editor-field-actions" role="group" aria-label="Ações da fotografia">';
+    html +=
+      '<button type="button" class="btn primary" id="btn-field-save">Salvar foto</button>';
+    html +=
+      '<button type="button" class="btn danger" id="btn-field-remove-photo"' +
+      (canRemove ? "" : " disabled") +
+      ">Remover foto</button>";
+    html += "</div>";
+    html +=
+      '<p class="field-hint editor-field-actions-hint">Escolhe o ficheiro, vê a pré-visualização e clica <strong>Salvar foto</strong> (precisa Laragon). Depois <strong>Guardar e aplicar</strong> no topo para o index.html.</p>';
+    return html;
+  }
+
+  function syncImageMetaFromForm(field) {
+    if (field.type === "image") {
+      var cur = state.content[field.id];
+      if (!cur || typeof cur !== "object") cur = { src: "", alt: "", lightbox: "" };
+      var altEl = $("img-alt");
+      var lbEl = $("img-lb");
+      if (altEl) cur.alt = altEl.value;
+      if (lbEl) cur.lightbox = lbEl.value;
+      state.content[field.id] = cur;
+    } else if (field.type === "image-slot") {
+      var slot = state.content[field.id];
+      if (!slot || typeof slot !== "object") slot = { src: "", label: "", note: "" };
+      var sl = $("slot-label");
+      var sn = $("slot-note");
+      if (sl) slot.label = sl.value;
+      if (sn) slot.note = sn.value;
+      state.content[field.id] = slot;
+    }
+    markDirty();
+  }
+
+  function applyUploadedPathToField(field, path) {
+    if (field.type === "image") {
+      var cur = state.content[field.id];
+      if (!cur || typeof cur !== "object") cur = { src: "", alt: "", lightbox: "" };
+      cur.src = path;
+      var altEl = $("img-alt");
+      var lbEl = $("img-lb");
+      if (altEl && altEl.value) cur.alt = altEl.value;
+      if (lbEl && lbEl.value) cur.lightbox = lbEl.value;
+      else if (!cur.lightbox) cur.lightbox = path;
+      state.content[field.id] = cur;
+    } else {
+      var slot = state.content[field.id];
+      if (!slot || typeof slot !== "object") slot = { src: "", label: "", note: "" };
+      slot.src = path;
+      var sl = $("slot-label");
+      var sn = $("slot-note");
+      if (sl) slot.label = sl.value;
+      if (sn) slot.note = sn.value;
+      state.content[field.id] = slot;
+    }
+    markDirty();
+  }
+
+  function uploadImageFromFile(field, file) {
+    var maxR = $("img-max");
+    var qR = $("img-q");
+    var maxW =
+      field.type === "image-slot"
+        ? maxR
+          ? parseInt(maxR.value, 10)
+          : 1200
+        : maxR
+        ? parseInt(maxR.value, 10)
+        : 1400;
+    var q = qR ? parseFloat(qR.value) : 0.82;
+    var info = $("img-size-info");
+    if (info) info.textContent = "A comprimir…";
+    return compressImage(file, maxW, q)
+      .then(function (blob) {
+        return blobToDataUrl(blob).then(function (dataUrl) {
+          return { blob: blob, dataUrl: dataUrl };
+        });
+      })
+      .then(function (pack) {
+        if (info) {
+          info.textContent =
+            "Original: " +
+            Math.round(file.size / 1024) +
+            " KB → WebP: " +
+            Math.round(pack.blob.size / 1024) +
+            " KB";
+        }
+        return uploadOrStoreImage(field.id, pack).then(function (path) {
+          applyUploadedPathToField(field, path);
+          return path;
+        });
+      });
+  }
+
+  function saveImageField(field) {
+    syncImageMetaFromForm(field);
+    var imgFile = $("img-file");
+    var file = imgFile && imgFile.files && imgFile.files[0];
+    var saveBtn = $("btn-field-save");
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = "A guardar…";
+    }
+    var work = file
+      ? uploadImageFromFile(field, file).catch(function (err) {
+          setStatus(err.message || "Erro no upload", "warn");
+          throw err;
+        })
+      : Promise.resolve(null);
+
+    return work
+      .then(function () {
+        return saveContent();
+      })
+      .then(function () {
+        if (file && state.php && state.authenticated) {
+          setStatus("Foto guardada (img/cms + JSON). Clica «Guardar e aplicar» no topo para o index.", "ok");
+        } else if (!file) {
+          setStatus("Rótulos guardados no JSON.", "ok");
+        }
+        renderEditor();
+      })
+      .catch(function () {
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.textContent = "Salvar foto";
+        }
+      });
+  }
+
+  function removeImageField(field) {
+    var hadSrc = !!imageSrcFromValue(state.content[field.id]);
+    if (!hadSrc && !hasBlobPreview()) return;
+    if (!window.confirm("Remover a fotografia deste campo?")) return;
+    syncImageMetaFromForm(field);
+    if (field.type === "image") {
+      var cur = state.content[field.id] || { src: "", alt: "", lightbox: "" };
+      cur.src = "";
+      cur.lightbox = "";
+      state.content[field.id] = cur;
+    } else {
+      var slot = state.content[field.id] || { src: "", label: "", note: "" };
+      slot.src = "";
+      state.content[field.id] = slot;
+    }
+    var imgFile = $("img-file");
+    if (imgFile) imgFile.value = "";
+    revokePreviewObjectUrl();
+    markDirty();
+    saveContent().then(function () {
+      setStatus("Foto removida. Aplica ao site (topo) para atualizar o index.html.", "ok");
+      renderEditor();
+    });
   }
 
   function allFields() {
@@ -744,13 +922,13 @@
 
     if (field.type === "image") {
       val = val && typeof val === "object" ? val : { src: "", alt: "", lightbox: "" };
-      html += '<p class="upload-banner"><strong>Upload aqui:</strong> botão «Escolher ficheiro» abaixo. Depois <strong>Guardar JSON</strong> e <strong>Aplicar ao index.html</strong>.</p>';
+      html += '<p class="upload-banner"><strong>Upload:</strong> escolhe o ficheiro e clica <strong>Salvar foto</strong> neste painel (Laragon).</p>';
       html += imageEditorHtml(field, val);
     }
 
     if (field.type === "image-slot") {
       val = val && typeof val === "object" ? val : { src: "", label: "", note: "" };
-      html += '<p class="upload-banner"><strong>Upload da fotografia:</strong> escolhe o ficheiro abaixo (comprime para WebP).</p>';
+      html += '<p class="upload-banner"><strong>Upload:</strong> escolhe o ficheiro e clica <strong>Salvar foto</strong> neste painel (Laragon).</p>';
       html += imageSlotEditorHtml(field, val);
     }
 
@@ -795,6 +973,7 @@
       html += "<p class=\"field-hint\">Ao carregar, pode usar o mesmo ficheiro ou enviar outro em «Aplicar ao site».</p></div>";
     }
     html += "<p class=\"field-hint\" id=\"img-size-info\"></p>";
+    html += imageFieldActionsHtml(!!(val.src || ""));
     html += "</div>";
     return html;
   }
@@ -816,6 +995,7 @@
     html += "<input id=\"slot-note\" type=\"text\" value=\"" + escapeAttr(val.note || "") + "\"></div>";
     html += "</div>";
     html += "<p class=\"field-hint\" id=\"img-size-info\"></p>";
+    html += imageFieldActionsHtml(!!(val.src || ""));
     html += "</div>";
     return html;
   }
@@ -874,63 +1054,26 @@
       var file = imgFile.files && imgFile.files[0];
       if (!file) return;
       showLocalFilePreview(file);
-      var maxW = maxR ? parseInt(maxR.value, 10) : 1400;
-      var q = qR ? parseFloat(qR.value) : 0.82;
       var info = $("img-size-info");
-      if (info) info.textContent = "A comprimir…";
-      compressImage(file, maxW, q)
-        .then(function (blob) {
-          return blobToDataUrl(blob).then(function (dataUrl) {
-            return { blob: blob, dataUrl: dataUrl };
-          });
-        })
-        .then(function (pack) {
-          if (info) {
-            info.textContent =
-              "Original: " +
-              Math.round(file.size / 1024) +
-              " KB → WebP: " +
-              Math.round(pack.blob.size / 1024) +
-              " KB";
-          }
-          return uploadOrStoreImage(field.id, pack).then(function (path) {
-            if (field.type === "image") {
-              var cur = state.content[field.id];
-              if (!cur || typeof cur !== "object") cur = { src: "", alt: "", lightbox: "" };
-              cur.src = path;
-              var altEl = $("img-alt");
-              if (altEl && altEl.value) cur.alt = altEl.value;
-              var lbEl = $("img-lb");
-              if (lbEl && lbEl.value) cur.lightbox = lbEl.value;
-              else if (!cur.lightbox) cur.lightbox = path;
-              state.content[field.id] = cur;
-            } else {
-              var slot = state.content[field.id];
-              if (!slot || typeof slot !== "object") slot = { src: "", label: "", note: "" };
-              slot.src = path;
-              var sl = $("slot-label");
-              var sn = $("slot-note");
-              if (sl) slot.label = sl.value;
-              if (sn) slot.note = sn.value;
-              state.content[field.id] = slot;
-            }
-            markDirty();
-            if (state.php && state.authenticated) {
-              return saveContent().then(function () {
-                setStatus("Foto em img/cms + JSON guardado. Clica «Aplicar» ou «Guardar e aplicar». Depois git push para o site público.", "ok");
-                renderEditor();
-              });
-            }
-            setStatus("Upload precisa do Laragon (fazendoemcasa.test/admin), não do site no GitHub.", "warn");
-            renderEditor();
-            refreshImageLiveStatus(field);
-          });
-        })
-        .catch(function (err) {
-          if (info) info.textContent = err.message || "Erro";
-          setStatus(err.message || "Erro no upload", "warn");
-        });
+      if (info) {
+        info.textContent = Math.round(file.size / 1024) + " KB — clica «Salvar foto» para comprimir e gravar.";
+      }
+      refreshImageLiveStatus(field);
+      updateRemovePhotoButton();
     });
+
+    var btnSaveField = $("btn-field-save");
+    if (btnSaveField) {
+      btnSaveField.addEventListener("click", function () {
+        saveImageField(field);
+      });
+    }
+    var btnRemovePhoto = $("btn-field-remove-photo");
+    if (btnRemovePhoto) {
+      btnRemovePhoto.addEventListener("click", function () {
+        removeImageField(field);
+      });
+    }
 
     var altEl = $("img-alt");
     if (altEl) {
