@@ -256,6 +256,16 @@ p:last-child { margin-bottom: 0; }
   font-weight: 800;
   letter-spacing: -.04em;
 }
+.brand-logo {
+  display: block;
+  height: 36px;
+  width: auto;
+  max-width: 132px;
+  object-fit: contain;
+  object-position: left center;
+}
+.brand-logo[hidden] { display: none; }
+.brand:has(.brand-logo:not([hidden])) .brand-mark { display: none; }
 .brand-text {
   font-size: 1rem;
   line-height: 1.05;
@@ -795,6 +805,49 @@ p:last-child { margin-bottom: 0; }
 @media (min-width: 820px) {
   .split-note { grid-template-columns: .92fr 1.08fr; align-items: center; gap: 2.25rem; }
 }
+
+#receitas .photo-slot.has-photo:not(.slot-mode-text) {
+  aspect-ratio: auto;
+  background: transparent;
+  border: 0;
+}
+#receitas .photo-slot.has-photo:not(.slot-mode-text) .slot-photo {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+}
+
+.auto-carousel { margin: 0; }
+.auto-carousel[hidden] { display: none !important; }
+#paraquem-carousel { margin-bottom: 1.35rem; }
+.auto-carousel .carousel-viewport { mask-image: none; padding: 0; }
+.auto-carousel .carousel-track { gap: 0; padding: 0; }
+.auto-carousel .carousel-slide {
+  flex: 0 0 100%;
+  opacity: 1;
+  transform: none;
+}
+.auto-carousel .carousel-slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+  background: #f4f1ea;
+}
+.auto-carousel .carousel-btn {
+  display: grid;
+  place-items: center;
+  background: rgba(31, 92, 69, .92);
+  border-color: transparent;
+  color: #fff;
+}
+.auto-carousel .carousel-dot { background: rgba(31, 92, 69, .28); }
+.auto-carousel .carousel-dot.is-active { background: var(--accent); }
+.auto-carousel.is-solo .carousel-btn,
+.auto-carousel.is-solo .carousel-dots { display: none; }
 
 .programa-media { margin-top: 1.25rem; }
 .programa-media[hidden] { display: none !important; }
@@ -1658,6 +1711,7 @@ p:last-child { margin-bottom: 0; }
 .brand-footer { color: var(--accent); font-weight: 800; }
 .brand-footer .brand-text { letter-spacing: -.02em; }
 .brand-footer .brand-mark { width: 32px; height: 32px; border-radius: 10px; }
+.brand-footer .brand-logo { height: 32px; max-width: 148px; }
 
 .legal-nav { display: flex; gap: 1rem; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
 .legal-nav a {
