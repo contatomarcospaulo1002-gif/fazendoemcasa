@@ -375,8 +375,9 @@
         return saveContent();
       })
       .then(function () {
+        if (file) refreshLiveSiteFrame();
         if (file && state.php && state.authenticated) {
-          setStatus("Foto guardada (img/cms + JSON). Clica «Guardar e aplicar» no topo para o index.", "ok");
+          setStatus("Foto guardada (img/cms + JSON). Clica «Publicar no site» no topo.", "ok");
         } else if (file && !state.php) {
           saveToBrowserStorage();
           setStatus("Foto guardada neste navegador. «Descarregar para Git» só quando fores publicar.", "ok");
@@ -814,6 +815,153 @@
       });
   }
 
+  var liveFrameWired = false;
+
+  function ensureVisualEditorShell() {
+    var root = $("panel-editor");
+    if (!root || root.querySelector("#live-site-frame")) return;
+    root.innerHTML =
+      '<div class="visual-toolbar" id="visual-toolbar">' +
+      '<p class="visual-toolbar-hint" id="visual-toolbar-hint">Clica num <strong>texto</strong> ou <strong>imagem</strong> na página. SEO e campos invisíveis: escolhe no menu à esquerda.</p>' +
+      '<div class="visual-toolbar-actions">' +
+      '<button type="button" class="btn sm" id="btn-live-refresh">Atualizar vista</button>' +
+      "</div></div>" +
+      '<div class="visual-layout">' +
+      '<div class="visual-frame-wrap"><iframe id="live-site-frame" class="live-site-frame" title="Página inicial"></iframe></div>' +
+      '<aside id="visual-inspector" class="visual-inspector" aria-hidden="true">' +
+      '<header class="visual-inspector-head">' +
+      '<h3 id="visual-inspector-title">Editar</h3>' +
+      '<button type="button" class="visual-inspector-close" id="visual-inspector-close" aria-label="Fechar">×</button>' +
+      "</header>" +
+      '<div id="visual-inspector-body" class="visual-inspector-body"></div>' +
+      "</aside></div>";
+    var btnRef = $("btn-live-refresh");
+    if (btnRef) btnRef.addEventListener("click", refreshLiveSiteFrame);
+    var btnClose = $("visual-inspector-close");
+    if (btnClose) {
+      btnClose.addEventListener("click", function () {
+        state.activeFieldId = null;
+        renderMenu();
+        closeVisualInspector();
+        clearVisualHighlights();
+      });
+    }
+  }
+
+  function closeVisualInspector() {
+    var panel = $("visual-inspector");
+    if (panel) {
+      panel.classList.remove("is-open");
+      panel.setAttribute("aria-hidden", "true");
+    }
+    var body = $("visual-inspector-body");
+    if (body) body.innerHTML = "";
+  }
+
+  function openVisualInspector(field) {
+    var panel = $("visual-inspector");
+    var title = $("visual-inspector-title");
+    if (title && field) title.textContent = field.label;
+    if (panel) {
+      panel.classList.add("is-open");
+      panel.setAttribute("aria-hidden", "false");
+    }
+  }
+
+  function clearVisualHighlights() {
+    var frame = $("live-site-frame");
+    if (!frame || !frame.contentDocument) return;
+    frame.contentDocument.querySelectorAll(".cms-visual-active").forEach(function (el) {
+      el.classList.remove("cms-visual-active");
+    });
+  }
+
+  function highlightVisualTarget(fieldId) {
+    clearVisualHighlights();
+    var field = fieldById(fieldId);
+    var frame = $("live-site-frame");
+    if (!field || !frame || !frame.contentDocument) return;
+    var el = frame.contentDocument.querySelector(field.selector);
+    if (el) {
+      el.classList.add("cms-visual-active");
+      el.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    }
+  }
+
+  function scrollToFieldInFrame(field) {
+    if (!field) return;
+    highlightVisualTarget(field.id);
+  }
+
+  function injectVisualEditorStyles(doc) {
+    if (!doc || doc.getElementById("cms-visual-editor-style")) return;
+    var style = doc.createElement("style");
+    style.id = "cms-visual-editor-style";
+    style.textContent =
+      ".cms-visual-target{cursor:pointer!important;transition:outline .15s,box-shadow .15s}" +
+      ".cms-visual-target:hover{outline:2px dashed #1f5c45!important;outline-offset:3px}" +
+      ".cms-visual-active{outline:3px solid #1f5c45!important;outline-offset:3px;box-shadow:0 0 0 6px rgba(31,92,69,.2)!important}";
+    doc.head.appendChild(style);
+  }
+
+  function wireVisualEditor(frame) {
+    if (!frame || !frame.contentDocument) return;
+    var doc = frame.contentDocument;
+    injectVisualEditorStyles(doc);
+    doc.addEventListener(
+      "click",
+      function (ev) {
+        var a = ev.target.closest("a");
+        if (a) ev.preventDefault();
+      },
+      true
+    );
+    allFields().forEach(function (field) {
+      if (field.selector === "title" || field.selector.indexOf("meta") === 0) return;
+      var el = doc.querySelector(field.selector);
+      if (!el) return;
+      el.classList.add("cms-visual-target");
+      el.setAttribute("data-cms-field", field.id);
+      var tip =
+        field.type === "image" || field.type === "image-slot"
+          ? "📷 " + field.label
+          : field.label;
+      el.setAttribute("title", tip + " — clica para editar");
+      el.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        selectField(field.id);
+      });
+    });
+    liveFrameWired = true;
+  }
+
+  function refreshLiveSiteFrame() {
+    ensureVisualEditorShell();
+    loadIndexDoc().then(function (doc) {
+      applyAllToDoc(doc);
+      pendingImagesToDoc(doc);
+      var html = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
+      var frame = $("live-site-frame");
+      if (!frame) return;
+      frame.onload = function () {
+        wireVisualEditor(frame);
+        if (state.activeFieldId) highlightVisualTarget(state.activeFieldId);
+      };
+      frame.srcdoc = html;
+    });
+  }
+
+  function patchLivePreview(field) {
+    var frame = $("live-site-frame");
+    if (!field || !frame || !frame.contentDocument) return;
+    applyField(frame.contentDocument, field, state.content[field.id]);
+    applyCommentSlides(frame.contentDocument);
+    applyVideoBlocks(frame.contentDocument);
+    updateDepoimentosVisibility(frame.contentDocument);
+    updateGaleriasVisibility(frame.contentDocument);
+  }
+
   function syncFromIndex() {
     if (!state.indexDoc) return;
     allFields().forEach(function (field) {
@@ -1037,19 +1185,22 @@
     }
     renderMenu();
     renderEditor();
+    if (state.activeTab === "editar") scrollToFieldInFrame(field);
     if (state.activeTab === "guia") renderGuide();
   }
 
   function renderEditor() {
-    var mount = $("panel-editor");
+    ensureVisualEditorShell();
+    var mount = $("visual-inspector-body");
     if (!mount) return;
     var field = state.activeFieldId ? fieldById(state.activeFieldId) : null;
     if (!field) {
-      mount.innerHTML =
-        "<p class=\"guide-intro\">Escolhe uma <strong>secção</strong> no menu (▶ abre e fecha).</p>" +
-        "<p class=\"guide-intro\">Upload: <strong>Só imagens</strong> → <strong>Galeria de fotos</strong> ou <strong>Hero</strong> → campo com etiqueta verde <strong>IMAGEM</strong>.</p>";
+      closeVisualInspector();
       return;
     }
+
+    openVisualInspector(field);
+    highlightVisualTarget(field.id);
 
     var val = state.content[field.id];
     var group = state.map.groups.find(function (g) {
@@ -1167,6 +1318,7 @@
       simple.addEventListener("input", function () {
         state.content[field.id] = simple.value;
         markDirty();
+        patchLivePreview(field);
       });
     }
     var vidFile = $("vid-file");
@@ -1577,7 +1729,10 @@
     if (topbar) topbar.classList.toggle("hidden", tab === "perfil");
     if (tab === "guia") renderGuide();
     if (tab === "preview") renderPreview();
-    if (tab === "editar") renderEditor();
+    if (tab === "editar") {
+      refreshLiveSiteFrame();
+      renderEditor();
+    }
     if (tab === "perfil") renderProfilePanel();
   }
 
@@ -1777,6 +1932,7 @@
           renderEditor();
         }
         renderGuide();
+        if (state.activeTab === "editar") refreshLiveSiteFrame();
       })
       .catch(function (e) {
         setStatus("Erro ao carregar: " + e.message, "warn");

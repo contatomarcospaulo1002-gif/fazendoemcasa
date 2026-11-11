@@ -362,6 +362,110 @@ a { color: var(--adm-accent); }
 .status-pill.warn { color: var(--adm-warn); }
 
 .panel-body { padding: 1rem 1.1rem 2rem; overflow: auto; flex: 1; }
+.panel-body-editor { padding: 0.65rem 0.75rem 1rem; display: flex; flex-direction: column; min-height: 0; }
+
+/* —— Editor visual (estilo WordPress) —— */
+.visual-editor-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: min(85vh, 900px);
+  gap: 0.5rem;
+}
+.visual-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius);
+}
+.visual-toolbar-hint { margin: 0; font-size: 0.82rem; color: var(--adm-muted); }
+.visual-toolbar-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.visual-layout {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px, 360px);
+  gap: 0.65rem;
+  flex: 1;
+  min-height: 0;
+}
+@media (max-width: 1100px) {
+  .visual-layout { grid-template-columns: 1fr; }
+  .visual-inspector { max-height: 42vh; }
+}
+.visual-frame-wrap {
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius);
+  background: #fff;
+  overflow: hidden;
+  box-shadow: var(--adm-shadow);
+  min-height: 480px;
+}
+.live-site-frame {
+  display: block;
+  width: 100%;
+  height: min(85vh, 880px);
+  border: 0;
+  background: #fff;
+}
+.visual-inspector {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--adm-accent);
+  border-radius: var(--adm-radius);
+  background: var(--adm-surface);
+  box-shadow: var(--adm-shadow);
+  min-height: 200px;
+  max-height: min(85vh, 880px);
+  opacity: 0.55;
+  transform: translateX(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.visual-inspector.is-open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.visual-inspector-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--adm-border);
+  background: var(--adm-accent-soft);
+}
+.visual-inspector-head h3 {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--adm-accent);
+}
+.visual-inspector-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--adm-muted);
+  padding: 0.15rem 0.35rem;
+}
+.visual-inspector-body {
+  overflow: auto;
+  padding: 0.35rem 0.65rem 1rem;
+  flex: 1;
+}
+.visual-inspector-body .editor-card {
+  max-width: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0.75rem 0.35rem;
+}
 
 .editor-card {
   max-width: 720px;
