@@ -42,6 +42,22 @@ nano admin/config.local.php   # senha igual à do MySQL
 php admin/tools/migrate-json-to-db.php
 ```
 
+### 4b. Área do cliente `/user` (tabela `member_users`)
+
+```bash
+mysql -u USUARIO -p NOME_BASE < scripts/vps/03-member-users.sql
+```
+
+Criar contas (manualmente, no servidor):
+
+```bash
+/usr/local/bin/ea-php82 admin/tools/create-member-user.php \
+  --nome "Nome" --login user1 --email email@exemplo.pt \
+  --senha 'SenhaForte' --valor 14.90 --ate 2026-12-31
+```
+
+O painel **/admin** (CMS) não gere estes utilizadores — só o MySQL ou o script acima.
+
 ### 5. Nginx (exemplo)
 
 ```nginx

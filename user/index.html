@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Área do cliente — 28 dias em casa</title>
+  <link rel="stylesheet" href="user.css">
+</head>
+<body>
+  <div id="login-screen" class="login-wrap">
+    <div class="login-card">
+      <p class="brand">28 dias em casa</p>
+      <h1>Área do cliente</h1>
+      <p>Entra com o login e a senha que recebeste após a compra.</p>
+      <form id="login-form">
+        <label for="login">Login</label>
+        <input id="login" name="login" type="text" autocomplete="username" required>
+        <label for="password">Senha</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button type="submit">Entrar</button>
+        <p id="login-err" class="login-err" aria-live="polite"></p>
+      </form>
+      <p class="login-foot"><a href="../index.html">Voltar ao site</a></p>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <div>
+        <p class="brand">28 dias em casa</p>
+        <h1>Os teus dados</h1>
+      </div>
+      <div class="top-actions">
+        <a class="btn ghost" href="../index.html">Site público</a>
+        <button type="button" class="btn ghost" id="btn-logout">Sair</button>
+      </div>
+    </header>
+
+    <main class="panel">
+      <p id="load-err" class="banner err hidden" role="alert"></p>
+      <div id="no-db" class="banner warn hidden">Esta área precisa de MySQL. Contacta o suporte.</div>
+
+      <section id="profile-card" class="card hidden">
+        <h2 id="p-nome">—</h2>
+        <p class="meta" id="p-login"></p>
+
+        <dl class="data-grid">
+          <span>
+            <dt>E-mail</dt>
+            <dd id="p-email">—</dd>
+          </span>
+          <span>
+            <dt>Valor pago</dt>
+            <dd id="p-valor">—</dd>
+          </span>
+          <span>
+            <dt>Plano válido desde</dt>
+            <dd id="p-desde">—</dd>
+          </span>
+          <span>
+            <dt>Plano válido até</dt>
+            <dd id="p-ate">—</dd>
+          </span>
+        </dl>
+
+        <p id="p-plano-status" class="status-pill" role="status">—</p>
+
+        <h3>O teu acesso</h3>
+        <p class="hint">Conteúdo extra (PDF, atualizações) pode ser ligado aqui mais tarde. Por agora vês o estado do teu plano.</p>
+        <ul class="access-list" id="access-list">
+          <li id="access-kiwify">Guia principal: abre na <a href="https://pay.kiwify.com/5NJmQkR" target="_blank" rel="noopener">área de membros Kiwify</a> (e-mail da compra).</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <script src="user.js" defer></script>
+</body>
+</html>
