@@ -20,6 +20,7 @@
   var SITE_PUBLIC = "https://fazendoemcasa.com";
   var STATIC_STORAGE_KEY = "fazendoemcasa-admin-draft";
   var STATIC_PENDING_KEY = "fazendoemcasa-admin-pending";
+  var IMAGE_UPLOAD_MAX_BYTES = 8 * 1024 * 1024;
   var previewObjectUrl = null;
 
   function $(id) {
@@ -325,6 +326,11 @@
         });
       })
       .then(function (pack) {
+        if (pack.blob.size > IMAGE_UPLOAD_MAX_BYTES) {
+          throw new Error(
+            "WebP maior que 8 MB — reduz largura máx. ou qualidade, ou escolhe outra foto."
+          );
+        }
         if (info) {
           info.textContent =
             "Original: " +

@@ -35,6 +35,14 @@ if ($raw === false) {
     admin_json(['ok' => false, 'error' => 'Base64 inválido.'], 400);
 }
 
+$maxBytes = 8 * 1024 * 1024;
+if (strlen($raw) > $maxBytes) {
+    admin_json([
+        'ok' => false,
+        'error' => 'Imagem maior que 8 MB. Reduz a largura máx. ou a qualidade no painel.',
+    ], 400);
+}
+
 if (!is_dir($paths['imgCms'])) {
     mkdir($paths['imgCms'], 0755, true);
 }
