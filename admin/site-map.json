@@ -418,6 +418,13 @@
                     "type": "text"
                 },
                 {
+                    "id": "programa.card1.photo",
+                    "label": "Cartão 1 — imagem",
+                    "where": "Substitui o texto de «Plano de 4 semanas» quando há fotografia",
+                    "selector": "#programa .feature-card:nth-child(1) .feature-photo",
+                    "type": "image"
+                },
+                {
                     "id": "programa.card1.h3",
                     "label": "Cartão 1 — título",
                     "where": "Plano de 4 semanas",
@@ -430,6 +437,13 @@
                     "where": "20 sessões",
                     "selector": "#programa .feature-card:nth-child(1) p",
                     "type": "text"
+                },
+                {
+                    "id": "programa.card2.photo",
+                    "label": "Cartão 2 — imagem",
+                    "where": "Substitui o texto de «Exercícios explicados» quando há fotografia",
+                    "selector": "#programa .feature-card:nth-child(2) .feature-photo",
+                    "type": "image"
                 },
                 {
                     "id": "programa.card2.h3",
@@ -446,6 +460,13 @@
                     "type": "text"
                 },
                 {
+                    "id": "programa.card3.photo",
+                    "label": "Cartão 3 — imagem",
+                    "where": "Substitui o texto de «Aquecimento e alongamentos» quando há fotografia",
+                    "selector": "#programa .feature-card:nth-child(3) .feature-photo",
+                    "type": "image"
+                },
+                {
                     "id": "programa.card3.h3",
                     "label": "Cartão 3 — título",
                     "where": "Aquecimento e alongamentos",
@@ -458,6 +479,13 @@
                     "where": "sequência",
                     "selector": "#programa .feature-card:nth-child(3) p",
                     "type": "text"
+                },
+                {
+                    "id": "programa.card4.photo",
+                    "label": "Cartão 4 — imagem",
+                    "where": "Substitui o texto de «Calendário de acompanhamento» quando há fotografia",
+                    "selector": "#programa .feature-card:nth-child(4) .feature-photo",
+                    "type": "image"
                 },
                 {
                     "id": "programa.card4.h3",
@@ -474,6 +502,13 @@
                     "type": "text"
                 },
                 {
+                    "id": "programa.card5.photo",
+                    "label": "Cartão 5 — imagem",
+                    "where": "Substitui o texto de «Hábitos saudáveis» quando há fotografia",
+                    "selector": "#programa .feature-card:nth-child(5) .feature-photo",
+                    "type": "image"
+                },
+                {
                     "id": "programa.card5.h3",
                     "label": "Cartão 5 — título",
                     "where": "Hábitos saudáveis",
@@ -486,6 +521,13 @@
                     "where": "sono",
                     "selector": "#programa .feature-card:nth-child(5) p",
                     "type": "text"
+                },
+                {
+                    "id": "programa.card6.photo",
+                    "label": "Cartão 6 — imagem",
+                    "where": "Substitui o texto de «Escala de esforço» quando há fotografia",
+                    "selector": "#programa .feature-card:nth-child(6) .feature-photo",
+                    "type": "image"
                 },
                 {
                     "id": "programa.card6.h3",

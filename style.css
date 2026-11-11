@@ -729,6 +729,27 @@ p:last-child { margin-bottom: 0; }
   box-shadow: 0 8px 16px rgba(20, 32, 27, .06), 0 26px 48px rgba(31, 92, 69, .12);
   border-color: rgba(31, 92, 69, .28);
 }
+.feature-card.has-feature-photo {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.feature-card.has-feature-photo::before { display: none; }
+.feature-card.has-feature-photo .icon,
+.feature-card.has-feature-photo h3,
+.feature-card.has-feature-photo p { display: none; }
+.feature-card.has-feature-photo:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+.feature-photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
+}
 .feature-card h3 { margin-bottom: .45rem; }
 .feature-card p { color: var(--muted); font-size: .94rem; line-height: 1.58; }
 
@@ -1899,13 +1920,13 @@ p.seller:last-child { margin-bottom: 0; }
   margin: 0;
   border-radius: 12px;
   overflow: hidden;
-  background: #d8d2c8;
-  aspect-ratio: 3 / 4;
+  background: #1c1c1c;
 }
 .ba-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  display: block;
+  object-fit: contain;
 }
 .ba-tag {
   position: absolute;
