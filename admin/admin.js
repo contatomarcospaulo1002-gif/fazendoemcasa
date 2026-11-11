@@ -679,6 +679,9 @@
         mode: mode,
       };
     }
+    if (field.type === "choice") {
+      return el.getAttribute(field.attribute || "data-value") || "";
+    }
     if (field.type === "video-embed") {
       return (el.innerHTML || "").trim();
     }
@@ -734,6 +737,10 @@
     }
     if (field.type === "image-slot") {
       applyImageSlot(el, value || {});
+      return true;
+    }
+    if (field.type === "choice") {
+      el.setAttribute(field.attribute || "data-value", value || "off");
       return true;
     }
     if (field.type === "video-embed") {
@@ -899,6 +906,67 @@
     }
   }
 
+  function programaMediaSrc(id) {
+    var v = state.content[id];
+    if (!v || typeof v !== "object") return "";
+    return (v.src || "").trim();
+  }
+
+  function applyProgramaMedia(doc) {
+    var root = doc.getElementById("programa-media");
+    if (!root) return;
+    var mode = String(state.content["programa.media.mode"] || root.getAttribute("data-view") || "off");
+    if (mode !== "single" && mode !== "carousel") mode = "off";
+    root.setAttribute("data-view", mode);
+    var singleWrap = root.querySelector(".programa-single");
+    var carousel = root.querySelector(".programa-carousel");
+    var singleImg = root.querySelector(".programa-single-img");
+    var count = 0;
+    var i;
+    for (i = 1; i <= 6; i++) {
+      var slide = root.querySelector('.programa-slide[data-index="' + i + '"]');
+      if (!slide) continue;
+      var src = programaMediaSrc("programa.media.s" + i);
+      var img = slide.querySelector("img");
+      if (mode === "carousel" && src) {
+        slide.removeAttribute("hidden");
+        if (img) {
+          img.setAttribute("src", src);
+          img.setAttribute("alt", (state.content["programa.media.s" + i] && state.content["programa.media.s" + i].alt) || "");
+          img.removeAttribute("hidden");
+        }
+        count++;
+      } else {
+        slide.setAttribute("hidden", "");
+      }
+    }
+    var singleSrc = programaMediaSrc("programa.media.single");
+    if (mode === "single" && singleSrc) {
+      root.removeAttribute("hidden");
+      if (singleWrap) singleWrap.removeAttribute("hidden");
+      if (carousel) carousel.setAttribute("hidden", "");
+      if (singleImg) {
+        singleImg.setAttribute("src", singleSrc);
+        singleImg.setAttribute("alt", (state.content["programa.media.single"] && state.content["programa.media.single"].alt) || "");
+        singleImg.removeAttribute("hidden");
+      }
+      return;
+    }
+    if (mode === "carousel" && count > 0) {
+      root.removeAttribute("hidden");
+      if (singleWrap) singleWrap.setAttribute("hidden", "");
+      if (carousel) {
+        carousel.removeAttribute("hidden");
+        carousel.classList.toggle("is-solo", count < 2);
+        window.requestAnimationFrame(function () {
+          if (carousel._carouselRefresh) carousel._carouselRefresh();
+        });
+      }
+      return;
+    }
+    root.setAttribute("hidden", "");
+  }
+
   function updateDepoimentosVisibility(doc) {
     var hasAny = false;
     [1, 2, 3].forEach(function (i) {
@@ -935,6 +1003,7 @@
     applyVideoBlocks(doc);
     updateDepoimentosVisibility(doc);
     updateGaleriasVisibility(doc);
+    applyProgramaMedia(doc);
   }
 
   function loadIndexDoc() {
@@ -1120,6 +1189,7 @@
     applyVideoBlocks(frame.contentDocument);
     updateDepoimentosVisibility(frame.contentDocument);
     updateGaleriasVisibility(frame.contentDocument);
+    applyProgramaMedia(frame.contentDocument);
     bustFieldImage(frame.contentDocument, field);
   }
 
@@ -1390,6 +1460,19 @@
       html += "</div>";
     }
 
+    if (field.type === "choice") {
+      var current = String(val || "off");
+      html += "<div class=\"field\">";
+      html += "<label for=\"f-val\">O que mostrar logo abaixo</label>";
+      html += "<select id=\"f-val\">";
+      (field.options || []).forEach(function (opt) {
+        html += "<option value=\"" + escapeAttr(opt.value) + "\"" + (current === opt.value ? " selected" : "") + ">" + escapeHtml(opt.label) + "</option>";
+      });
+      html += "</select>";
+      if (field.hint) html += "<p class=\"field-hint\">" + escapeHtml(field.hint) + "</p>";
+      html += "</div>";
+    }
+
     if (field.type === "image") {
       val = val && typeof val === "object" ? val : { src: "", alt: "", lightbox: "" };
       html += imageUploadBannerHtml();
@@ -1483,11 +1566,13 @@
   function bindEditor(field) {
     var simple = $("f-val");
     if (simple) {
-      simple.addEventListener("input", function () {
+      var onSimple = function () {
         state.content[field.id] = simple.value;
         markDirty();
         patchLivePreview(field);
-      });
+      };
+      if (simple.tagName === "SELECT") simple.addEventListener("change", onSimple);
+      else simple.addEventListener("input", onSimple);
     }
     var vidFile = $("vid-file");
     if (vidFile) {
@@ -2100,6 +2185,10 @@
         state.content = parts[1] || {};
         if (!state.php) loadFromBrowserStorage();
         syncFromIndex();
+        var programaSlot = state.content["programa.photo"];
+        if (programaSlot && typeof programaSlot === "object" && (programaSlot.src || "").trim() && programaSlot.mode !== "image" && programaSlot.mode !== "both") {
+          programaSlot.mode = "both";
+        }
         if (!state.activeFieldId && state.map.groups[0] && state.map.groups[0].fields[0]) {
           selectField(state.map.groups[0].fields[0].id);
         } else {
