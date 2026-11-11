@@ -31,9 +31,17 @@
             "where": "Topo em todas as secções — marca, menu e botão",
             "fields": [
                 {
+                    "id": "header.brand.logo",
+                    "label": "Marca — logótipo",
+                    "where": "Imagem no lugar do «28», no topo e no rodapé. Sem imagem, fica o número.",
+                    "selector": ".brand-logo",
+                    "type": "image",
+                    "all": true
+                },
+                {
                     "id": "header.brand.mark",
                     "label": "Marca — número",
-                    "where": "Logo «28»",
+                    "where": "Logo «28», visível só quando não há logótipo",
                     "selector": ".site-header .brand-mark",
                     "type": "text"
                 },
@@ -566,6 +574,48 @@
             "where": "Três cartões Iniciante, Intermédio e Avançado",
             "fields": [
                 {
+                    "id": "paraquem.slide.1",
+                    "label": "Carrossel acima do título — foto 1",
+                    "where": "Acima de «Para quem é o programa». As fotos passam sozinhas para o lado.",
+                    "selector": "#paraquem-carousel .carousel-slide[data-index=\"1\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "paraquem.slide.2",
+                    "label": "Carrossel acima do título — foto 2",
+                    "where": "Segunda imagem",
+                    "selector": "#paraquem-carousel .carousel-slide[data-index=\"2\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "paraquem.slide.3",
+                    "label": "Carrossel acima do título — foto 3",
+                    "where": "Terceira imagem",
+                    "selector": "#paraquem-carousel .carousel-slide[data-index=\"3\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "paraquem.slide.4",
+                    "label": "Carrossel acima do título — foto 4",
+                    "where": "Quarta imagem",
+                    "selector": "#paraquem-carousel .carousel-slide[data-index=\"4\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "paraquem.slide.5",
+                    "label": "Carrossel acima do título — foto 5",
+                    "where": "Quinta imagem",
+                    "selector": "#paraquem-carousel .carousel-slide[data-index=\"5\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "paraquem.slide.6",
+                    "label": "Carrossel acima do título — foto 6",
+                    "where": "Sexta imagem",
+                    "selector": "#paraquem-carousel .carousel-slide[data-index=\"6\"] img",
+                    "type": "image"
+                },
+                {
                     "id": "niveis.kicker",
                     "label": "Rótulo",
                     "where": "«Níveis»",
@@ -1087,10 +1137,52 @@
             "fields": [
                 {
                     "id": "receitas.photo",
-                    "label": "Fotografia da refeição",
-                    "where": "Quadrado ao lado do texto",
+                    "label": "Capa do guia",
+                    "where": "Imagem de baixo, ao lado do texto",
                     "selector": "#receitas [data-photo=\"receitas\"]",
                     "type": "image-slot"
+                },
+                {
+                    "id": "receitas.slide.1",
+                    "label": "Carrossel entre as imagens — foto 1",
+                    "where": "Entre a capa verde e a imagem de baixo. Passa sozinha para o lado.",
+                    "selector": "#receitas-carousel .carousel-slide[data-index=\"1\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "receitas.slide.2",
+                    "label": "Carrossel entre as imagens — foto 2",
+                    "where": "Segunda imagem",
+                    "selector": "#receitas-carousel .carousel-slide[data-index=\"2\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "receitas.slide.3",
+                    "label": "Carrossel entre as imagens — foto 3",
+                    "where": "Terceira imagem",
+                    "selector": "#receitas-carousel .carousel-slide[data-index=\"3\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "receitas.slide.4",
+                    "label": "Carrossel entre as imagens — foto 4",
+                    "where": "Quarta imagem",
+                    "selector": "#receitas-carousel .carousel-slide[data-index=\"4\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "receitas.slide.5",
+                    "label": "Carrossel entre as imagens — foto 5",
+                    "where": "Quinta imagem",
+                    "selector": "#receitas-carousel .carousel-slide[data-index=\"5\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "receitas.slide.6",
+                    "label": "Carrossel entre as imagens — foto 6",
+                    "where": "Sexta imagem",
+                    "selector": "#receitas-carousel .carousel-slide[data-index=\"6\"] img",
+                    "type": "image"
                 },
                 {
                     "id": "receitas.kicker",

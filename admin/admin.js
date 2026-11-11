@@ -976,6 +976,49 @@
     root.setAttribute("hidden", "");
   }
 
+  function applyAutoCarousel(doc, rootId, prefix) {
+    var root = doc.getElementById(rootId);
+    if (!root) return;
+    var count = 0;
+    var i;
+    for (i = 1; i <= 6; i++) {
+      var slide = root.querySelector('.carousel-slide[data-index="' + i + '"]');
+      if (!slide) continue;
+      var val = state.content[prefix + i];
+      var src = val && typeof val === "object" ? (val.src || "").trim() : "";
+      var img = slide.querySelector("img");
+      if (src) {
+        slide.removeAttribute("hidden");
+        if (img) {
+          img.setAttribute("src", src);
+          img.setAttribute("alt", val.alt || "");
+          img.removeAttribute("hidden");
+        }
+        count++;
+      } else {
+        slide.setAttribute("hidden", "");
+        if (img) {
+          img.removeAttribute("src");
+          img.setAttribute("hidden", "");
+        }
+      }
+    }
+    if (count > 0) {
+      root.removeAttribute("hidden");
+      root.classList.toggle("is-solo", count < 2);
+      window.requestAnimationFrame(function () {
+        if (root._carouselRefresh) root._carouselRefresh();
+      });
+    } else {
+      root.setAttribute("hidden", "");
+    }
+  }
+
+  function applyAutoCarousels(doc) {
+    applyAutoCarousel(doc, "receitas-carousel", "receitas.slide.");
+    applyAutoCarousel(doc, "paraquem-carousel", "paraquem.slide.");
+  }
+
   function updateDepoimentosVisibility(doc) {
     var hasAny = false;
     [1, 2, 3].forEach(function (i) {
@@ -1014,6 +1057,7 @@
     updateGaleriasVisibility(doc);
     applyProgramaMedia(doc);
     applyFeaturePhotos(doc);
+    applyAutoCarousels(doc);
   }
 
   function loadIndexDoc() {
@@ -1201,6 +1245,7 @@
     updateGaleriasVisibility(frame.contentDocument);
     applyProgramaMedia(frame.contentDocument);
     applyFeaturePhotos(frame.contentDocument);
+    applyAutoCarousels(frame.contentDocument);
     bustFieldImage(frame.contentDocument, field);
   }
 
