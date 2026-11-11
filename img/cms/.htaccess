@@ -1,0 +1,8 @@
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-cache, must-revalidate"
+</IfModule>
+<IfModule mod_authz_core.c>
+  <FilesMatch "^\.tmp-">
+    Require all denied
+  </FilesMatch>
+</IfModule>

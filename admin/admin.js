@@ -82,6 +82,16 @@
     return String(val).trim();
   }
 
+  function assetPathOnly(src) {
+    return String(src || "").split("?")[0];
+  }
+
+  function cacheBustAsset(src) {
+    var base = String(src || "");
+    if (!base || /^(blob:|data:)/i.test(base)) return base;
+    return base + (base.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+  }
+
   function revokePreviewObjectUrl() {
     if (previewObjectUrl) {
       URL.revokeObjectURL(previewObjectUrl);
@@ -116,7 +126,7 @@
       '<img class="img-preview' +
       (has ? "" : " hidden") +
       '" id="img-prev" src="' +
-      (has ? "../" + escapeAttr(src) : "") +
+      (has ? escapeAttr(cacheBustAsset("../" + src)) : "") +
       '" alt="">';
     html +=
       '<p class="media-preview-empty' +
@@ -132,8 +142,8 @@
     html += "</div>";
     if (has) {
       html +=
-        '<p class="media-preview-links"><a href="../' +
-        escapeAttr(src) +
+        '<p class="media-preview-links"><a href="' +
+        escapeAttr(cacheBustAsset("../" + src)) +
         '" target="_blank" rel="noopener">Abrir ficheiro local</a></p>';
     }
     html += "</div>";
@@ -159,28 +169,36 @@
     box.innerHTML =
       '<p class="live-row live-pending"><span class="live-dot" aria-hidden="true"></span> A verificar publicação…</p>';
 
+    var pathOnly = assetPathOnly(src);
     Promise.all([
       loadIndexDoc(),
-      probeAssetUrl("../" + src),
-      probeAssetUrl(SITE_PUBLIC + "/" + src.replace(/^\//, "")),
+      probeAssetUrl("../" + pathOnly),
+      probeAssetUrl(SITE_PUBLIC + "/" + pathOnly.replace(/^\//, "")),
     ]).then(function (parts) {
       if (!box.parentNode || state.activeFieldId !== field.id) return;
       var doc = parts[0];
       var fileLocal = parts[1];
       var fileOnline = parts[2];
-      var indexSrc = imageSrcFromValue(readField(doc, field));
-      var onIndex = indexSrc === src;
+      var indexSrcFull = imageSrcFromValue(readField(doc, field));
+      var indexSrc = assetPathOnly(indexSrcFull);
+      var onIndex = indexSrcFull === src && src !== "";
+      var applyLabel =
+        state.php && state.database
+          ? "Publicar no site"
+          : state.php
+          ? "Atualizar index.html"
+          : "Guardar e aplicar";
       var rows = "";
 
       if (fileLocal) {
         rows +=
           '<p class="live-row live-ok"><span class="live-dot" aria-hidden="true"></span> Ficheiro no projeto <code>' +
-          escapeHtml(src) +
+          escapeHtml(pathOnly) +
           "</code></p>";
       } else {
         rows +=
           '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Ficheiro não encontrado em <code>' +
-          escapeHtml(src) +
+          escapeHtml(pathOnly) +
           "</code> (upload no Laragon?)</p>";
       }
 
@@ -189,10 +207,14 @@
           '<p class="live-row live-ok"><span class="live-dot" aria-hidden="true"></span> Está no <strong>index.html</strong> (site local / pré-visualização).</p>';
       } else if (indexSrc) {
         rows +=
-          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> O index ainda tem outra imagem — clica <strong>Guardar e aplicar</strong>.</p>';
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> O index ainda tem a imagem anterior — clica <strong>' +
+          applyLabel +
+          "</strong>.</p>";
       } else {
         rows +=
-          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Ainda não aplicaste ao index — <strong>Guardar e aplicar</strong>.</p>';
+          '<p class="live-row live-warn"><span class="live-dot" aria-hidden="true"></span> Ainda não aplicaste ao index — <strong>' +
+          applyLabel +
+          "</strong>.</p>";
       }
 
       if (!state.php && fieldHasPendingImage(field.id)) {
@@ -204,7 +226,7 @@
       if (fileOnline) {
         rows +=
           '<p class="live-row live-ok"><span class="live-dot" aria-hidden="true"></span> <strong>No ar agora</strong> em <a href="' +
-          escapeAttr(SITE_PUBLIC + "/" + src.replace(/^\//, "")) +
+          escapeAttr(SITE_PUBLIC + "/" + pathOnly.replace(/^\//, "")) +
           '" target="_blank" rel="noopener">fazendoemcasa.com</a> (pode ser a versão anterior)</p>';
       } else if (fileLocal && onIndex) {
         rows +=
@@ -435,7 +457,10 @@
         return saveContent();
       })
       .then(function () {
-        if (file) refreshLiveSiteFrame();
+        if (file) {
+          patchLivePreview(field);
+          refreshLiveSiteFrame();
+        }
         if (file && state.php && state.authenticated) {
           setStatus("Foto guardada (img/cms + JSON). Clica «Publicar no site» no topo.", "ok");
         } else if (file && !state.php) {
@@ -1018,6 +1043,7 @@
     var doc = frame.contentDocument;
     applyAllToDoc(doc);
     pendingImagesToDoc(doc);
+    bustPreviewImages(doc);
     wireVisualEditor(frame);
     if (state.activeFieldId) highlightVisualTarget(state.activeFieldId);
   }
@@ -1034,6 +1060,26 @@
     frame.src = "../index.html?cms_preview=1&t=" + Date.now();
   }
 
+  function bustPreviewImages(doc) {
+    if (!doc) return;
+    doc.querySelectorAll("img[src]").forEach(function (img) {
+      var src = img.getAttribute("src") || "";
+      if (!src || /^(blob:|data:)/i.test(src)) return;
+      img.setAttribute("src", cacheBustAsset(src));
+    });
+  }
+
+  function bustFieldImage(doc, field) {
+    if (!doc || !field || !isImageField(field)) return;
+    var el = doc.querySelector(field.selector);
+    if (!el) return;
+    var img = field.type === "image-slot" ? el.querySelector(".slot-photo") : el;
+    if (!img || String(img.tagName).toUpperCase() !== "IMG") return;
+    var src = img.getAttribute("src") || "";
+    if (!src || /^(blob:|data:)/i.test(src)) return;
+    img.setAttribute("src", cacheBustAsset(src));
+  }
+
   function patchLivePreview(field) {
     var frame = $("live-site-frame");
     if (!field || !frame || !frame.contentDocument) return;
@@ -1042,6 +1088,7 @@
     applyVideoBlocks(frame.contentDocument);
     updateDepoimentosVisibility(frame.contentDocument);
     updateGaleriasVisibility(frame.contentDocument);
+    bustFieldImage(frame.contentDocument, field);
   }
 
   function syncFromIndex() {

@@ -43,16 +43,20 @@ if (strlen($raw) > $maxBytes) {
     ], 400);
 }
 
-if (!is_dir($paths['imgCms'])) {
-    mkdir($paths['imgCms'], 0755, true);
-}
-
 $filename = $fieldId . '.' . ($ext === 'jpeg' ? 'jpg' : $ext);
 $full = $paths['imgCms'] . '/' . $filename;
-if (file_put_contents($full, $raw) === false) {
-    admin_json(['ok' => false, 'error' => 'Não foi possível gravar a imagem.'], 500);
+if (!admin_write_bytes($full, $raw)) {
+    admin_json([
+        'ok' => false,
+        'error' => 'Não foi possível gravar a imagem. A pasta img/cms não deixou substituir o ficheiro.',
+    ], 500);
 }
 
-$publicPath = 'img/cms/' . $filename;
-cms_log_media($fieldId, $publicPath, strlen($raw), 'image/webp');
+$version = (string) time() . bin2hex(random_bytes(2));
+$publicPath = 'img/cms/' . $filename . '?v=' . $version;
+try {
+    cms_log_media($fieldId, $publicPath, strlen($raw), 'image/webp');
+} catch (Throwable) {
+    // A imagem já ficou em disco. Falha no registo não deve anular o upload.
+}
 admin_json(['ok' => true, 'path' => $publicPath, 'bytes' => strlen($raw)]);

@@ -33,7 +33,7 @@ if (admin_db_connected()) {
     }
 }
 
-if (file_put_contents($paths['content'], $json) === false) {
+if (!admin_write_bytes($paths['content'], $json)) {
     admin_json(['ok' => false, 'error' => 'Não foi possível gravar content.json.'], 500);
 }
 

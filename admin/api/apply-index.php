@@ -21,7 +21,7 @@ if (is_file($paths['index'])) {
     copy($paths['index'], $backup);
 }
 
-if (file_put_contents($paths['index'], $html) === false) {
+if (!admin_write_bytes($paths['index'], $html)) {
     admin_json(['ok' => false, 'error' => 'Não foi possível gravar index.html.'], 500);
 }
 
