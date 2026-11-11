@@ -906,6 +906,15 @@
     }
   }
 
+  function applyFeaturePhotos(doc) {
+    doc.querySelectorAll("#programa .feature-card").forEach(function (card) {
+      var img = card.querySelector(".feature-photo");
+      var src = img ? (img.getAttribute("src") || "").trim() : "";
+      var show = !!src && !(img && img.hasAttribute("hidden"));
+      card.classList.toggle("has-feature-photo", show);
+    });
+  }
+
   function programaMediaSrc(id) {
     var v = state.content[id];
     if (!v || typeof v !== "object") return "";
@@ -1004,6 +1013,7 @@
     updateDepoimentosVisibility(doc);
     updateGaleriasVisibility(doc);
     applyProgramaMedia(doc);
+    applyFeaturePhotos(doc);
   }
 
   function loadIndexDoc() {
@@ -1190,6 +1200,7 @@
     updateDepoimentosVisibility(frame.contentDocument);
     updateGaleriasVisibility(frame.contentDocument);
     applyProgramaMedia(frame.contentDocument);
+    applyFeaturePhotos(frame.contentDocument);
     bustFieldImage(frame.contentDocument, field);
   }
 
