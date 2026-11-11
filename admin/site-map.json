@@ -58,6 +58,88 @@
                     "selector": ".header-cta",
                     "type": "attr",
                     "attribute": "href"
+                },
+                {
+                    "id": "header.nav.programa",
+                    "label": "Menu — O programa",
+                    "where": "Cabeçalho e menu do telemóvel",
+                    "selector": "a.nav-programa",
+                    "type": "text",
+                    "all": true
+                },
+                {
+                    "id": "header.nav.programa.href",
+                    "label": "Menu — O programa — link",
+                    "where": "Âncora",
+                    "selector": "a.nav-programa",
+                    "type": "attr",
+                    "attribute": "href",
+                    "all": true
+                },
+                {
+                    "id": "header.nav.como",
+                    "label": "Menu — Como funciona",
+                    "where": "Cabeçalho e menu do telemóvel",
+                    "selector": "a.nav-como",
+                    "type": "text",
+                    "all": true
+                },
+                {
+                    "id": "header.nav.como.href",
+                    "label": "Menu — Como funciona — link",
+                    "where": "Âncora",
+                    "selector": "a.nav-como",
+                    "type": "attr",
+                    "attribute": "href",
+                    "all": true
+                },
+                {
+                    "id": "header.nav.incluido",
+                    "label": "Menu — O que está incluído",
+                    "where": "Cabeçalho e menu do telemóvel",
+                    "selector": "a.nav-incluido",
+                    "type": "text",
+                    "all": true
+                },
+                {
+                    "id": "header.nav.incluido.href",
+                    "label": "Menu — O que está incluído — link",
+                    "where": "Âncora",
+                    "selector": "a.nav-incluido",
+                    "type": "attr",
+                    "attribute": "href",
+                    "all": true
+                },
+                {
+                    "id": "header.nav.faq",
+                    "label": "Menu — Perguntas frequentes",
+                    "where": "Cabeçalho e menu do telemóvel",
+                    "selector": "a.nav-faq",
+                    "type": "text",
+                    "all": true
+                },
+                {
+                    "id": "header.nav.faq.href",
+                    "label": "Menu — Perguntas frequentes — link",
+                    "where": "Âncora",
+                    "selector": "a.nav-faq",
+                    "type": "attr",
+                    "attribute": "href",
+                    "all": true
+                },
+                {
+                    "id": "header.nav.receitas",
+                    "label": "Menu telemóvel — Receitas",
+                    "where": "Só no menu do telemóvel",
+                    "selector": "a.nav-receitas",
+                    "type": "text"
+                },
+                {
+                    "id": "header.nav.oferta",
+                    "label": "Menu telemóvel — Oferta",
+                    "where": "Só no menu do telemóvel",
+                    "selector": "a.nav-oferta",
+                    "type": "text"
                 }
             ]
         },
@@ -271,6 +353,280 @@
                     "where": "Formato PDF",
                     "selector": "#programa .split-text p:nth-of-type(2)",
                     "type": "text"
+                },
+                {
+                    "id": "programa.card1.h3",
+                    "label": "Cartão 1 — título",
+                    "where": "Plano de 4 semanas",
+                    "selector": "#programa .feature-card:nth-child(1) h3",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card1.p",
+                    "label": "Cartão 1 — texto",
+                    "where": "20 sessões",
+                    "selector": "#programa .feature-card:nth-child(1) p",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card2.h3",
+                    "label": "Cartão 2 — título",
+                    "where": "Exercícios explicados",
+                    "selector": "#programa .feature-card:nth-child(2) h3",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card2.p",
+                    "label": "Cartão 2 — texto",
+                    "where": "4 exercícios",
+                    "selector": "#programa .feature-card:nth-child(2) p",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card3.h3",
+                    "label": "Cartão 3 — título",
+                    "where": "Aquecimento e alongamentos",
+                    "selector": "#programa .feature-card:nth-child(3) h3",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card3.p",
+                    "label": "Cartão 3 — texto",
+                    "where": "sequência",
+                    "selector": "#programa .feature-card:nth-child(3) p",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card4.h3",
+                    "label": "Cartão 4 — título",
+                    "where": "Calendário de acompanhamento",
+                    "selector": "#programa .feature-card:nth-child(4) h3",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card4.p",
+                    "label": "Cartão 4 — texto",
+                    "where": "sessão concluída",
+                    "selector": "#programa .feature-card:nth-child(4) p",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card5.h3",
+                    "label": "Cartão 5 — título",
+                    "where": "Hábitos saudáveis",
+                    "selector": "#programa .feature-card:nth-child(5) h3",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card5.p",
+                    "label": "Cartão 5 — texto",
+                    "where": "sono",
+                    "selector": "#programa .feature-card:nth-child(5) p",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card6.h3",
+                    "label": "Cartão 6 — título",
+                    "where": "Escala de esforço",
+                    "selector": "#programa .feature-card:nth-child(6) h3",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.card6.p",
+                    "label": "Cartão 6 — texto",
+                    "where": "0 a 10",
+                    "selector": "#programa .feature-card:nth-child(6) p",
+                    "type": "text"
+                },
+                {
+                    "id": "programa.cta.text",
+                    "label": "Botão ao lado da foto — texto",
+                    "where": "«Quero o guia…»",
+                    "selector": "#programa .split-text .btn",
+                    "type": "html"
+                },
+                {
+                    "id": "programa.cta.href",
+                    "label": "Botão ao lado da foto — link",
+                    "where": "URL",
+                    "selector": "#programa .split-text .btn",
+                    "type": "attr",
+                    "attribute": "href"
+                }
+            ]
+        },
+        {
+            "id": "para-quem",
+            "title": "Níveis — para quem é",
+            "where": "Três cartões Iniciante, Intermédio e Avançado",
+            "fields": [
+                {
+                    "id": "niveis.kicker",
+                    "label": "Rótulo",
+                    "where": "«Níveis»",
+                    "selector": "#para-quem .kicker",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.h2",
+                    "label": "Título",
+                    "where": "H2 da secção",
+                    "selector": "#para-quem .section-head h2",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.lead",
+                    "label": "Introdução",
+                    "where": "Sob o título",
+                    "selector": "#para-quem .section-lead",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.iniciante.photo",
+                    "label": "Iniciante — fotografia",
+                    "where": "Topo do cartão 1",
+                    "selector": "#para-quem [data-photo=\"nivel-iniciante\"]",
+                    "type": "image-slot"
+                },
+                {
+                    "id": "niveis.iniciante.tag",
+                    "label": "Iniciante — etiqueta",
+                    "where": "«Nível 1»",
+                    "selector": "#para-quem .level-card:nth-child(1) .level-tag",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.iniciante.h3",
+                    "label": "Iniciante — título",
+                    "where": "Nome do nível",
+                    "selector": "#para-quem .level-card:nth-child(1) h3",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.iniciante.p",
+                    "label": "Iniciante — texto",
+                    "where": "Descrição do cartão",
+                    "selector": "#para-quem .level-card:nth-child(1) .level-body p:last-child",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.intermedio.photo",
+                    "label": "Intermédio — fotografia",
+                    "where": "Topo do cartão 2",
+                    "selector": "#para-quem [data-photo=\"nivel-intermedio\"]",
+                    "type": "image-slot"
+                },
+                {
+                    "id": "niveis.intermedio.tag",
+                    "label": "Intermédio — etiqueta",
+                    "where": "«Nível 2»",
+                    "selector": "#para-quem .level-card:nth-child(2) .level-tag",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.intermedio.h3",
+                    "label": "Intermédio — título",
+                    "where": "Nome do nível",
+                    "selector": "#para-quem .level-card:nth-child(2) h3",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.intermedio.p",
+                    "label": "Intermédio — texto",
+                    "where": "Descrição do cartão",
+                    "selector": "#para-quem .level-card:nth-child(2) .level-body p:last-child",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.avancado.photo",
+                    "label": "Avançado — fotografia",
+                    "where": "Topo do cartão 3",
+                    "selector": "#para-quem [data-photo=\"nivel-avancado\"]",
+                    "type": "image-slot"
+                },
+                {
+                    "id": "niveis.avancado.tag",
+                    "label": "Avançado — etiqueta",
+                    "where": "«Nível 3»",
+                    "selector": "#para-quem .level-card:nth-child(3) .level-tag",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.avancado.h3",
+                    "label": "Avançado — título",
+                    "where": "Nome do nível",
+                    "selector": "#para-quem .level-card:nth-child(3) h3",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.avancado.p",
+                    "label": "Avançado — texto",
+                    "where": "Descrição do cartão",
+                    "selector": "#para-quem .level-card:nth-child(3) .level-body p:last-child",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.yes.h3",
+                    "label": "Coluna «Para quem é» — título",
+                    "where": "Lista verde",
+                    "selector": "#para-quem .fit-yes h3",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.no.h3",
+                    "label": "Coluna «Para quem não é» — título",
+                    "where": "Lista ao lado",
+                    "selector": "#para-quem .fit-no h3",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.yes.1",
+                    "label": "Para quem é — item 1",
+                    "where": "Lista da esquerda",
+                    "selector": "#para-quem .fit-yes li:nth-child(1)",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.yes.2",
+                    "label": "Para quem é — item 2",
+                    "where": "Lista da esquerda",
+                    "selector": "#para-quem .fit-yes li:nth-child(2)",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.yes.3",
+                    "label": "Para quem é — item 3",
+                    "where": "Lista da esquerda",
+                    "selector": "#para-quem .fit-yes li:nth-child(3)",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.yes.4",
+                    "label": "Para quem é — item 4",
+                    "where": "Lista da esquerda",
+                    "selector": "#para-quem .fit-yes li:nth-child(4)",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.no.1",
+                    "label": "Para quem não é — item 1",
+                    "where": "Lista da direita",
+                    "selector": "#para-quem .fit-no li:nth-child(1)",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.no.2",
+                    "label": "Para quem não é — item 2",
+                    "where": "Lista da direita",
+                    "selector": "#para-quem .fit-no li:nth-child(2)",
+                    "type": "text"
+                },
+                {
+                    "id": "niveis.no.3",
+                    "label": "Para quem não é — item 3",
+                    "where": "Lista da direita",
+                    "selector": "#para-quem .fit-no li:nth-child(3)",
+                    "type": "text"
                 }
             ]
         },
@@ -313,6 +669,188 @@
                     "where": "Sob a imagem",
                     "selector": "#como-funciona .how-media figcaption",
                     "type": "text"
+                },
+                {
+                    "id": "como.semana1.num",
+                    "label": "Semana 1 — número",
+                    "where": "Quadrado verde",
+                    "selector": "#como-funciona .week-step[data-week=\"1\"] .week-num",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana1.h3",
+                    "label": "Semana 1 — título",
+                    "where": "Nome da semana",
+                    "selector": "#como-funciona .week-step[data-week=\"1\"] h3",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana1.title",
+                    "label": "Semana 1 — subtítulo",
+                    "where": "Linha verde sob o título. Vazio = não aparece.",
+                    "selector": "#como-funciona .week-step[data-week=\"1\"] .week-title",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana1.text",
+                    "label": "Semana 1 — texto",
+                    "where": "Parágrafo do cartão",
+                    "selector": "#como-funciona .week-step[data-week=\"1\"] .week-text",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana1.meta",
+                    "label": "Semana 1 — etiqueta",
+                    "where": "Pílula no fundo do cartão",
+                    "selector": "#como-funciona .week-step[data-week=\"1\"] .week-meta",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana2.num",
+                    "label": "Semana 2 — número",
+                    "where": "Quadrado verde",
+                    "selector": "#como-funciona .week-step[data-week=\"2\"] .week-num",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana2.h3",
+                    "label": "Semana 2 — título",
+                    "where": "Nome da semana",
+                    "selector": "#como-funciona .week-step[data-week=\"2\"] h3",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana2.title",
+                    "label": "Semana 2 — subtítulo",
+                    "where": "Linha verde sob o título. Vazio = não aparece.",
+                    "selector": "#como-funciona .week-step[data-week=\"2\"] .week-title",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana2.text",
+                    "label": "Semana 2 — texto",
+                    "where": "Parágrafo do cartão",
+                    "selector": "#como-funciona .week-step[data-week=\"2\"] .week-text",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana2.meta",
+                    "label": "Semana 2 — etiqueta",
+                    "where": "Pílula no fundo do cartão",
+                    "selector": "#como-funciona .week-step[data-week=\"2\"] .week-meta",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana3.num",
+                    "label": "Semana 3 — número",
+                    "where": "Quadrado verde",
+                    "selector": "#como-funciona .week-step[data-week=\"3\"] .week-num",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana3.h3",
+                    "label": "Semana 3 — título",
+                    "where": "Nome da semana",
+                    "selector": "#como-funciona .week-step[data-week=\"3\"] h3",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana3.title",
+                    "label": "Semana 3 — subtítulo",
+                    "where": "Linha verde sob o título. Vazio = não aparece.",
+                    "selector": "#como-funciona .week-step[data-week=\"3\"] .week-title",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana3.text",
+                    "label": "Semana 3 — texto",
+                    "where": "Parágrafo do cartão",
+                    "selector": "#como-funciona .week-step[data-week=\"3\"] .week-text",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana3.meta",
+                    "label": "Semana 3 — etiqueta",
+                    "where": "Pílula no fundo do cartão",
+                    "selector": "#como-funciona .week-step[data-week=\"3\"] .week-meta",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana4.num",
+                    "label": "Semana 4 — número",
+                    "where": "Quadrado verde",
+                    "selector": "#como-funciona .week-step[data-week=\"4\"] .week-num",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana4.h3",
+                    "label": "Semana 4 — título",
+                    "where": "Nome da semana",
+                    "selector": "#como-funciona .week-step[data-week=\"4\"] h3",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana4.title",
+                    "label": "Semana 4 — subtítulo",
+                    "where": "Linha verde sob o título. Vazio = não aparece.",
+                    "selector": "#como-funciona .week-step[data-week=\"4\"] .week-title",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana4.text",
+                    "label": "Semana 4 — texto",
+                    "where": "Parágrafo do cartão",
+                    "selector": "#como-funciona .week-step[data-week=\"4\"] .week-text",
+                    "type": "text"
+                },
+                {
+                    "id": "como.semana4.meta",
+                    "label": "Semana 4 — etiqueta",
+                    "where": "Pílula no fundo do cartão",
+                    "selector": "#como-funciona .week-step[data-week=\"4\"] .week-meta",
+                    "type": "text"
+                },
+                {
+                    "id": "como.passos.h3",
+                    "label": "Passos — título",
+                    "where": "«Como funciona, do pagamento…»",
+                    "selector": "#como-funciona .how-copy h3",
+                    "type": "text"
+                },
+                {
+                    "id": "como.passos.1",
+                    "label": "Passo 1",
+                    "where": "Lista numerada",
+                    "selector": "#como-funciona .steps li:nth-child(1)",
+                    "type": "html"
+                },
+                {
+                    "id": "como.passos.2",
+                    "label": "Passo 2",
+                    "where": "Lista numerada",
+                    "selector": "#como-funciona .steps li:nth-child(2)",
+                    "type": "html"
+                },
+                {
+                    "id": "como.passos.3",
+                    "label": "Passo 3",
+                    "where": "Lista numerada",
+                    "selector": "#como-funciona .steps li:nth-child(3)",
+                    "type": "html"
+                },
+                {
+                    "id": "como.passos.4",
+                    "label": "Passo 4",
+                    "where": "Lista numerada",
+                    "selector": "#como-funciona .steps li:nth-child(4)",
+                    "type": "html"
+                },
+                {
+                    "id": "como.passos.5",
+                    "label": "Passo 5",
+                    "where": "Lista numerada",
+                    "selector": "#como-funciona .steps li:nth-child(5)",
+                    "type": "html"
                 }
             ]
         },
@@ -364,6 +902,153 @@
                     "selector": "#amostra .sample-grid .sample-card:nth-child(2) img",
                     "type": "image",
                     "lightboxSelector": "#amostra .sample-grid .sample-card:nth-child(2) .sample-zoom"
+                },
+                {
+                    "id": "incluido.kicker",
+                    "label": "Rótulo",
+                    "where": "«Incluído»",
+                    "selector": "#incluido .kicker",
+                    "type": "text"
+                },
+                {
+                    "id": "incluido.item1",
+                    "label": "Lista — item 1",
+                    "where": "O que está no PDF",
+                    "selector": "#incluido .receive-list .check-list li:nth-child(1)",
+                    "type": "html"
+                },
+                {
+                    "id": "incluido.item2",
+                    "label": "Lista — item 2",
+                    "where": "O que está no PDF",
+                    "selector": "#incluido .receive-list .check-list li:nth-child(2)",
+                    "type": "html"
+                },
+                {
+                    "id": "incluido.item3",
+                    "label": "Lista — item 3",
+                    "where": "O que está no PDF",
+                    "selector": "#incluido .receive-list .check-list li:nth-child(3)",
+                    "type": "html"
+                },
+                {
+                    "id": "incluido.item4",
+                    "label": "Lista — item 4",
+                    "where": "O que está no PDF",
+                    "selector": "#incluido .receive-list .check-list li:nth-child(4)",
+                    "type": "html"
+                },
+                {
+                    "id": "incluido.item5",
+                    "label": "Lista — item 5",
+                    "where": "O que está no PDF",
+                    "selector": "#incluido .receive-list .check-list li:nth-child(5)",
+                    "type": "html"
+                },
+                {
+                    "id": "incluido.item6",
+                    "label": "Lista — item 6",
+                    "where": "O que está no PDF",
+                    "selector": "#incluido .receive-list .check-list li:nth-child(6)",
+                    "type": "html"
+                },
+                {
+                    "id": "incluido.p08.caption",
+                    "label": "Legenda da página 8",
+                    "where": "Figura ao lado da lista",
+                    "selector": "#incluido .receive-media figcaption",
+                    "type": "text"
+                },
+                {
+                    "id": "incluido.sample.p08.caption",
+                    "label": "Amostra — legenda página 8",
+                    "where": "Sob a primeira miniatura",
+                    "selector": "#amostra .sample-card:nth-child(1) figcaption",
+                    "type": "html"
+                },
+                {
+                    "id": "incluido.sample.p13.caption",
+                    "label": "Amostra — legenda página 13",
+                    "where": "Sob a segunda miniatura",
+                    "selector": "#amostra .sample-card:nth-child(2) figcaption",
+                    "type": "html"
+                }
+            ]
+        },
+        {
+            "id": "receitas",
+            "title": "Guia de receitas",
+            "where": "Cartão extra opcional no checkout",
+            "fields": [
+                {
+                    "id": "receitas.photo",
+                    "label": "Fotografia da refeição",
+                    "where": "Quadrado ao lado do texto",
+                    "selector": "#receitas [data-photo=\"receitas\"]",
+                    "type": "image-slot"
+                },
+                {
+                    "id": "receitas.kicker",
+                    "label": "Rótulo",
+                    "where": "«Extra opcional»",
+                    "selector": "#receitas .kicker",
+                    "type": "text"
+                },
+                {
+                    "id": "receitas.h2",
+                    "label": "Título",
+                    "where": "Nome do extra",
+                    "selector": "#receitas .bonus-body h2",
+                    "type": "text"
+                },
+                {
+                    "id": "receitas.lead",
+                    "label": "Texto",
+                    "where": "Descrição do PDF",
+                    "selector": "#receitas .bonus-lead",
+                    "type": "text"
+                },
+                {
+                    "id": "receitas.item1",
+                    "label": "Lista — item 1",
+                    "where": "Refeições",
+                    "selector": "#receitas .mini-list li:nth-child(1)",
+                    "type": "text"
+                },
+                {
+                    "id": "receitas.item2",
+                    "label": "Lista — item 2",
+                    "where": "Semana-tipo",
+                    "selector": "#receitas .mini-list li:nth-child(2)",
+                    "type": "text"
+                },
+                {
+                    "id": "receitas.item3",
+                    "label": "Lista — item 3",
+                    "where": "Lista de compras",
+                    "selector": "#receitas .mini-list li:nth-child(3)",
+                    "type": "text"
+                },
+                {
+                    "id": "receitas.preco",
+                    "label": "Preço",
+                    "where": "7,90 €",
+                    "selector": "#receitas .bonus-price",
+                    "type": "html"
+                },
+                {
+                    "id": "receitas.nota",
+                    "label": "Nota do preço",
+                    "where": "Sob o preço",
+                    "selector": "#receitas .bonus-note",
+                    "type": "html"
+                },
+                {
+                    "id": "receitas.disclaimer",
+                    "label": "Aviso",
+                    "where": "Rodapé do cartão",
+                    "selector": "#receitas .disclaimer",
+                    "type": "text"
                 }
             ]
         },
@@ -821,6 +1506,41 @@
             ]
         },
         {
+            "id": "garantia",
+            "title": "Garantia de reembolso",
+            "where": "Faixa dos 14 dias",
+            "fields": [
+                {
+                    "id": "garantia.h2",
+                    "label": "Título",
+                    "where": "H2 da garantia",
+                    "selector": "#garantia h2",
+                    "type": "text"
+                },
+                {
+                    "id": "garantia.p1",
+                    "label": "Parágrafo 1",
+                    "where": "Como pedir",
+                    "selector": "#garantia .guarantee-body p:nth-of-type(1)",
+                    "type": "html"
+                },
+                {
+                    "id": "garantia.p2",
+                    "label": "Parágrafo 2",
+                    "where": "Kiwify e termos",
+                    "selector": "#garantia .guarantee-body p:nth-of-type(2)",
+                    "type": "html"
+                },
+                {
+                    "id": "garantia.p3",
+                    "label": "Nota pequena",
+                    "where": "Livre resolução",
+                    "selector": "#garantia .small-note",
+                    "type": "html"
+                }
+            ]
+        },
+        {
             "id": "faq",
             "title": "Perguntas frequentes (FAQ)",
             "where": "Secção de dúvidas antes da chamada final",
@@ -1021,6 +1741,104 @@
                     "selector": "#oferta .offer-buy .btn",
                     "type": "attr",
                     "attribute": "href"
+                },
+                {
+                    "id": "oferta.kicker",
+                    "label": "Rótulo",
+                    "where": "«A tua oferta»",
+                    "selector": "#oferta .kicker",
+                    "type": "text"
+                },
+                {
+                    "id": "oferta.includes",
+                    "label": "Título da lista",
+                    "where": "«Inclui»",
+                    "selector": "#oferta .includes-title",
+                    "type": "text"
+                },
+                {
+                    "id": "oferta.item1",
+                    "label": "Inclui — item 1",
+                    "where": "Lista do cartão",
+                    "selector": "#oferta .offer-includes .check-list li:nth-child(1)",
+                    "type": "html"
+                },
+                {
+                    "id": "oferta.item2",
+                    "label": "Inclui — item 2",
+                    "where": "Lista do cartão",
+                    "selector": "#oferta .offer-includes .check-list li:nth-child(2)",
+                    "type": "html"
+                },
+                {
+                    "id": "oferta.item3",
+                    "label": "Inclui — item 3",
+                    "where": "Lista do cartão",
+                    "selector": "#oferta .offer-includes .check-list li:nth-child(3)",
+                    "type": "html"
+                },
+                {
+                    "id": "oferta.item4",
+                    "label": "Inclui — item 4",
+                    "where": "Lista do cartão",
+                    "selector": "#oferta .offer-includes .check-list li:nth-child(4)",
+                    "type": "html"
+                },
+                {
+                    "id": "oferta.item5",
+                    "label": "Inclui — item 5",
+                    "where": "Lista do cartão",
+                    "selector": "#oferta .offer-includes .check-list li:nth-child(5)",
+                    "type": "html"
+                },
+                {
+                    "id": "oferta.item6",
+                    "label": "Inclui — item 6",
+                    "where": "Lista do cartão",
+                    "selector": "#oferta .offer-includes .check-list li:nth-child(6)",
+                    "type": "html"
+                },
+                {
+                    "id": "oferta.extra",
+                    "label": "Nota das receitas",
+                    "where": "Sob a lista",
+                    "selector": "#oferta .offer-extra",
+                    "type": "html"
+                },
+                {
+                    "id": "oferta.meta1",
+                    "label": "Linha sob o preço 1",
+                    "where": "Pagamento único",
+                    "selector": "#oferta .offer-buy p.price-meta:nth-of-type(2)",
+                    "type": "text"
+                },
+                {
+                    "id": "oferta.meta2",
+                    "label": "Linha sob o preço 2",
+                    "where": "Sem subscrição",
+                    "selector": "#oferta .offer-buy p.price-meta:nth-of-type(3)",
+                    "type": "text"
+                },
+                {
+                    "id": "oferta.nota1",
+                    "label": "Nota de compra 1",
+                    "where": "Sob o botão",
+                    "selector": "#oferta .buy-notes li:nth-child(1)",
+                    "type": "text"
+                },
+                {
+                    "id": "oferta.nota2",
+                    "label": "Nota de compra 2",
+                    "where": "Sob o botão",
+                    "selector": "#oferta .buy-notes li:nth-child(2)",
+                    "type": "text"
+                },
+                {
+                    "id": "oferta.nota3",
+                    "label": "Nota de compra 3",
+                    "where": "Sob o botão",
+                    "selector": "#oferta .buy-notes li:nth-child(3)",
+                    "type": "text"
                 }
             ]
         },
@@ -1057,6 +1875,55 @@
                     "selector": ".final-cta .btn",
                     "type": "attr",
                     "attribute": "href"
+                },
+                {
+                    "id": "final.point1",
+                    "label": "Ponto 1",
+                    "where": "Lista sob o botão final",
+                    "selector": ".final-cta .final-points li:nth-child(1)",
+                    "type": "text"
+                },
+                {
+                    "id": "final.point2",
+                    "label": "Ponto 2",
+                    "where": "Lista sob o botão final",
+                    "selector": ".final-cta .final-points li:nth-child(2)",
+                    "type": "text"
+                },
+                {
+                    "id": "final.point3",
+                    "label": "Ponto 3",
+                    "where": "Lista sob o botão final",
+                    "selector": ".final-cta .final-points li:nth-child(3)",
+                    "type": "text"
+                },
+                {
+                    "id": "final.point4",
+                    "label": "Ponto 4",
+                    "where": "Lista sob o botão final",
+                    "selector": ".final-cta .final-points li:nth-child(4)",
+                    "type": "text"
+                },
+                {
+                    "id": "final.point5",
+                    "label": "Ponto 5",
+                    "where": "Lista sob o botão final",
+                    "selector": ".final-cta .final-points li:nth-child(5)",
+                    "type": "text"
+                },
+                {
+                    "id": "sticky.preco",
+                    "label": "Barra fixa — preço",
+                    "where": "Canto no telemóvel",
+                    "selector": "#sticky-cta .sticky-cta-price",
+                    "type": "html"
+                },
+                {
+                    "id": "sticky.cta",
+                    "label": "Barra fixa — botão",
+                    "where": "Texto do botão",
+                    "selector": "#sticky-cta .btn",
+                    "type": "html"
                 }
             ]
         }

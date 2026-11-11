@@ -360,8 +360,10 @@
       if (!slot || typeof slot !== "object") slot = { src: "", label: "", note: "" };
       var sl = $("slot-label");
       var sn = $("slot-note");
+      var sm = $("slot-mode");
       if (sl) slot.label = sl.value;
       if (sn) slot.note = sn.value;
+      if (sm) slot.mode = sm.value;
       state.content[field.id] = slot;
     }
     markDirty();
@@ -384,8 +386,11 @@
       slot.src = path;
       var sl = $("slot-label");
       var sn = $("slot-note");
+      var sm = $("slot-mode");
       if (sl) slot.label = sl.value;
       if (sn) slot.note = sn.value;
+      if (sm) slot.mode = sm.value;
+      if (!slot.mode) slot.mode = "both";
       state.content[field.id] = slot;
     }
     markDirty();
@@ -659,10 +664,16 @@
     }
     if (field.type === "image-slot") {
       var note = el.querySelector(".slot-note");
+      var src = el.getAttribute("data-cms-src") || "";
+      var mode = el.getAttribute("data-slot-mode") || "";
+      if (mode !== "image" && mode !== "text" && mode !== "both") {
+        mode = src ? "both" : "text";
+      }
       return {
-        src: el.getAttribute("data-cms-src") || "",
+        src: src,
         label: el.getAttribute("data-label") || "",
         note: note ? (note.textContent || "").trim() : "",
+        mode: mode,
       };
     }
     if (field.type === "video-embed") {
@@ -675,8 +686,18 @@
   }
 
   function applyField(doc, field, value) {
-    var el = doc.querySelector(field.selector);
-    if (!el) return false;
+    var nodes = field.all
+      ? Array.prototype.slice.call(doc.querySelectorAll(field.selector))
+      : [doc.querySelector(field.selector)].filter(Boolean);
+    if (!nodes.length) return false;
+    var ok = false;
+    nodes.forEach(function (el) {
+      if (applyFieldElement(doc, field, el, value)) ok = true;
+    });
+    return ok;
+  }
+
+  function applyFieldElement(doc, field, el, value) {
     if (field.type === "text") {
       el.textContent = value || "";
       return true;
@@ -766,30 +787,38 @@
     });
   }
 
+  function normalizeSlotMode(mode, hasSrc) {
+    if (mode === "image" || mode === "text" || mode === "both") return mode;
+    return hasSrc ? "both" : "text";
+  }
+
   function applyImageSlot(el, val) {
     val = val || {};
-    var src = val.src || "";
-    if (!src) {
-      el.classList.remove("has-photo");
-      el.removeAttribute("data-cms-src");
-      var old = el.querySelector(".slot-photo");
-      if (old) old.remove();
-      return;
-    }
-    el.setAttribute("data-cms-src", src);
-    el.classList.add("has-photo");
-    var img = el.querySelector(".slot-photo");
-    if (!img) {
-      img = el.ownerDocument.createElement("img");
-      img.className = "slot-photo";
-      img.alt = val.label || "";
-      el.insertBefore(img, el.firstChild);
-    }
-    img.setAttribute("src", src);
-    img.setAttribute("alt", val.label || "");
+    var src = (val.src || "").trim();
+    var mode = normalizeSlotMode(val.mode, !!src);
+    el.setAttribute("data-slot-mode", mode);
+    el.classList.remove("slot-mode-text", "slot-mode-image", "slot-mode-both");
+    el.classList.add("slot-mode-" + mode);
     if (val.label) el.setAttribute("data-label", val.label);
     var note = el.querySelector(".slot-note");
     if (note && val.note !== undefined) note.textContent = val.note;
+    var showPhoto = mode !== "text" && !!src;
+    if (src) el.setAttribute("data-cms-src", src);
+    else el.removeAttribute("data-cms-src");
+    el.classList.toggle("has-photo", showPhoto);
+    var img = el.querySelector(".slot-photo");
+    if (showPhoto) {
+      if (!img) {
+        img = el.ownerDocument.createElement("img");
+        img.className = "slot-photo";
+        el.insertBefore(img, el.firstChild);
+      }
+      img.setAttribute("src", src);
+      img.setAttribute("alt", val.label || "");
+      img.removeAttribute("hidden");
+    } else if (img) {
+      img.setAttribute("hidden", "");
+    }
   }
 
   function slideHasPhotoContent(i) {
@@ -1429,6 +1458,13 @@
     html += "<span id=\"img-max-lbl\">1200px</span>";
     html += "<label>Qualidade <input type=\"range\" id=\"img-q\" min=\"0.5\" max=\"0.95\" step=\"0.05\" value=\"0.82\"></label>";
     html += "</div>";
+    html += "<div class=\"field\"><label for=\"slot-mode\">O que mostrar neste espaço</label>";
+    html += "<select id=\"slot-mode\">";
+    html += "<option value=\"both\"" + (val.mode === "both" ? " selected" : "") + ">Imagem e texto</option>";
+    html += "<option value=\"image\"" + (val.mode === "image" ? " selected" : "") + ">Só imagem</option>";
+    html += "<option value=\"text\"" + (val.mode !== "both" && val.mode !== "image" ? " selected" : "") + ">Só texto</option>";
+    html += "</select>";
+    html += "<p class=\"field-hint\">O cartão mantém o mesmo tamanho. Muda só o que aparece dentro da área da fotografia.</p></div>";
     html += "<div class=\"slot-extra\">";
     html += "<div class=\"field\"><label for=\"slot-label\">Rótulo (data-label)</label>";
     html += "<input id=\"slot-label\" type=\"text\" value=\"" + escapeAttr(val.label || "") + "\"></div>";
@@ -1535,16 +1571,20 @@
         markDirty();
       });
     }
-    ["slot-label", "slot-note"].forEach(function (id) {
+    ["slot-label", "slot-note", "slot-mode"].forEach(function (id) {
       var el = $(id);
       if (!el) return;
-      el.addEventListener("input", function () {
-        var cur = state.content[field.id] || { src: "", label: "", note: "" };
+      var onSlotMeta = function () {
+        var cur = state.content[field.id] || { src: "", label: "", note: "", mode: "text" };
         if (id === "slot-label") cur.label = el.value;
         if (id === "slot-note") cur.note = el.value;
+        if (id === "slot-mode") cur.mode = el.value;
         state.content[field.id] = cur;
         markDirty();
-      });
+        patchLivePreview(field);
+      };
+      el.addEventListener("input", onSlotMeta);
+      el.addEventListener("change", onSlotMeta);
     });
   }
 

@@ -20,10 +20,10 @@
       </a>
 
       <nav class="nav-desktop" aria-label="Navegação principal">
-        <a href="#programa">O programa</a>
-        <a href="#como-funciona">Como funciona</a>
-        <a href="#incluido">O que está incluído</a>
-        <a href="#faq">Perguntas frequentes</a>
+        <a class="nav-programa" href="#programa">O programa</a>
+        <a class="nav-como" href="#como-funciona">Como funciona</a>
+        <a class="nav-incluido" href="#incluido">O que está incluído</a>
+        <a href="#faq" class="nav-faq">Perguntas frequentes</a>
       </nav>
 
       <a class="btn btn-sm header-cta" data-checkout href="https://pay.kiwify.com/5NJmQkR">Quero o guia</a>
@@ -34,12 +34,12 @@
           <span class="nav-mobile-label">Menu</span>
         </summary>
         <div class="nav-mobile-panel">
-          <a href="#programa">O programa</a>
-          <a href="#como-funciona">Como funciona</a>
-          <a href="#incluido">O que está incluído</a>
-          <a href="#receitas">Guia de receitas</a>
-          <a href="#oferta">Oferta e preço</a>
-          <a href="#faq">Perguntas frequentes</a>
+          <a class="nav-programa" href="#programa">O programa</a>
+          <a class="nav-como" href="#como-funciona">Como funciona</a>
+          <a class="nav-incluido" href="#incluido">O que está incluído</a>
+          <a class="nav-receitas" href="#receitas">Guia de receitas</a>
+          <a class="nav-oferta" href="#oferta">Oferta e preço</a>
+          <a class="nav-faq" href="#faq">Perguntas frequentes</a>
           <a class="btn btn-sm" data-checkout href="https://pay.kiwify.com/5NJmQkR">Quero o guia por 14,90&nbsp;€</a>
         </div>
       </details>
@@ -89,7 +89,7 @@
 
         <div class="hero-visual">
           <div class="hero-shot">
-            <div class="photo-slot has-photo" data-photo="hero" data-label="Treino em casa — agachamento ou prancha" data-ratio="4:5" data-cms-src="img/cms/hero.photo.hero.webp"><img class="slot-photo" src="img/cms/hero.photo.hero.webp" alt="Treino em casa — agachamento ou prancha"><span class="slot-tag" aria-hidden="true">Fotografia</span><span class="slot-note">Pessoa adulta a treinar em casa, enquadramento vertical</span></div>
+            <div class="photo-slot has-photo slot-mode-both" data-photo="hero" data-slot-mode="both" data-label="Treino em casa — agachamento ou prancha" data-ratio="4:5" data-cms-src="img/cms/hero.photo.hero.webp"><img class="slot-photo" src="img/cms/hero.photo.hero.webp" alt="Treino em casa — agachamento ou prancha"><span class="slot-tag" aria-hidden="true">Fotografia</span><span class="slot-note">Pessoa adulta a treinar em casa, enquadramento vertical</span></div>
             <div class="hero-badges" aria-hidden="true">
               <span class="pill">4 semanas</span>
               <span class="pill">3 níveis</span>
@@ -156,7 +156,7 @@
 
         <div class="split-note">
           <div class="split-media">
-            <div class="photo-slot" data-photo="programa" data-label="Sala de casa, tapete e cadeira" data-ratio="3:2">
+            <div class="photo-slot slot-mode-text" data-photo="programa" data-slot-mode="text" data-label="Sala de casa, tapete e cadeira" data-ratio="3:2">
               <span class="slot-tag" aria-hidden="true">Fotografia</span>
               <span class="slot-note">Espaço de treino doméstico: tapete, cadeira firme encostada à parede</span>
             </div>
@@ -184,7 +184,7 @@
 
         <div class="level-grid">
           <article class="level-card">
-            <div class="photo-slot" data-photo="nivel-iniciante" data-label="Nível iniciante" data-ratio="4:3">
+            <div class="photo-slot slot-mode-text" data-photo="nivel-iniciante" data-slot-mode="text" data-label="Nível iniciante" data-ratio="4:3">
               <span class="slot-tag" aria-hidden="true">Fotografia</span>
               <span class="slot-note">Pessoa a começar, agachamento apoiada numa cadeira</span>
             </div>
@@ -196,7 +196,7 @@
           </article>
 
           <article class="level-card">
-            <div class="photo-slot" data-photo="nivel-intermedio" data-label="Nível intermédio" data-ratio="4:3">
+            <div class="photo-slot slot-mode-text" data-photo="nivel-intermedio" data-slot-mode="text" data-label="Nível intermédio" data-ratio="4:3">
               <span class="slot-tag" aria-hidden="true">Fotografia</span>
               <span class="slot-note">Pessoa a treinar, flexão inclinada na bancada</span>
             </div>
@@ -208,7 +208,7 @@
           </article>
 
           <article class="level-card">
-            <div class="photo-slot" data-photo="nivel-avancado" data-label="Nível avançado" data-ratio="4:3">
+            <div class="photo-slot slot-mode-text" data-photo="nivel-avancado" data-slot-mode="text" data-label="Nível avançado" data-ratio="4:3">
               <span class="slot-tag" aria-hidden="true">Fotografia</span>
               <span class="slot-note">Pessoa a treinar, prancha ou bird-dog no tapete</span>
             </div>
@@ -261,29 +261,32 @@
         </div>
 
         <ol class="week-track">
-          <li class="week-step">
+          <li class="week-step" data-week="1">
             <span class="week-num" aria-hidden="true">1</span>
             <h3>Semana 1</h3>
             <p class="week-title">Aprender os movimentos</p>
-            <p>As 5 sessões da semana, com voltas e repetições, e como ajustar ao teu nível.</p>
+            <p class="week-text">As 5 sessões da semana, com voltas e repetições, e como ajustar ao teu nível.</p>
             <span class="week-meta">Guião na página 8</span>
           </li>
-          <li class="week-step">
+          <li class="week-step" data-week="2">
             <span class="week-num" aria-hidden="true">2</span>
             <h3>Semana 2</h3>
-            <p>Continuação do plano de 4 semanas, com as sessões da semana e o ajuste de volume ao teu nível.</p>
+            <p class="week-title"></p>
+            <p class="week-text">Continuação do plano de 4 semanas, com as sessões da semana e o ajuste de volume ao teu nível.</p>
             <span class="week-meta">Plano de 4 semanas</span>
           </li>
-          <li class="week-step">
+          <li class="week-step" data-week="3">
             <span class="week-num" aria-hidden="true">3</span>
             <h3>Semana 3</h3>
-            <p>Continuação do plano de 4 semanas, com as sessões da semana e o ajuste de volume ao teu nível.</p>
+            <p class="week-title"></p>
+            <p class="week-text">Continuação do plano de 4 semanas, com as sessões da semana e o ajuste de volume ao teu nível.</p>
             <span class="week-meta">Plano de 4 semanas</span>
           </li>
-          <li class="week-step">
+          <li class="week-step" data-week="4">
             <span class="week-num" aria-hidden="true">4</span>
             <h3>Semana 4</h3>
-            <p>Última semana do plano, que termina com uma revisão das 4 semanas e o registo do teu percurso.</p>
+            <p class="week-title"></p>
+            <p class="week-text">Última semana do plano, que termina com uma revisão das 4 semanas e o registo do teu percurso.</p>
             <span class="week-meta">Revisão na página 15</span>
           </li>
         </ol>
@@ -397,7 +400,7 @@
                 <span class="bonus-cover-big">Receitas</span>
                 <span class="bonus-cover-sub">Saudáveis · PDF 15 páginas</span>
               </div>
-              <div class="photo-slot photo-slot-sm" data-photo="receitas" data-label="Refeição simples" data-ratio="1:1">
+              <div class="photo-slot photo-slot-sm slot-mode-text" data-photo="receitas" data-slot-mode="text" data-label="Refeição simples" data-ratio="1:1">
                 <span class="slot-tag" aria-hidden="true">Fotografia</span>
                 <span class="slot-note">Refeição caseira em prato</span>
               </div>
@@ -407,7 +410,7 @@
           <div class="bonus-body">
             <p class="kicker kicker-accent">Extra opcional no checkout</p>
             <h2>28 Dias de Receitas</h2>
-            <p>Um PDF de 15 páginas com 28 receitas simples: 7 pequenos-almoços, 7 almoços, 7 jantares e 7 lanches, com ingredientes comuns em Portugal. Estão organizadas numa semana-tipo que podes repetir ou trocar ao longo das 4 semanas, com uma lista de compras semanal de base para facilitar as idas ao supermercado.</p>
+            <p class="bonus-lead">Um PDF de 15 páginas com 28 receitas simples: 7 pequenos-almoços, 7 almoços, 7 jantares e 7 lanches, com ingredientes comuns em Portugal. Estão organizadas numa semana-tipo que podes repetir ou trocar ao longo das 4 semanas, com uma lista de compras semanal de base para facilitar as idas ao supermercado.</p>
             <ul class="mini-list">
               <li>7 pequenos-almoços, 7 almoços, 7 jantares e 7 lanches</li>
               <li>Semana-tipo que podes repetir ou trocar</li>
