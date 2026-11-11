@@ -65,3 +65,48 @@ function admin_paths(): array
         'imgCms' => dirname($root) . '/img/cms',
     ];
 }
+
+/**
+ * Substitui um ficheiro mesmo quando o destino existe e não é gravável
+ * (por exemplo, dono root e modo 644 depois de um deploy). A pasta tem de
+ * ser gravável pelo PHP. No Linux, rename() troca o nome mesmo sem permissão
+ * de escrita no ficheiro antigo.
+ */
+function admin_write_bytes(string $path, string $contents): bool
+{
+    $dir = dirname($path);
+    if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) {
+        return false;
+    }
+
+    $tmp = $dir . DIRECTORY_SEPARATOR . '.tmp-' . bin2hex(random_bytes(6)) . '-' . basename($path);
+    if (file_put_contents($tmp, $contents, LOCK_EX) === false) {
+        return false;
+    }
+    @chmod($tmp, 0644);
+
+    if (@rename($tmp, $path)) {
+        @chmod($path, 0644);
+        return true;
+    }
+
+    if (is_file($path)) {
+        @chmod($path, 0644);
+        if (!@unlink($path)) {
+            @unlink($tmp);
+            return file_put_contents($path, $contents, LOCK_EX) !== false;
+        }
+    }
+
+    if (@rename($tmp, $path)) {
+        @chmod($path, 0644);
+        return true;
+    }
+
+    $ok = file_put_contents($path, $contents, LOCK_EX) !== false;
+    @unlink($tmp);
+    if ($ok) {
+        @chmod($path, 0644);
+    }
+    return $ok;
+}

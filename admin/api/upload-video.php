@@ -35,14 +35,9 @@ if (strlen($raw) > $maxBytes) {
     admin_json(['ok' => false, 'error' => 'Vídeo maior que 12 MB. Usa embed (YouTube/Facebook/Vimeo).'], 400);
 }
 
-$videoDir = $paths['project'] . '/video/cms';
-if (!is_dir($videoDir)) {
-    mkdir($videoDir, 0755, true);
-}
-
 $filename = $fieldId . '.mp4';
-$full = $videoDir . '/' . $filename;
-if (file_put_contents($full, $raw) === false) {
+$full = $paths['project'] . '/video/cms/' . $filename;
+if (!admin_write_bytes($full, $raw)) {
     admin_json(['ok' => false, 'error' => 'Não foi possível gravar o vídeo.'], 500);
 }
 
