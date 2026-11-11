@@ -14,6 +14,7 @@ if (!is_file($configPath)) {
 $config = require $configPath;
 
 require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/admin-users.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -38,6 +39,12 @@ function admin_json(array $payload, int $code = 200): void
 
 function admin_require_auth(): void
 {
+    if (admin_accounts_enabled()) {
+        if (admin_session_user_id() === null) {
+            admin_json(['ok' => false, 'error' => 'Não autenticado.'], 401);
+        }
+        return;
+    }
     if (!admin_pin_required()) {
         return;
     }

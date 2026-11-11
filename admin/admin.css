@@ -59,6 +59,14 @@ a { color: var(--adm-accent); }
   cursor: pointer;
 }
 .login-err { color: #ff8f8f; font-size: .85rem; margin-top: .75rem; min-height: 1.2em; }
+.login-card input + label { margin-top: .75rem; }
+
+.profile-card hr.profile-sep {
+  border: 0;
+  border-top: 1px solid var(--adm-border);
+  margin: 1.5rem 0;
+}
+.profile-card h3 { margin: 0 0 .75rem; font-size: 1rem; }
 
 /* shell */
 .app { display: grid; grid-template-columns: 300px 1fr; min-height: 100vh; }

@@ -58,6 +58,18 @@ Criar contas (manualmente, no servidor):
 
 O painel **/admin** (CMS) não gere estes utilizadores — só o MySQL ou o script acima.
 
+### 4c. Administradores do painel `/admin`
+
+```bash
+mysql -u USUARIO -p NOME_BASE < scripts/vps/04-admin-users.sql
+# ou: php admin/tools/apply-admin-users-schema.php
+
+php admin/tools/create-admin-user.php \
+  --nome "Nome" --login marcos --email email@exemplo.pt --senha 'SenhaForte'
+```
+
+Com pelo menos um registo em `admin_users`, o **PIN deixa de ser usado** — entra com login e senha. Perfil e troca de senha ficam no separador **Perfil** do painel.
+
 ### 5. Nginx (exemplo)
 
 ```nginx

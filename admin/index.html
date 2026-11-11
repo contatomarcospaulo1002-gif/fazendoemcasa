@@ -11,10 +11,18 @@
   <div id="login-screen" class="login-wrap">
     <div class="login-card">
       <h1>Painel administrativo</h1>
-      <p>Configura textos e imagens da página inicial. No Laragon podes desligar o PIN em <code>admin/config.local.php</code> (<code>'require_pin' => false</code>).</p>
+      <p id="login-hint">Configura textos e imagens da página inicial.</p>
       <form id="login-form">
-        <label for="pin">PIN</label>
-        <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="current-password" required>
+        <div id="login-account-fields" class="hidden">
+          <label for="adm-login">Login</label>
+          <input id="adm-login" name="login" type="text" autocomplete="username">
+          <label for="adm-password">Senha</label>
+          <input id="adm-password" name="password" type="password" autocomplete="current-password">
+        </div>
+        <div id="login-pin-fields" class="hidden">
+          <label for="pin">PIN</label>
+          <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="current-password">
+        </div>
         <button type="submit">Entrar</button>
         <p id="login-err" class="login-err" aria-live="polite"></p>
       </form>
@@ -31,6 +39,7 @@
         <button type="button" class="active" data-tab="editar">Editar</button>
         <button type="button" data-tab="guia">Guia de configuração</button>
         <button type="button" data-tab="preview">Pré-visualizar</button>
+        <button type="button" class="hidden" data-tab="perfil" id="tab-perfil">Perfil</button>
       </div>
       <div class="menu-filters" role="toolbar" aria-label="Filtrar campos">
         <button type="button" class="active" data-menu-filter="all">Tudo</button>
@@ -48,8 +57,10 @@
           <span id="php-hint" class="status-pill warn hidden">Modo ficheiros: sem PHP, usa exportar/descarregar.</span>
         </div>
         <div class="actions">
+          <span id="admin-user-label" class="status-pill hidden"></span>
           <button type="button" class="btn ghost hidden" id="btn-open-laragon-admin">Abrir no Laragon</button>
           <button type="button" class="btn ghost" id="btn-open-site">Abrir site</button>
+          <button type="button" class="btn ghost hidden" id="btn-logout">Sair</button>
           <button type="button" class="btn" id="btn-save">Guardar JSON</button>
           <button type="button" class="btn primary" id="btn-apply">Aplicar ao index.html</button>
           <button type="button" class="btn primary" id="btn-publish">Guardar e aplicar</button>
@@ -62,6 +73,39 @@
         <div id="panel-preview" class="hidden">
           <p class="guide-intro">Pré-visualização com as alterações em memória (ainda não gravadas no disco até «Aplicar»).</p>
           <button type="button" class="btn" id="btn-preview-refresh">Atualizar pré-visualização</button>
+        </div>
+        <div id="panel-perfil" class="hidden">
+          <div class="editor-card profile-card">
+            <h2>Perfil do administrador</h2>
+            <p class="field-hint">Nome e e-mail usados só neste painel (não são os clientes em /user).</p>
+            <form id="profile-form">
+              <div class="field">
+                <label for="prof-nome">Nome</label>
+                <input id="prof-nome" type="text" required>
+              </div>
+              <div class="field">
+                <label for="prof-email">E-mail</label>
+                <input id="prof-email" type="email" required>
+              </div>
+              <p class="field-hint">Login: <strong id="prof-login">—</strong> (não alterável aqui)</p>
+              <button type="submit" class="btn primary">Guardar perfil</button>
+              <p id="prof-msg" class="field-hint" aria-live="polite"></p>
+            </form>
+            <hr class="profile-sep">
+            <h3>Alterar senha</h3>
+            <form id="password-form">
+              <div class="field">
+                <label for="pwd-current">Senha atual</label>
+                <input id="pwd-current" type="password" autocomplete="current-password" required>
+              </div>
+              <div class="field">
+                <label for="pwd-new">Nova senha (mín. 8 caracteres)</label>
+                <input id="pwd-new" type="password" autocomplete="new-password" required>
+              </div>
+              <button type="submit" class="btn">Atualizar senha</button>
+              <p id="pwd-msg" class="field-hint" aria-live="polite"></p>
+            </form>
+          </div>
         </div>
       </div>
     </div>

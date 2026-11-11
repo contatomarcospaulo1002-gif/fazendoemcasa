@@ -10,6 +10,10 @@
     php: false,
     database: false,
     authenticated: false,
+    accounts: false,
+    authMode: "none",
+    profile: null,
+    appBootstrapped: false,
     dirty: false,
     indexDoc: null,
     menuFilter: "all",
@@ -1554,9 +1558,128 @@
     $("panel-editor").classList.toggle("hidden", tab !== "editar");
     $("panel-guia").classList.toggle("hidden", tab !== "guia");
     $("panel-preview").classList.toggle("hidden", tab !== "preview");
+    var perfil = $("panel-perfil");
+    if (perfil) perfil.classList.toggle("hidden", tab !== "perfil");
+  var sidebar = document.querySelector(".menu-filters");
+    var menuHint = document.querySelector(".menu-upload-hint");
+    var menuGroups = $("menu-groups");
+    var hideMenu = tab === "perfil" || tab === "guia" || tab === "preview";
+    if (sidebar) sidebar.classList.toggle("hidden", hideMenu);
+    if (menuHint) menuHint.classList.toggle("hidden", hideMenu);
+    if (menuGroups) menuGroups.classList.toggle("hidden", hideMenu);
     if (tab === "guia") renderGuide();
     if (tab === "preview") renderPreview();
     if (tab === "editar") renderEditor();
+    if (tab === "perfil") renderProfilePanel();
+  }
+
+  function updateAdminChrome() {
+    var tabPerfil = $("tab-perfil");
+    var logout = $("btn-logout");
+    var label = $("admin-user-label");
+    if (tabPerfil) tabPerfil.classList.toggle("hidden", !state.accounts);
+    if (logout) logout.classList.toggle("hidden", !state.accounts);
+    if (label) {
+      if (state.accounts && state.profile && state.profile.nome) {
+        label.textContent = state.profile.nome;
+        label.classList.remove("hidden");
+      } else {
+        label.classList.add("hidden");
+      }
+    }
+  }
+
+  function renderProfilePanel() {
+    var p = state.profile;
+    if (!p) return;
+    var nome = $("prof-nome");
+    var email = $("prof-email");
+    var loginEl = $("prof-login");
+    if (nome) nome.value = p.nome || "";
+    if (email) email.value = p.email || "";
+    if (loginEl) loginEl.textContent = p.login || "—";
+  }
+
+  function bindProfileFormsOnce() {
+    if (state.profileFormsBound) return;
+    state.profileFormsBound = true;
+    var pf = $("profile-form");
+    if (pf) {
+      pf.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        var msg = $("prof-msg");
+        if (msg) msg.textContent = "";
+        api("profile.php", {
+          method: "POST",
+          body: {
+            nome: $("prof-nome").value.trim(),
+            email: $("prof-email").value.trim(),
+          },
+        })
+          .then(function (res) {
+            state.profile = res.profile;
+            updateAdminChrome();
+            if (msg) msg.textContent = "Perfil guardado.";
+          })
+          .catch(function (e) {
+            if (msg) msg.textContent = e.message || "Erro ao guardar.";
+          });
+      });
+    }
+    var pwf = $("password-form");
+    if (pwf) {
+      pwf.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        var msg = $("pwd-msg");
+        if (msg) msg.textContent = "";
+        api("change-password.php", {
+          method: "POST",
+          body: {
+            currentPassword: $("pwd-current").value,
+            newPassword: $("pwd-new").value,
+          },
+        })
+          .then(function () {
+            $("pwd-current").value = "";
+            $("pwd-new").value = "";
+            if (msg) msg.textContent = "Senha atualizada.";
+          })
+          .catch(function (e) {
+            if (msg) msg.textContent = e.message || "Erro.";
+          });
+      });
+    }
+  }
+
+  function configureLoginForm(res) {
+    var hint = $("login-hint");
+    var acc = $("login-account-fields");
+    var pin = $("login-pin-fields");
+    var useAccounts = !!(res && res.accounts);
+    var pinRequired = !!(res && res.pinRequired);
+    if (acc) acc.classList.toggle("hidden", !useAccounts);
+    if (pin) pin.classList.toggle("hidden", useAccounts || !pinRequired);
+    if (hint) {
+      if (useAccounts) {
+        hint.textContent = "Entra com o teu login e senha de administrador.";
+      } else if (pinRequired) {
+        hint.textContent =
+          "Configura textos e imagens. Usa o PIN do config.local.php (modo legado).";
+      } else {
+        hint.textContent = "Modo local sem autenticação.";
+      }
+    }
+    var admLogin = $("adm-login");
+    var admPass = $("adm-password");
+    var pinIn = $("pin");
+    if (admLogin) admLogin.required = useAccounts;
+    if (admPass) admPass.required = useAccounts;
+    if (pinIn) pinIn.required = !useAccounts && pinRequired;
+  }
+
+  function showLogin() {
+    $("login-screen").classList.remove("hidden");
+    $("app").classList.add("hidden");
   }
 
   function escapeHtml(s) {
@@ -1576,11 +1699,20 @@
     $("app").classList.remove("hidden");
   }
 
-  function tryLogin(pin) {
-    return api("login.php", { method: "POST", body: { pin: pin } })
-      .then(function () {
+  function tryLogin() {
+    var body = {};
+    if (state.accounts) {
+      body.login = ($("adm-login") && $("adm-login").value.trim()) || "";
+      body.password = ($("adm-password") && $("adm-password").value) || "";
+    } else {
+      body.pin = ($("pin") && $("pin").value) || "";
+    }
+    return api("login.php", { method: "POST", body: body })
+      .then(function (res) {
         state.authenticated = true;
+        if (res.profile) state.profile = res.profile;
         showApp();
+        updateAdminChrome();
         bootstrapApp();
       })
       .catch(function (e) {
@@ -1600,6 +1732,9 @@
   }
 
   function bootstrapApp() {
+    bindProfileFormsOnce();
+    if (state.appBootstrapped) return;
+    state.appBootstrapped = true;
     Promise.all([
       fetch("site-map.json").then(function (r) {
         return r.json();
@@ -1664,6 +1799,21 @@
         renderMenu();
       });
     });
+
+    var btnLogout = $("btn-logout");
+    if (btnLogout) {
+      btnLogout.addEventListener("click", function () {
+        api("logout.php", { method: "POST", body: {} })
+          .then(function () {
+            state.authenticated = false;
+            state.profile = null;
+            showLogin();
+          })
+          .catch(function () {
+            showLogin();
+          });
+      });
+    }
   }
 
   function init() {
@@ -1671,7 +1821,7 @@
     if (els.login) {
       els.login.addEventListener("submit", function (ev) {
         ev.preventDefault();
-        tryLogin($("pin").value);
+        tryLogin();
       });
     }
 
@@ -1679,14 +1829,27 @@
       .then(function (res) {
         state.php = !!res.php;
         state.database = !!res.database;
-        var pinRequired = res.pinRequired !== false;
-        if (res.authenticated || !pinRequired) {
+        state.accounts = !!res.accounts;
+        state.authMode = res.authMode || "none";
+        if (res.profile) state.profile = res.profile;
+        configureLoginForm(res);
+        updateAdminChrome();
+        var needAuth = state.accounts || res.pinRequired === true;
+        if (res.authenticated) {
           state.authenticated = true;
           showApp();
           updatePhpUi();
           bootstrapApp();
           return;
         }
+        if (!needAuth) {
+          state.authenticated = true;
+          showApp();
+          updatePhpUi();
+          bootstrapApp();
+          return;
+        }
+        showLogin();
       })
       .catch(function () {
         state.php = false;
