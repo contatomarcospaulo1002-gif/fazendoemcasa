@@ -31,6 +31,51 @@
     return document.getElementById(id);
   }
 
+  function confirmDialog(options) {
+    options = options || {};
+    return new Promise(function (resolve) {
+      var root = $("adm-modal");
+      var titleEl = $("adm-modal-title");
+      var msgEl = $("adm-modal-msg");
+      var btnOk = $("adm-modal-ok");
+      var btnCancel = $("adm-modal-cancel");
+      var backdrop = root && root.querySelector(".adm-modal-backdrop");
+      if (!root || !btnOk || !btnCancel) {
+        resolve(false);
+        return;
+      }
+      if (titleEl) titleEl.textContent = options.title || "Confirmar";
+      if (msgEl) msgEl.textContent = options.message || "";
+      btnOk.textContent = options.confirmLabel || "Confirmar";
+      btnCancel.textContent = options.cancelLabel || "Cancelar";
+      btnOk.className = "btn " + (options.danger ? "danger" : "primary");
+
+      function close(result) {
+        root.classList.add("hidden");
+        btnOk.onclick = null;
+        btnCancel.onclick = null;
+        if (backdrop) backdrop.onclick = null;
+        document.removeEventListener("keydown", onKey);
+        resolve(result);
+      }
+      function onKey(ev) {
+        if (ev.key === "Escape") close(false);
+      }
+      btnOk.onclick = function () {
+        close(true);
+      };
+      btnCancel.onclick = function () {
+        close(false);
+      };
+      if (backdrop) backdrop.onclick = function () {
+        close(false);
+      };
+      document.addEventListener("keydown", onKey);
+      root.classList.remove("hidden");
+      btnCancel.focus();
+    });
+  }
+
   function imageSrcFromValue(val) {
     if (!val) return "";
     if (typeof val === "object") return (val.src || "").trim();
@@ -205,8 +250,23 @@
       if (/captura|screenshot|print|ecr[aã]|tela|mockup|canva|post/i.test(file.name)) {
         cap.textContent +=
           " Parece arte/captura: no site ficará igual; para o hero, usa só a fotografia da pessoa.";
+        cap.classList.add("preview-warn-shot");
       }
     }
+    var probe = new Image();
+    probe.onload = function () {
+      if (!cap) return;
+      if (probe.width >= 1600 && probe.height >= 900 && file.size > 350000) {
+        cap.textContent =
+          "⚠️ Este ficheiro parece captura de ecrã ou arte com texto (" +
+          probe.width +
+          "×" +
+          probe.height +
+          " px). Para o hero, escolhe só a fotografia da pessoa (JPG da câmara ou telemóvel).";
+        cap.classList.add("preview-warn-shot");
+      }
+    };
+    probe.src = previewObjectUrl;
     var fld = state.activeFieldId ? fieldById(state.activeFieldId) : null;
     if (fld) refreshImageLiveStatus(fld);
   }
@@ -258,7 +318,7 @@
     html += "</div>";
     var hint =
       state.php && state.authenticated
-        ? "Escolhe o ficheiro, clica <strong>Salvar foto</strong>, depois <strong>Guardar e aplicar</strong> no topo."
+        ? "Escolhe a <strong>foto</strong> (não print do painel) → <strong>Salvar foto</strong> → <strong>Publicar no site</strong>."
         : "No site hospedado: <strong>Salvar foto</strong> guarda no navegador (sem descarga). Quando quiseres publicar, usa <strong>Descarregar para Git</strong> no topo.";
     html += '<p class="field-hint editor-field-actions-hint">' + hint + "</p>";
     return html;
@@ -397,24 +457,41 @@
   function removeImageField(field) {
     var hadSrc = !!imageSrcFromValue(state.content[field.id]);
     if (!hadSrc && !hasBlobPreview()) return;
-    if (!window.confirm("Remover a fotografia deste campo?")) return;
-    syncImageMetaFromForm(field);
-    if (field.type === "image") {
-      var cur = state.content[field.id] || { src: "", alt: "", lightbox: "" };
-      cur.src = "";
-      cur.lightbox = "";
-      state.content[field.id] = cur;
-    } else {
-      var slot = state.content[field.id] || { src: "", label: "", note: "" };
-      slot.src = "";
-      state.content[field.id] = slot;
-    }
-    var imgFile = $("img-file");
-    if (imgFile) imgFile.value = "";
-    revokePreviewObjectUrl();
-    markDirty();
-    saveContent().then(function () {
-      setStatus("Foto removida. Aplica ao site (topo) para atualizar o index.html.", "ok");
+    confirmDialog({
+      title: "Remover fotografia?",
+      message:
+        "A imagem deixa de aparecer na pré-visualização e no conteúdo guardado (MySQL). " +
+        "Para o site público ficar sem foto, clica depois «Publicar no site» no topo. " +
+        "O ficheiro antigo em img/cms/ pode ficar no servidor — podes apagar manualmente se quiseres.",
+      confirmLabel: "Sim, remover",
+      cancelLabel: "Manter foto",
+      danger: true,
+    }).then(function (ok) {
+      if (!ok) return;
+      syncImageMetaFromForm(field);
+      if (field.type === "image") {
+        var cur = state.content[field.id] || { src: "", alt: "", lightbox: "" };
+        cur.src = "";
+        cur.lightbox = "";
+        state.content[field.id] = cur;
+      } else {
+        var slot = state.content[field.id] || { src: "", label: "", note: "" };
+        slot.src = "";
+        state.content[field.id] = slot;
+      }
+      if (state.content._pendingImages && state.content._pendingImages[field.id]) {
+        delete state.content._pendingImages[field.id];
+      }
+      var imgFile = $("img-file");
+      if (imgFile) imgFile.value = "";
+      revokePreviewObjectUrl();
+      markDirty();
+      return saveContent();
+    }).then(function (saved) {
+      if (saved === undefined) return;
+      patchLivePreview(field);
+      refreshLiveSiteFrame();
+      setStatus("Foto removida na pré-visualização. Clica «Publicar no site» para o index.html.", "ok");
       renderEditor();
     });
   }

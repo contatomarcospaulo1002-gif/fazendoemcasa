@@ -618,3 +618,39 @@ table.guide th, table.guide td {
 
 /* Legado tabs-main (classe partilhada com app-nav) */
 .tabs-main { border: 0; }
+
+/* Modal de confirmação */
+.adm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+.adm-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 32, 27, .45);
+  animation: adm-fade-in 0.22s ease;
+}
+.adm-modal-card {
+  position: relative;
+  width: min(100%, 420px);
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius);
+  padding: 1.35rem 1.4rem;
+  box-shadow: var(--adm-shadow);
+  animation: adm-modal-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.adm-modal-title { margin: 0 0 0.5rem; font-size: 1.1rem; }
+.adm-modal-msg { margin: 0 0 1.15rem; color: var(--adm-muted); font-size: 0.92rem; line-height: 1.5; }
+.adm-modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; flex-wrap: wrap; }
+.adm-modal .btn.danger { background: #fff5f5; border-color: rgba(163, 60, 60, .4); color: var(--adm-danger); }
+@keyframes adm-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes adm-modal-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.preview-warn-shot { color: var(--adm-warn) !important; font-weight: 600; }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Painel — 28 dias em casa</title>
-  <link rel="stylesheet" href="admin.css?v=20260327">
+  <link rel="stylesheet" href="admin.css?v=20260328">
 </head>
 <body>
   <div id="login-screen" class="login-wrap">
@@ -124,6 +124,18 @@
     </div>
   </div>
 
-  <script src="admin.js?v=20260327" defer></script>
+  <div id="adm-modal" class="adm-modal hidden" role="dialog" aria-modal="true" aria-labelledby="adm-modal-title" aria-describedby="adm-modal-msg">
+    <div class="adm-modal-backdrop" aria-hidden="true"></div>
+    <div class="adm-modal-card">
+      <h2 id="adm-modal-title" class="adm-modal-title">Confirmar</h2>
+      <p id="adm-modal-msg" class="adm-modal-msg"></p>
+      <div class="adm-modal-actions">
+        <button type="button" class="btn ghost" id="adm-modal-cancel">Cancelar</button>
+        <button type="button" class="btn primary" id="adm-modal-ok">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js?v=20260328" defer></script>
 </body>
 </html>
