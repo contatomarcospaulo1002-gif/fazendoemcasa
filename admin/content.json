@@ -42,10 +42,19 @@
     "programa.h2": "O que é o 28 dias em casa",
     "programa.lead": "Há exercícios publicados por todo o lado. O que costuma faltar é uma ordem. O 28 dias em casa tira a escolha do caminho: abres o PDF na semana em que estás e a sessão do dia está lá, com exercícios, voltas, repetições ou tempos.",
     "programa.photo": {
-        "src": "",
+        "src": "img/cms/programa.photo.webp",
         "label": "Sala de casa, tapete e cadeira",
-        "note": "Espaço de treino doméstico: tapete, cadeira firme encostada à parede"
+        "note": "Espaço de treino doméstico: tapete, cadeira firme encostada à parede",
+        "mode": "both"
     },
+    "programa.media.mode": "off",
+    "programa.media.single": { "src": "", "alt": "" },
+    "programa.media.s1": { "src": "", "alt": "" },
+    "programa.media.s2": { "src": "", "alt": "" },
+    "programa.media.s3": { "src": "", "alt": "" },
+    "programa.media.s4": { "src": "", "alt": "" },
+    "programa.media.s5": { "src": "", "alt": "" },
+    "programa.media.s6": { "src": "", "alt": "" },
     "programa.split.h3": "Não precisas de ginásio, de pesos nem de horário marcado",
     "como.kicker": "4 semanas",
     "como.h2": "Como funcionam as quatro semanas",

@@ -60,7 +60,6 @@
     if (!viewport || !track) return;
 
     var slides = visibleSlides(track);
-    if (!slides.length) return;
 
     var autoplayMs = parseInt(root.getAttribute("data-carousel-autoplay") || "5500", 10);
     var timer = null;
@@ -70,6 +69,10 @@
       slides = visibleSlides(track);
       buildDots();
       updateActive(root, viewport, slides);
+      if (slides.length) {
+        scrollSlideIntoView(viewport, slides[root._carouselIndex || 0] || slides[0], "auto");
+      }
+      startAutoplay();
     }
 
     function buildDots() {

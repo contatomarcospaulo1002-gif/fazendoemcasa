@@ -334,6 +334,69 @@
                     "type": "image-slot"
                 },
                 {
+                    "id": "programa.media.mode",
+                    "label": "Abaixo: uma imagem ou carrossel",
+                    "where": "Logo abaixo do bloco «Não precisas de ginásio»",
+                    "selector": "#programa-media",
+                    "attribute": "data-view",
+                    "type": "choice",
+                    "hint": "Não mostrar esconde a zona. Uma imagem usa só a fotografia única. Carrossel passa as fotos 1 a 6 que tiverem ficheiro.",
+                    "options": [
+                        { "value": "off", "label": "Não mostrar" },
+                        { "value": "single", "label": "Uma imagem" },
+                        { "value": "carousel", "label": "Carrossel" }
+                    ]
+                },
+                {
+                    "id": "programa.media.single",
+                    "label": "Imagem única",
+                    "where": "Quando a opção acima é «Uma imagem»",
+                    "selector": "#programa-media .programa-single-img",
+                    "type": "image"
+                },
+                {
+                    "id": "programa.media.s1",
+                    "label": "Carrossel — foto 1",
+                    "where": "Primeira imagem do carrossel",
+                    "selector": "#programa-media .programa-slide[data-index=\"1\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "programa.media.s2",
+                    "label": "Carrossel — foto 2",
+                    "where": "Segunda imagem do carrossel",
+                    "selector": "#programa-media .programa-slide[data-index=\"2\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "programa.media.s3",
+                    "label": "Carrossel — foto 3",
+                    "where": "Terceira imagem do carrossel",
+                    "selector": "#programa-media .programa-slide[data-index=\"3\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "programa.media.s4",
+                    "label": "Carrossel — foto 4",
+                    "where": "Quarta imagem do carrossel",
+                    "selector": "#programa-media .programa-slide[data-index=\"4\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "programa.media.s5",
+                    "label": "Carrossel — foto 5",
+                    "where": "Quinta imagem do carrossel",
+                    "selector": "#programa-media .programa-slide[data-index=\"5\"] img",
+                    "type": "image"
+                },
+                {
+                    "id": "programa.media.s6",
+                    "label": "Carrossel — foto 6",
+                    "where": "Sexta imagem do carrossel",
+                    "selector": "#programa-media .programa-slide[data-index=\"6\"] img",
+                    "type": "image"
+                },
+                {
                     "id": "programa.split.h3",
                     "label": "Título do bloco lateral",
                     "where": "H3 ao lado da foto",
