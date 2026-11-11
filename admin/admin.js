@@ -390,7 +390,10 @@
       if (sl) slot.label = sl.value;
       if (sn) slot.note = sn.value;
       if (sm) slot.mode = sm.value;
-      if (!slot.mode) slot.mode = "both";
+      if (slot.mode !== "image" && slot.mode !== "both") {
+        slot.mode = "both";
+        if (sm) sm.value = "both";
+      }
       state.content[field.id] = slot;
     }
     markDirty();
@@ -1464,7 +1467,7 @@
     html += "<option value=\"image\"" + (val.mode === "image" ? " selected" : "") + ">Só imagem</option>";
     html += "<option value=\"text\"" + (val.mode !== "both" && val.mode !== "image" ? " selected" : "") + ">Só texto</option>";
     html += "</select>";
-    html += "<p class=\"field-hint\">O cartão mantém o mesmo tamanho. Muda só o que aparece dentro da área da fotografia.</p></div>";
+    html += "<p class=\"field-hint\">Imagem e texto: a foto fica em cima, limpa, e o texto do cartão continua por baixo. Só imagem: a foto ocupa o cartão. Só texto: o espaço riscado, sem foto. A nota só aparece quando não há fotografia.</p></div>";
     html += "<div class=\"slot-extra\">";
     html += "<div class=\"field\"><label for=\"slot-label\">Rótulo (data-label)</label>";
     html += "<input id=\"slot-label\" type=\"text\" value=\"" + escapeAttr(val.label || "") + "\"></div>";
