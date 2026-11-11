@@ -936,20 +936,25 @@
     liveFrameWired = true;
   }
 
+  function applyContentToFrameDocument(frame) {
+    if (!frame || !frame.contentDocument) return;
+    var doc = frame.contentDocument;
+    applyAllToDoc(doc);
+    pendingImagesToDoc(doc);
+    wireVisualEditor(frame);
+    if (state.activeFieldId) highlightVisualTarget(state.activeFieldId);
+  }
+
   function refreshLiveSiteFrame() {
     ensureVisualEditorShell();
-    loadIndexDoc().then(function (doc) {
-      applyAllToDoc(doc);
-      pendingImagesToDoc(doc);
-      var html = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
-      var frame = $("live-site-frame");
-      if (!frame) return;
-      frame.onload = function () {
-        wireVisualEditor(frame);
-        if (state.activeFieldId) highlightVisualTarget(state.activeFieldId);
-      };
-      frame.srcdoc = html;
-    });
+    var frame = $("live-site-frame");
+    if (!frame) return;
+    liveFrameWired = false;
+    frame.onload = function () {
+      applyContentToFrameDocument(frame);
+    };
+    frame.removeAttribute("srcdoc");
+    frame.src = "../index.html?cms_preview=1&t=" + Date.now();
   }
 
   function patchLivePreview(field) {
@@ -1477,17 +1482,20 @@
   function renderPreview() {
     var mount = $("panel-preview");
     if (!mount) return;
-    loadIndexDoc().then(function (doc) {
+    var frame = $("preview-frame");
+    if (!frame) {
+      mount.innerHTML =
+        '<iframe id="preview-frame" class="preview-frame" title="Pré-visualização"></iframe>';
+      frame = $("preview-frame");
+    }
+    frame.onload = function () {
+      var doc = frame.contentDocument;
+      if (!doc) return;
       applyAllToDoc(doc);
       pendingImagesToDoc(doc);
-      var html = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
-      var frame = $("preview-frame");
-      if (!frame) {
-        mount.innerHTML = "<iframe id=\"preview-frame\" class=\"preview-frame\" title=\"Pré-visualização\"></iframe>";
-        frame = $("preview-frame");
-      }
-      frame.srcdoc = html;
-    });
+    };
+    frame.removeAttribute("srcdoc");
+    frame.src = "../index.html?cms_preview=1&t=" + Date.now();
   }
 
   function pendingImagesToDoc(doc) {
