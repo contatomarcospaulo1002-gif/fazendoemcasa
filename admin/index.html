@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Painel — 28 dias em casa</title>
-  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="admin.css?v=20260325">
 </head>
 <body>
   <div id="login-screen" class="login-wrap">
     <div class="login-card">
-      <h1>Painel administrativo</h1>
-      <p id="login-hint">Configura textos e imagens da página inicial.</p>
+      <p class="login-brand">28 dias em casa</p>
+      <h1>Painel CMS</h1>
+      <p id="login-hint">Entra para editar a página inicial.</p>
       <form id="login-form">
         <div id="login-account-fields" class="hidden">
           <label for="adm-login">Login</label>
@@ -23,94 +24,106 @@
           <label for="pin">PIN</label>
           <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="current-password">
         </div>
-        <button type="submit">Entrar</button>
+        <button type="submit" class="btn-login">Entrar</button>
         <p id="login-err" class="login-err" aria-live="polite"></p>
       </form>
+      <p class="login-foot"><a href="../index.html">← Voltar ao site</a></p>
     </div>
   </div>
 
   <div id="app" class="app hidden">
-    <aside class="sidebar">
-      <div class="side-head">
-        <h1>Página inicial</h1>
-        <p>Menu: o quê muda e onde aparece</p>
+    <header class="app-header">
+      <div class="app-header-start">
+        <p class="app-brand">28 dias em casa <span class="app-brand-tag">CMS</span></p>
+        <span id="env-badge" class="env-badge hidden"></span>
       </div>
-      <div class="tabs-main" role="tablist">
-        <button type="button" class="active" data-tab="editar">Editar</button>
-        <button type="button" data-tab="guia">Guia de configuração</button>
+      <nav class="app-nav tabs-main" role="tablist" aria-label="Áreas do painel">
+        <button type="button" class="active" data-tab="editar">Conteúdo</button>
+        <button type="button" data-tab="guia">Ajuda</button>
         <button type="button" data-tab="preview">Pré-visualizar</button>
-        <button type="button" class="hidden" data-tab="perfil" id="tab-perfil">Perfil</button>
+        <button type="button" class="nav-perfil hidden" data-tab="perfil" id="tab-perfil">Perfil</button>
+      </nav>
+      <div class="app-header-end">
+        <span id="admin-user-label" class="user-chip hidden" title="Conta administrador"></span>
+        <button type="button" class="btn ghost sm hidden" id="btn-logout">Sair</button>
       </div>
-      <div class="menu-filters" role="toolbar" aria-label="Filtrar campos">
-        <button type="button" class="active" data-menu-filter="all">Tudo</button>
-        <button type="button" data-menu-filter="images">Imagens</button>
-        <button type="button" data-menu-filter="videos">Vídeos</button>
-      </div>
-      <p class="menu-upload-hint"><strong>Imagens:</strong> filtro Imagens → Galeria ou Hero. <strong>Vídeos:</strong> filtro Vídeos → cola embed Facebook/YouTube (recomendado) ou MP4 curto.</p>
-      <div id="menu-groups" class="menu-groups"></div>
-    </aside>
+    </header>
 
-    <div class="main">
-      <header class="topbar">
-        <div>
-          <span id="save-status" class="status-pill">Pronto</span>
-          <span id="php-hint" class="status-pill warn hidden">Modo ficheiros: sem PHP, usa exportar/descarregar.</span>
+    <div class="app-workspace">
+      <aside class="sidebar" id="sidebar-editor">
+        <div class="side-head">
+          <h2>Secções da página</h2>
+          <p>O quê mudas e onde aparece no site.</p>
         </div>
-        <div class="actions">
-          <span id="admin-user-label" class="status-pill hidden"></span>
-          <button type="button" class="btn ghost hidden" id="btn-open-laragon-admin">Abrir no Laragon</button>
-          <button type="button" class="btn ghost" id="btn-open-site">Abrir site</button>
-          <button type="button" class="btn ghost hidden" id="btn-logout">Sair</button>
-          <button type="button" class="btn" id="btn-save">Guardar JSON</button>
-          <button type="button" class="btn primary" id="btn-apply">Aplicar ao index.html</button>
-          <button type="button" class="btn primary" id="btn-publish">Guardar e aplicar</button>
+        <div class="menu-filters" role="toolbar" aria-label="Filtrar campos">
+          <button type="button" class="active" data-menu-filter="all">Tudo</button>
+          <button type="button" data-menu-filter="images">Imagens</button>
+          <button type="button" data-menu-filter="videos">Vídeos</button>
         </div>
-      </header>
+        <p class="menu-upload-hint"><strong>Imagens:</strong> filtro Imagens → Galeria ou Hero. <strong>Vídeos:</strong> embed ou MP4 curto.</p>
+        <div id="menu-groups" class="menu-groups"></div>
+      </aside>
 
-      <div class="panel-body">
-        <div id="panel-editor"></div>
-        <div id="panel-guia" class="hidden"></div>
-        <div id="panel-preview" class="hidden">
-          <p class="guide-intro">Pré-visualização com as alterações em memória (ainda não gravadas no disco até «Aplicar»).</p>
-          <button type="button" class="btn" id="btn-preview-refresh">Atualizar pré-visualização</button>
-        </div>
-        <div id="panel-perfil" class="hidden">
-          <div class="editor-card profile-card">
-            <h2>Perfil do administrador</h2>
-            <p class="field-hint">Nome e e-mail usados só neste painel (não são os clientes em /user).</p>
-            <form id="profile-form">
-              <div class="field">
-                <label for="prof-nome">Nome</label>
-                <input id="prof-nome" type="text" required>
-              </div>
-              <div class="field">
-                <label for="prof-email">E-mail</label>
-                <input id="prof-email" type="email" required>
-              </div>
-              <p class="field-hint">Login: <strong id="prof-login">—</strong> (não alterável aqui)</p>
-              <button type="submit" class="btn primary">Guardar perfil</button>
-              <p id="prof-msg" class="field-hint" aria-live="polite"></p>
-            </form>
-            <hr class="profile-sep">
-            <h3>Alterar senha</h3>
-            <form id="password-form">
-              <div class="field">
-                <label for="pwd-current">Senha atual</label>
-                <input id="pwd-current" type="password" autocomplete="current-password" required>
-              </div>
-              <div class="field">
-                <label for="pwd-new">Nova senha (mín. 8 caracteres)</label>
-                <input id="pwd-new" type="password" autocomplete="new-password" required>
-              </div>
-              <button type="submit" class="btn">Atualizar senha</button>
-              <p id="pwd-msg" class="field-hint" aria-live="polite"></p>
-            </form>
+      <main class="main">
+        <header class="topbar">
+          <div id="save-status-wrap">
+            <span id="save-status" class="status-pill">Pronto</span>
+          </div>
+          <span id="php-hint" class="status-pill warn hidden"></span>
+          <div class="actions">
+            <button type="button" class="btn ghost hidden" id="btn-open-laragon-admin">Abrir no Laragon</button>
+            <button type="button" class="btn ghost" id="btn-open-site">Ver site</button>
+            <button type="button" class="btn" id="btn-save">Guardar conteúdo</button>
+            <button type="button" class="btn" id="btn-apply">Atualizar index.html</button>
+            <button type="button" class="btn primary" id="btn-publish">Publicar no site</button>
+          </div>
+        </header>
+
+        <div class="panel-body">
+          <div id="panel-editor"></div>
+          <div id="panel-guia" class="hidden"></div>
+          <div id="panel-preview" class="hidden">
+            <p class="guide-intro">Pré-visualização em memória — usa «Publicar no site» para gravar no servidor.</p>
+            <button type="button" class="btn" id="btn-preview-refresh">Atualizar pré-visualização</button>
+          </div>
+          <div id="panel-perfil" class="hidden">
+            <div class="editor-card profile-card">
+              <h2>O teu perfil</h2>
+              <p class="field-hint">Dados da conta de administrador (separado dos clientes em /user).</p>
+              <form id="profile-form">
+                <div class="field">
+                  <label for="prof-nome">Nome</label>
+                  <input id="prof-nome" type="text" required>
+                </div>
+                <div class="field">
+                  <label for="prof-email">E-mail</label>
+                  <input id="prof-email" type="email" required>
+                </div>
+                <p class="field-hint">Login: <strong id="prof-login">—</strong></p>
+                <button type="submit" class="btn primary">Guardar perfil</button>
+                <p id="prof-msg" class="field-hint" aria-live="polite"></p>
+              </form>
+              <hr class="profile-sep">
+              <h3>Alterar senha</h3>
+              <form id="password-form">
+                <div class="field">
+                  <label for="pwd-current">Senha atual</label>
+                  <input id="pwd-current" type="password" autocomplete="current-password" required>
+                </div>
+                <div class="field">
+                  <label for="pwd-new">Nova senha (mín. 8 caracteres)</label>
+                  <input id="pwd-new" type="password" autocomplete="new-password" required>
+                </div>
+                <button type="submit" class="btn">Atualizar senha</button>
+                <p id="pwd-msg" class="field-hint" aria-live="polite"></p>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   </div>
 
-  <script src="admin.js" defer></script>
+  <script src="admin.js?v=20260325" defer></script>
 </body>
 </html>

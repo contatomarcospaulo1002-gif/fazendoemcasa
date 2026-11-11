@@ -867,6 +867,9 @@
   function updatePhpUi() {
     var hint = $("php-hint");
     var btnLar = $("btn-open-laragon-admin");
+    var bs = $("btn-save");
+    var ba = $("btn-apply");
+    var bp = $("btn-publish");
     if (state.php) {
       if (hint) {
         hint.classList.add("hidden");
@@ -874,10 +877,17 @@
       }
       if (btnLar) btnLar.classList.add("hidden");
       if (state.database) {
-        setStatus("PHP + MySQL — gravação no servidor", "ok");
+        setStatus("Ligado ao servidor · alterações gravam na base e em ficheiros", "ok");
+        if (bs) bs.textContent = "Guardar conteúdo";
+        if (ba) ba.textContent = "Atualizar index.html";
+        if (bp) bp.textContent = "Publicar no site";
       } else {
-        setStatus("Laragon (PHP) — podes gravar fotos", "ok");
+        setStatus("PHP local — podes gravar fotos e JSON", "ok");
+        if (bs) bs.textContent = "Guardar conteúdo";
+        if (ba) ba.textContent = "Atualizar index.html";
+        if (bp) bp.textContent = "Guardar e aplicar";
       }
+      updateAdminChrome();
       return;
     }
     if (hint) {
@@ -1560,13 +1570,11 @@
     $("panel-preview").classList.toggle("hidden", tab !== "preview");
     var perfil = $("panel-perfil");
     if (perfil) perfil.classList.toggle("hidden", tab !== "perfil");
-  var sidebar = document.querySelector(".menu-filters");
-    var menuHint = document.querySelector(".menu-upload-hint");
-    var menuGroups = $("menu-groups");
-    var hideMenu = tab === "perfil" || tab === "guia" || tab === "preview";
-    if (sidebar) sidebar.classList.toggle("hidden", hideMenu);
-    if (menuHint) menuHint.classList.toggle("hidden", hideMenu);
-    if (menuGroups) menuGroups.classList.toggle("hidden", hideMenu);
+    var side = $("sidebar-editor");
+    var topbar = document.querySelector(".topbar");
+    var hideEditorChrome = tab === "perfil" || tab === "guia" || tab === "preview";
+    if (side) side.classList.toggle("hidden", hideEditorChrome);
+    if (topbar) topbar.classList.toggle("hidden", tab === "perfil");
     if (tab === "guia") renderGuide();
     if (tab === "preview") renderPreview();
     if (tab === "editar") renderEditor();
@@ -1577,14 +1585,29 @@
     var tabPerfil = $("tab-perfil");
     var logout = $("btn-logout");
     var label = $("admin-user-label");
+    var env = $("env-badge");
     if (tabPerfil) tabPerfil.classList.toggle("hidden", !state.accounts);
     if (logout) logout.classList.toggle("hidden", !state.accounts);
     if (label) {
       if (state.accounts && state.profile && state.profile.nome) {
         label.textContent = state.profile.nome;
         label.classList.remove("hidden");
+      } else if (state.accounts && state.profile && state.profile.login) {
+        label.textContent = state.profile.login;
+        label.classList.remove("hidden");
       } else {
         label.classList.add("hidden");
+      }
+    }
+    if (env) {
+      if (state.php && state.database) {
+        env.textContent = "Produção · MySQL";
+        env.classList.remove("hidden");
+      } else if (state.php) {
+        env.textContent = "PHP local";
+        env.classList.remove("hidden");
+      } else {
+        env.classList.add("hidden");
       }
     }
   }
@@ -1838,6 +1861,7 @@
         if (res.authenticated) {
           state.authenticated = true;
           showApp();
+          updateAdminChrome();
           updatePhpUi();
           bootstrapApp();
           return;
