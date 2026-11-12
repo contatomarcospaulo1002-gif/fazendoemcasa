@@ -12,6 +12,7 @@
   }
 
   function scrollSlideIntoView(viewport, slide, behavior) {
+    if (!viewport || !slide) return;
     var vpRect = viewport.getBoundingClientRect();
     var slRect = slide.getBoundingClientRect();
     var delta = slRect.left - vpRect.left - (vpRect.width - slRect.width) / 2;
@@ -145,6 +146,10 @@
 
     refreshSlides();
     root._carouselIndex = 0;
+    if (!slides.length) {
+      root._carouselRefresh = refreshSlides;
+      return;
+    }
     window.requestAnimationFrame(function () {
       scrollSlideIntoView(viewport, slides[0], "auto");
       updateActive(root, viewport, slides);

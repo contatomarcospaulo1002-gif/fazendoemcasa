@@ -1,0 +1,30 @@
+# Segurança e publicação — fazendoemcasa.com (Apache/cPanel)
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Bloquear repositório Git e ferramentas internas na web
+  RewriteRule ^\.git - [F,L]
+  RewriteRule ^\.github - [F,L]
+  RewriteRule ^\.vscode - [F,L]
+  RewriteRule ^docs/ - [F,L]
+  RewriteRule ^scripts/ - [F,L]
+  RewriteRule ^docker/ - [F,L]
+  RewriteRule ^admin/var/ - [F,L]
+
+  # Ficheiros de configuração e ambiente
+  RewriteRule (^|/)\.env$ - [F,L]
+  RewriteRule (^|/)docker\.env$ - [F,L]
+  RewriteRule (^|/)admin/config\.local\.php$ - [F,L]
+
+  # Backups gerados pelo CMS
+  RewriteRule ^index\.html\.bak\. - [F,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>

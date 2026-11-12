@@ -30,6 +30,12 @@ if ($raw === false) {
     admin_json(['ok' => false, 'error' => 'Base64 inválido.'], 400);
 }
 
+$finfo = new finfo(FILEINFO_MIME_TYPE);
+$detected = $finfo->buffer($raw);
+if ($detected !== 'video/mp4') {
+    admin_json(['ok' => false, 'error' => 'O ficheiro não é um vídeo MP4 válido.'], 400);
+}
+
 $maxBytes = 12 * 1024 * 1024;
 if (strlen($raw) > $maxBytes) {
     admin_json(['ok' => false, 'error' => 'Vídeo maior que 12 MB. Usa embed (YouTube/Facebook/Vimeo).'], 400);

@@ -35,6 +35,19 @@ if ($raw === false) {
     admin_json(['ok' => false, 'error' => 'Base64 inválido.'], 400);
 }
 
+$finfo = new finfo(FILEINFO_MIME_TYPE);
+$detected = $finfo->buffer($raw);
+$allowedMimes = [
+    'webp' => ['image/webp'],
+    'jpg' => ['image/jpeg'],
+    'jpeg' => ['image/jpeg'],
+    'png' => ['image/png'],
+];
+$normExt = $ext === 'jpeg' ? 'jpg' : $ext;
+if (!isset($allowedMimes[$normExt]) || !in_array($detected, $allowedMimes[$normExt], true)) {
+    admin_json(['ok' => false, 'error' => 'O conteúdo não corresponde a uma imagem válida.'], 400);
+}
+
 $maxBytes = 8 * 1024 * 1024;
 if (strlen($raw) > $maxBytes) {
     admin_json([

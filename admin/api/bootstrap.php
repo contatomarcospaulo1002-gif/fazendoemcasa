@@ -17,6 +17,15 @@ require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/admin-users.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
+    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https');
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'secure' => $https,
+        'httponly' => true,
+        'samesite' => 'Strict',
+    ]);
     session_start();
 }
 

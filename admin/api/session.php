@@ -25,9 +25,19 @@ if ($accounts) {
     $authenticated = !empty($_SESSION['admin_ok']);
 }
 
+if (!$authenticated) {
+    admin_json([
+        'ok' => true,
+        'authenticated' => false,
+        'php' => true,
+        'pinRequired' => !$accounts && admin_pin_required(),
+        'accounts' => $accounts,
+    ]);
+}
+
 admin_json([
     'ok' => true,
-    'authenticated' => $authenticated,
+    'authenticated' => true,
     'php' => true,
     'pinRequired' => !$accounts && admin_pin_required(),
     'accounts' => $accounts,

@@ -1975,12 +1975,16 @@ p.seller:last-child { margin-bottom: 0; }
   border-radius: 12px;
   overflow: hidden;
   background: #1c1c1c;
+  aspect-ratio: 4 / 5;
 }
 .ba-img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
+}
+.section-compact-depoimentos .section-lead {
+  margin-bottom: .5rem;
 }
 .ba-tag {
   position: absolute;
