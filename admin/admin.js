@@ -369,11 +369,17 @@
     markDirty();
   }
 
+  function withCacheBustSrc(path) {
+    var p = String(path || "").trim();
+    if (!p || /^(blob:|data:)/i.test(p)) return p;
+    return cacheBustAsset(p);
+  }
+
   function applyUploadedPathToField(field, path) {
     if (field.type === "image") {
       var cur = state.content[field.id];
       if (!cur || typeof cur !== "object") cur = { src: "", alt: "", lightbox: "" };
-      cur.src = path;
+      cur.src = withCacheBustSrc(path);
       var altEl = $("img-alt");
       var lbEl = $("img-lb");
       if (altEl && altEl.value) cur.alt = altEl.value;
@@ -383,7 +389,7 @@
     } else {
       var slot = state.content[field.id];
       if (!slot || typeof slot !== "object") slot = { src: "", label: "", note: "" };
-      slot.src = path;
+      slot.src = withCacheBustSrc(path);
       var sl = $("slot-label");
       var sn = $("slot-note");
       var sm = $("slot-mode");
@@ -465,12 +471,19 @@
         return saveContent();
       })
       .then(function () {
-        if (file) {
-          patchLivePreview(field);
-          refreshLiveSiteFrame();
-        }
+        if (!file) return;
+        patchLivePreview(field);
         if (file && state.php && state.authenticated) {
-          setStatus("Foto guardada (img/cms + JSON). Clica «Publicar no site» no topo.", "ok");
+          return applyToSite().then(function () {
+            patchLivePreview(field);
+            refreshImageLiveStatus(field);
+          });
+        }
+        refreshLiveSiteFrame();
+      })
+      .then(function () {
+        if (file && state.php && state.authenticated) {
+          setStatus("Foto guardada e aplicada ao site. Atualiza o browser se ainda vês a antiga.", "ok");
         } else if (file && !state.php) {
           saveToBrowserStorage();
           setStatus("Foto guardada neste navegador. «Descarregar para Git» só quando fores publicar.", "ok");
@@ -523,6 +536,13 @@
     }).then(function (saved) {
       if (saved === undefined) return;
       patchLivePreview(field);
+      if (state.php && state.authenticated) {
+        return applyToSite().then(function () {
+          patchLivePreview(field);
+          setStatus("Foto removida e site atualizado.", "ok");
+          renderEditor();
+        });
+      }
       refreshLiveSiteFrame();
       setStatus("Foto removida na pré-visualização. Clica «Publicar no site» para o index.html.", "ok");
       renderEditor();
@@ -823,7 +843,7 @@
         img.className = "slot-photo";
         el.insertBefore(img, el.firstChild);
       }
-      img.setAttribute("src", src);
+      img.setAttribute("src", withCacheBustSrc(src));
       img.setAttribute("alt", val.label || "");
       img.removeAttribute("hidden");
     } else if (img) {
