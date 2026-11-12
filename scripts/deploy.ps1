@@ -25,7 +25,7 @@ function Invoke-Git {
     $ErrorActionPreference = 'Continue'
     $out = & git @GitArgs 2>&1 | ForEach-Object { "$_" }
     $code = $LASTEXITCODE
-    if ($code -ne 0 -and -not $AllowFail) { Fail "git $($GitArgs -join ' ') falhou:`n$($out -join \"`n\")" }
+    if ($code -ne 0 -and -not $AllowFail) { Fail ("git $($GitArgs -join ' ') falhou:" + [Environment]::NewLine + ($out -join [Environment]::NewLine)) }
     return [pscustomobject]@{ Output = @($out); Code = $code }
 }
 

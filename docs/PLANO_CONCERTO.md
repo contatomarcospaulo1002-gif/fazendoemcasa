@@ -74,9 +74,9 @@ Auditoria base: [`relatorios/AUDITORIA_2026-11-11.md`](relatorios/AUDITORIA_2026
 
 | ID | Item | Estado |
 |----|------|--------|
-| 7.1 | `smoke-prod.ps1` pós-deploy | [ ] |
+| 7.1 | `smoke-prod.ps1` pós-deploy | [x] | 2026-11-12 — 8/8 OK |
 | 7.2 | Security review diff | [x] | Ajustes: `admin/var/` + CF-Connecting-IP |
-| 7.3 | Veredito | [ ] | APROVADO após deploy + smoke verde |
+| 7.3 | Veredito | [x] | APROVADO (deploy `06da553`) |
 
 ## Rollback
 
