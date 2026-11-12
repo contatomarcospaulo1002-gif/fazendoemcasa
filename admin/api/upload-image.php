@@ -35,8 +35,7 @@ if ($raw === false) {
     admin_json(['ok' => false, 'error' => 'Base64 inválido.'], 400);
 }
 
-$finfo = new finfo(FILEINFO_MIME_TYPE);
-$detected = $finfo->buffer($raw);
+$detected = admin_detect_mime($raw);
 $allowedMimes = [
     'webp' => ['image/webp'],
     'jpg' => ['image/jpeg'],

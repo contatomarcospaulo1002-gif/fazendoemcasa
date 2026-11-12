@@ -30,8 +30,7 @@ if ($raw === false) {
     admin_json(['ok' => false, 'error' => 'Base64 inválido.'], 400);
 }
 
-$finfo = new finfo(FILEINFO_MIME_TYPE);
-$detected = $finfo->buffer($raw);
+$detected = admin_detect_mime($raw);
 if ($detected !== 'video/mp4') {
     admin_json(['ok' => false, 'error' => 'O ficheiro não é um vídeo MP4 válido.'], 400);
 }
