@@ -364,6 +364,11 @@
       if (sl) slot.label = sl.value;
       if (sn) slot.note = sn.value;
       if (sm) slot.mode = sm.value;
+      var slotSrc = (slot.src || "").trim();
+      if (slotSrc && slot.mode === "text") {
+        slot.mode = normalizeSlotMode(slot.mode, true);
+        if (sm) sm.value = slot.mode;
+      }
       state.content[field.id] = slot;
     }
     markDirty();
@@ -1279,6 +1284,24 @@
     });
   }
 
+  function enrichImageSlotsFromIndex() {
+    if (!state.indexDoc) return;
+    allFields().forEach(function (field) {
+      if (field.type !== "image-slot") return;
+      var cur = state.content[field.id];
+      if (!cur || typeof cur !== "object") cur = {};
+      var fromIndex = readField(state.indexDoc, field);
+      if (fromIndex && typeof fromIndex === "object") {
+        if (!cur.mode && fromIndex.mode) cur.mode = fromIndex.mode;
+        if (!(cur.src || "").trim() && (fromIndex.src || "").trim()) cur.src = fromIndex.src;
+      }
+      if ((cur.src || "").trim()) {
+        cur.mode = normalizeSlotMode(cur.mode, true);
+      }
+      state.content[field.id] = cur;
+    });
+  }
+
   function setStatus(text, kind) {
     var pill = $("save-status");
     if (!pill) return;
@@ -1612,6 +1635,8 @@
   }
 
   function imageSlotEditorHtml(field, val) {
+    val = val || {};
+    var slotMode = normalizeSlotMode(val.mode, !!(val.src || "").trim());
     var html = mediaPreviewSection(val.src || "");
     html += "<div class=\"field img-tools\">";
     html += "<label><strong>1.</strong> Carregar fotografia (JPG, PNG ou WebP)</label>";
@@ -1623,9 +1648,9 @@
     html += "</div>";
     html += "<div class=\"field\"><label for=\"slot-mode\">O que mostrar neste espaço</label>";
     html += "<select id=\"slot-mode\">";
-    html += "<option value=\"both\"" + (val.mode === "both" ? " selected" : "") + ">Imagem e texto</option>";
-    html += "<option value=\"image\"" + (val.mode === "image" ? " selected" : "") + ">Só imagem</option>";
-    html += "<option value=\"text\"" + (val.mode !== "both" && val.mode !== "image" ? " selected" : "") + ">Só texto</option>";
+    html += "<option value=\"both\"" + (slotMode === "both" ? " selected" : "") + ">Imagem e texto</option>";
+    html += "<option value=\"image\"" + (slotMode === "image" ? " selected" : "") + ">Só imagem</option>";
+    html += "<option value=\"text\"" + (slotMode === "text" ? " selected" : "") + ">Só texto</option>";
     html += "</select>";
     html += "<p class=\"field-hint\">Imagem e texto: a foto fica em cima, limpa, e o texto do cartão continua por baixo. Só imagem: a foto ocupa o cartão. Só texto: o espaço riscado, sem foto. A nota só aparece quando não há fotografia.</p></div>";
     html += "<div class=\"slot-extra\">";
@@ -1696,11 +1721,20 @@
     imgFile.addEventListener("change", function () {
       var file = imgFile.files && imgFile.files[0];
       if (!file) return;
+      if (field.type === "image-slot") {
+        var sm = $("slot-mode");
+        var slot = state.content[field.id];
+        if (!slot || typeof slot !== "object") slot = { src: "", label: "", note: "" };
+        slot.mode = "both";
+        state.content[field.id] = slot;
+        if (sm) sm.value = "both";
+      }
       showLocalFilePreview(file);
       var info = $("img-size-info");
       if (info) {
         info.textContent = Math.round(file.size / 1024) + " KB — clica «Salvar foto» para comprimir e gravar.";
       }
+      patchLivePreview(field);
       refreshImageLiveStatus(field);
       updateRemovePhotoButton();
     });
@@ -1923,6 +1957,7 @@
         })
         .catch(function (e) {
           setStatus(e.message, "warn");
+          throw e;
         });
     }
     if (!options.forceDownload && saveToBrowserStorage()) {
@@ -2291,10 +2326,7 @@
         state.content = parts[1] || {};
         if (!state.php) loadFromBrowserStorage();
         syncFromIndex();
-        var programaSlot = state.content["programa.photo"];
-        if (programaSlot && typeof programaSlot === "object" && (programaSlot.src || "").trim() && programaSlot.mode !== "image" && programaSlot.mode !== "both") {
-          programaSlot.mode = "both";
-        }
+        enrichImageSlotsFromIndex();
         if (!state.activeFieldId && state.map.groups[0] && state.map.groups[0].fields[0]) {
           selectField(state.map.groups[0].fields[0].id);
         } else {
