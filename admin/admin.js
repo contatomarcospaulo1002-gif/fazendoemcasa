@@ -827,6 +827,7 @@
       img.setAttribute("alt", val.label || "");
       img.removeAttribute("hidden");
     } else if (img) {
+      img.removeAttribute("src");
       img.setAttribute("hidden", "");
     }
   }
@@ -1285,10 +1286,10 @@
 
   function phpHintMessage() {
     if (isPublicAdminHost()) {
-      return (
-        "Hospedagem GitHub Pages: o servidor não corre PHP. Podes editar aqui — «Salvar foto» descarrega o WebP e o content.json; depois «Guardar e aplicar» descarrega o index.html. Envia tudo ao Git (push) para ficar no ar. Laragon opcional: " +
-        localAdminUrl()
-      );
+      if (!state.authenticated) {
+        return "Inicia sessão (login) para gravar fotos e publicar no servidor.";
+      }
+      return "Ligação ao servidor PHP perdida — recarrega a página. Se persistir, confirma que estás em https://fazendoemcasa.com/admin/";
     }
     if (isLocalTestHost()) {
       return (
@@ -1874,9 +1875,26 @@
     return new Blob([arr], { type: mime });
   }
 
+  function requireServerWrite() {
+    if (!isPublicAdminHost() && !isLocalTestHost()) return true;
+    if (state.php && state.authenticated) return true;
+    var msg =
+      isPublicAdminHost() && !state.authenticated
+        ? "Inicia sessão para gravar no servidor."
+        : "Sem ligação ao PHP — recarrega o painel ou usa " + localAdminUrl();
+    setStatus(msg, "warn");
+    if (!state.authenticated && $("login-screen")) showLogin();
+    return false;
+  }
+
   function saveContent(options) {
     options = options || {};
     var payload = contentPayloadForDisk();
+    if (isPublicAdminHost() && (!state.php || !state.authenticated)) {
+      if (!options.forceDownload) {
+        if (!requireServerWrite()) return Promise.resolve();
+      }
+    }
     if (state.php && state.authenticated) {
       return api("save-content.php", { method: "POST", body: { content: payload } })
         .then(function () {
@@ -1963,12 +1981,13 @@
         if (state.php && state.authenticated) {
           return api("apply-index.php", { method: "POST", body: { html: serialized } })
             .then(function (res) {
-              setStatus(
-                "Site local atualizado. Faz commit + push para aparecer em fazendoemcasa.com (backup: " +
-                  (res.backup || "—") +
-                  ")",
-                "ok"
-              );
+              var msg =
+                state.database
+                  ? "Site publicado no servidor (index.html atualizado). Atualiza fazendoemcasa.com no browser (backup: " +
+                    (res.backup || "—") +
+                    ")."
+                  : "index.html atualizado no servidor (backup: " + (res.backup || "—") + ").";
+              setStatus(msg, "ok");
               var f = state.activeFieldId ? fieldById(state.activeFieldId) : null;
               if (f && isImageField(f)) refreshImageLiveStatus(f);
             })
@@ -1988,6 +2007,9 @@
   }
 
   function publishAll() {
+    if (isPublicAdminHost() && (!state.php || !state.authenticated)) {
+      if (!requireServerWrite()) return Promise.resolve();
+    }
     if (!state.php) {
       return downloadExportForGit();
     }
@@ -2204,9 +2226,17 @@
     return api("login.php", { method: "POST", body: body })
       .then(function (res) {
         state.authenticated = true;
+        state.php = true;
         if (res.profile) state.profile = res.profile;
+        return api("session.php").then(function (sess) {
+          state.database = !!sess.database;
+          state.accounts = !!sess.accounts;
+        });
+      })
+      .then(function () {
         showApp();
         updateAdminChrome();
+        updatePhpUi();
         bootstrapApp();
       })
       .catch(function (e) {
@@ -2324,39 +2354,57 @@
       });
     }
 
-    api("session.php")
-      .then(function (res) {
-        state.php = !!res.php;
-        state.database = !!res.database;
-        state.accounts = !!res.accounts;
-        state.authMode = res.authMode || "none";
-        if (res.profile) state.profile = res.profile;
-        configureLoginForm(res);
+    function applySession(res) {
+      state.php = !!res.php;
+      state.database = !!res.database;
+      state.accounts = !!res.accounts;
+      state.authMode = res.authMode || "none";
+      if (res.profile) state.profile = res.profile;
+      configureLoginForm(res);
+      updateAdminChrome();
+      var needAuth = state.accounts || res.pinRequired === true;
+      if (res.authenticated) {
+        state.authenticated = true;
+        showApp();
         updateAdminChrome();
-        var needAuth = state.accounts || res.pinRequired === true;
-        if (res.authenticated) {
-          state.authenticated = true;
-          showApp();
-          updateAdminChrome();
-          updatePhpUi();
-          bootstrapApp();
-          return;
-        }
-        if (!needAuth) {
-          state.authenticated = true;
-          showApp();
-          updatePhpUi();
-          bootstrapApp();
-          return;
-        }
-        showLogin();
-      })
-      .catch(function () {
-        state.php = false;
+        updatePhpUi();
+        bootstrapApp();
+        return;
+      }
+      state.authenticated = false;
+      if (!needAuth) {
         state.authenticated = true;
         showApp();
         updatePhpUi();
         bootstrapApp();
+        return;
+      }
+      showLogin();
+    }
+
+    function sessionFailed() {
+      state.php = false;
+      state.authenticated = false;
+      if (isPublicAdminHost() || isLocalTestHost()) {
+        configureLoginForm({ accounts: true, pinRequired: false });
+        showLogin();
+        var err = $("login-err");
+        if (err) {
+          err.textContent =
+            "Não foi possível contactar o servidor (PHP). Recarrega a página ou confirma que estás com sessão iniciada.";
+        }
+        return;
+      }
+      state.authenticated = true;
+      showApp();
+      updatePhpUi();
+      bootstrapApp();
+    }
+
+    api("session.php")
+      .then(applySession)
+      .catch(function () {
+        return api("session.php").then(applySession).catch(sessionFailed);
       });
   }
 
