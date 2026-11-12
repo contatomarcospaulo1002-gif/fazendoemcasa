@@ -8,5 +8,7 @@ Desktop.ini
 # Cursor / IDE (opcional local)
 .cursor/
 admin/config.local.php
+admin/var/*
+!admin/var/.htaccess
 docker/.env
 index.html.bak.*

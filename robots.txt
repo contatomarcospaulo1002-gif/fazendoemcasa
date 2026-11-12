@@ -8,4 +8,8 @@ User-agent: meta-externalagent
 Allow: /
 
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /admin/
+Disallow: /user/
+
+Sitemap: https://fazendoemcasa.com/sitemap.xml

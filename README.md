@@ -1,45 +1,27 @@
 ﻿# Fazendo em Casa
 
-Site estático em [fazendoemcasa.com](https://fazendoemcasa.com/), hospedado no **GitHub Pages** (branch `main`, raiz do repositório).
+Landing e CMS em [fazendoemcasa.com](https://fazendoemcasa.com/) — **VPS** (PHP 8.2 + MySQL), não GitHub Pages.
 
-## Fluxo (igual ao Elba Food, sem VPS)
+## Fluxo de trabalho
 
-1. Crie uma branch a partir da `main` atualizada: `git fetch origin` e `git switch -c fix/alguma-coisa origin/main`
-2. Commite as alterações na branch.
-3. Publique: `.\scripts\deploy.ps1 -Branch fix/alguma-coisa` (confirme com **SIM**) ou `-Confirmar` quando pedir commit e push explícito.
-
-O script faz: `push` da branch → merge na `main` → `push` da `main`. O GitHub Pages publica em 1–3 minutos.
+1. `git fetch origin` e `git switch -c fix/nome origin/main`
+2. Implementar e testar (Docker ou Laragon)
+3. Commit na branch; merge na `main` quando apropriado
+4. Push na `main` → GitHub Actions **Deploy produção** (SSH `git pull` no servidor)
+5. Deploy manual alternativo: `.\scripts\deploy.ps1` (confirmação explícita)
 
 ## Desenvolvimento local
 
-Abra a pasta no Laragon ou sirva os arquivos com qualquer servidor estático.
+- **Laragon:** virtual host ou pasta `C:\laragon\www\fazendoemcasa`
+- **Docker:** ver [`docker/README.md`](docker/README.md) — `http://localhost:8080/`
+- Admin: `/admin/` — PIN em `admin/config.local.php` (gitignored; exemplo em `admin/config.example.php`)
 
-### Painel administrativo (página inicial)
+## Plano de qualidade
 
-No Laragon (PHP ativo): `http://fazendoemcasa.test/admin/` (ou o virtual host que usares).
-
-1. **Editar** — menu lateral com cada texto/imagem: mostra *o quê* muda e *onde* no site.
-2. **Guia de configuração** — tabela com mapeamento completo (secção, seletor CSS, ID).
-3. Imagens: upload com compressão WebP (largura máx. e qualidade ajustáveis).
-4. **Guardar JSON** → grava `admin/content.json`.
-5. **Aplicar ao index.html** → atualiza a landing (cria backup `index.html.bak.*`).
-
-PIN inicial: `2828` (só se `require_pin` for `true`). Para abrir direto no Laragon: em `config.local.php` usa `'require_pin' => false` (`config.local.php` não vai para o Git).
-
-Em GitHub Pages o painel é só leitura/exportação (sem PHP): descarrega JSON e `index.html` e faz commit manual.
-
-**Galerias (opcionais):** secções «Galeria de fotos» (Antes/Depois, até 6 slides) e «Galeria de comentários» (captura ou texto). Ficam ocultas no site até carregares conteúdo no admin. Carrossel com swipe + avanço automático (`carousel.js`).
-
-**Vídeos:** no admin, filtro **Vídeos**. O sítio recomendado é **Como funciona** (vídeo explicativo); opcional no **Hero**. Prefere **embed** (código iframe do Facebook/YouTube/Vimeo). Upload **MP4** só para clipes até 12 MB (`video/cms/`).
-
-O site público em produção continua estático; não expõe o painel na mesma URL do Pages unless commits incluem `/admin`.
+- Checklist vivo: [`docs/PLANO_CONCERTO.md`](docs/PLANO_CONCERTO.md)
+- Fluxo agentes: [`docs/FLUXO_AGENTES.md`](docs/FLUXO_AGENTES.md)
+- Smoke produção: `.\scripts\smoke-prod.ps1`
 
 ## Cursor
 
-Ao abrir a pasta, a tarefa **git: puxar ao abrir o Cursor** roda `git fetch` / `git pull --ff-only` (como no Elba Food).
-
-## Produção
-
-- **Não** usa SSH na VPS do Elba Food: o domínio aponta para GitHub Pages (`CNAME`).
-- Push na `main` dispara o build do Pages automaticamente.
-- O workflow `Deploy GitHub Pages` só verifica se o site responde após o deploy.
+Contexto: [`docs/CURSOR_CONTEXTO.md`](docs/CURSOR_CONTEXTO.md) + regra `fazendoemcasa-core.mdc`.
