@@ -528,6 +528,7 @@
       } else {
         var slot = state.content[field.id] || { src: "", label: "", note: "" };
         slot.src = "";
+        slot.mode = "text";
         state.content[field.id] = slot;
       }
       if (state.content._pendingImages && state.content._pendingImages[field.id]) {
@@ -854,6 +855,7 @@
     } else if (img) {
       img.removeAttribute("src");
       img.setAttribute("hidden", "");
+      img.remove();
     }
   }
 

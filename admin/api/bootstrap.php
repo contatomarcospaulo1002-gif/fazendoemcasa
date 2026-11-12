@@ -119,3 +119,29 @@ function admin_write_bytes(string $path, string $contents): bool
     }
     return $ok;
 }
+
+/**
+ * Tipo real dos bytes. O PHP de produção pode não ter a extensão fileinfo.
+ */
+function admin_detect_mime(string $raw): string
+{
+    if (class_exists('finfo')) {
+        $detected = (new finfo(FILEINFO_MIME_TYPE))->buffer($raw);
+        if (is_string($detected) && $detected !== '' && $detected !== 'application/octet-stream') {
+            return $detected;
+        }
+    }
+    if (str_starts_with($raw, "\x89PNG\r\n\x1a\n")) {
+        return 'image/png';
+    }
+    if (str_starts_with($raw, "\xFF\xD8\xFF")) {
+        return 'image/jpeg';
+    }
+    if (strlen($raw) >= 12 && str_starts_with($raw, 'RIFF') && substr($raw, 8, 4) === 'WEBP') {
+        return 'image/webp';
+    }
+    if (strlen($raw) >= 12 && substr($raw, 4, 4) === 'ftyp') {
+        return 'video/mp4';
+    }
+    return '';
+}
