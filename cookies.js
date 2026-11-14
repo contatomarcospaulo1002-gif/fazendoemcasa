@@ -211,7 +211,7 @@
       try {
         fbq("track", "InitiateCheckout");
       } catch (e) {}
-      setTimeout(go, 500);
+      setTimeout(go, 200);
     });
   });
 })();

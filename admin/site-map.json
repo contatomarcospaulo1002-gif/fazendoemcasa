@@ -61,7 +61,7 @@
                 },
                 {
                     "id": "header.cta.href",
-                    "label": "Botão do topo — link Kiwify",
+                    "label": "Botão do topo — link Hotmart",
                     "where": "URL de checkout",
                     "selector": ".header-cta",
                     "type": "attr",
@@ -237,7 +237,7 @@
                 {
                     "id": "hero.cta.href",
                     "label": "Botão principal — link",
-                    "where": "URL Kiwify do CTA",
+                    "where": "URL Hotmart (checkout) do CTA",
                     "selector": "#hero .cta-row .btn",
                     "type": "attr",
                     "attribute": "href"
@@ -1449,7 +1449,7 @@
                 {
                     "id": "gallery.photos.cta.href",
                     "label": "Botão — link",
-                    "where": "URL Kiwify",
+                    "where": "URL Hotmart (checkout)",
                     "selector": "#galeria-fotos .gallery-photos-cta",
                     "type": "attr",
                     "attribute": "href"
@@ -1611,7 +1611,7 @@
                 {
                     "id": "gallery.comments.cta.href",
                     "label": "Botão — link",
-                    "where": "URL Kiwify",
+                    "where": "URL Hotmart (checkout)",
                     "selector": "#galeria-comentarios .gallery-comments-cta",
                     "type": "attr",
                     "attribute": "href"
@@ -1724,7 +1724,7 @@
                 {
                     "id": "garantia.p2",
                     "label": "Parágrafo 2",
-                    "where": "Kiwify e termos",
+                    "where": "Hotmart e termos",
                     "selector": "#garantia .guarantee-body p:nth-of-type(2)",
                     "type": "html"
                 },
@@ -1934,7 +1934,7 @@
                 {
                     "id": "oferta.cta.href",
                     "label": "Botão compra — link",
-                    "where": "URL Kiwify",
+                    "where": "URL Hotmart (checkout)",
                     "selector": "#oferta .offer-buy .btn",
                     "type": "attr",
                     "attribute": "href"
@@ -2068,7 +2068,7 @@
                 {
                     "id": "final.cta.href",
                     "label": "Botão — link",
-                    "where": "URL Kiwify",
+                    "where": "URL Hotmart (checkout)",
                     "selector": ".final-cta .btn",
                     "type": "attr",
                     "attribute": "href"

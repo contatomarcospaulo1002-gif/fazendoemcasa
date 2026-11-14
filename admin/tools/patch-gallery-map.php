@@ -8,7 +8,7 @@ $photoFields = [
     ['id' => 'gallery.photos.title', 'label' => 'Título da galeria', 'where' => 'Cabeçalho (podes usar <span class="heading-accent">)', 'selector' => '#galeria-fotos .gallery-title-photos', 'type' => 'html'],
     ['id' => 'gallery.photos.lead', 'label' => 'Introdução', 'where' => 'Texto sob o título', 'selector' => '#galeria-fotos .gallery-lead-photos', 'type' => 'text'],
     ['id' => 'gallery.photos.cta.text', 'label' => 'Botão — texto', 'where' => 'CTA sob o carrossel', 'selector' => '#galeria-fotos .gallery-photos-cta', 'type' => 'html'],
-    ['id' => 'gallery.photos.cta.href', 'label' => 'Botão — link', 'where' => 'URL Kiwify', 'selector' => '#galeria-fotos .gallery-photos-cta', 'type' => 'attr', 'attribute' => 'href'],
+    ['id' => 'gallery.photos.cta.href', 'label' => 'Botão — link', 'where' => 'URL Hotmart (checkout)', 'selector' => '#galeria-fotos .gallery-photos-cta', 'type' => 'attr', 'attribute' => 'href'],
 ];
 
 for ($i = 1; $i <= 6; $i++) {
@@ -39,7 +39,7 @@ $commentFields = [
     ['id' => 'gallery.comments.title', 'label' => 'Título da galeria', 'where' => 'Cabeçalho comentários', 'selector' => '#galeria-comentarios .gallery-title-comments', 'type' => 'html'],
     ['id' => 'gallery.comments.lead', 'label' => 'Introdução', 'where' => 'Texto sob o título', 'selector' => '#galeria-comentarios .gallery-lead-comments', 'type' => 'text'],
     ['id' => 'gallery.comments.cta.text', 'label' => 'Botão — texto', 'where' => 'CTA sob o carrossel', 'selector' => '#galeria-comentarios .gallery-comments-cta', 'type' => 'html'],
-    ['id' => 'gallery.comments.cta.href', 'label' => 'Botão — link', 'where' => 'URL Kiwify', 'selector' => '#galeria-comentarios .gallery-comments-cta', 'type' => 'attr', 'attribute' => 'href'],
+    ['id' => 'gallery.comments.cta.href', 'label' => 'Botão — link', 'where' => 'URL Hotmart (checkout)', 'selector' => '#galeria-comentarios .gallery-comments-cta', 'type' => 'attr', 'attribute' => 'href'],
 ];
 
 for ($i = 1; $i <= 6; $i++) {
