@@ -1,262 +1,499 @@
 {
-    "_meta": {
-        "source": "extract-content.php",
-        "updatedAt": "2026-11-10T17:10:57+00:00"
-    },
-    "seo.title": "28 dias em casa — guia de treino em PDF",
-    "seo.description": "Plano de treino de 4 semanas em PDF: 20 sessões, três níveis, sem pesos nem máquinas. Pagamento único.",
-    "header.brand.logo": {
-        "src": "",
-        "alt": ""
-    },
-    "header.brand.mark": "28",
-    "header.brand.text": "dias em casa",
-    "header.cta.text": "Quero o guia",
-    "header.cta.href": "https://pay.kiwify.com/5NJmQkR",
-    "hero.eyebrow": "<span class=\"dot\" aria-hidden=\"true\"></span>Guia em PDF · 15 páginas",
-    "hero.h1": "Transforma 4 semanas num plano que já está escrito.",
-    "hero.lead": "28 dias em casa: 20 sessões em 4 semanas, 5 por semana. Três níveis, sessões de 20 a 30 minutos e exercícios para fazer em casa, sem pesos nem máquinas.",
-    "hero.stat.1": "20 sessões",
-    "hero.stat.2": "4 semanas",
-    "hero.stat.3": "3 níveis",
-    "hero.point.1": "<span class=\"tick\" aria-hidden=\"true\"></span>4 semanas de treino organizado, com a sessão do dia já decidida",
-    "hero.point.2": "<span class=\"tick\" aria-hidden=\"true\"></span>Sessões de 20 a 30 minutos: 5 de aquecimento, 12 a 20 de parte principal, 3 a 5 de retorno à calma",
-    "hero.point.3": "<span class=\"tick\" aria-hidden=\"true\"></span>3 níveis de dificuldade: iniciante, intermédio e avançado",
-    "hero.point.4": "<span class=\"tick\" aria-hidden=\"true\"></span>Exercícios para fazer em casa, sem pesos nem máquinas",
-    "hero.cta.text": "Quero o guia 28 dias em casa por 14,90 €",
-    "hero.cta.href": "https://pay.kiwify.com/5NJmQkR",
-    "hero.trust.1": "Pagamento único de 14,90 €, IVA incluído",
-    "hero.trust.2": "Reembolso de 14 dias",
-    "hero.trust.3": "Acesso na Kiwify após o pagamento",
-    "hero.photo.hero": {
-        "src": "img/cms/hero.photo.hero.webp",
-        "label": "Treino em casa — agachamento ou prancha",
-        "note": "Pessoa adulta a treinar em casa, enquadramento vertical"
-    },
-    "hero.pill.1": "4 semanas",
-    "hero.pill.2": "3 níveis",
-    "hero.pill.3": "Sem pesos",
-    "hero.guia.thumb": {
-        "src": "img/guia-p08.webp",
-        "alt": "Página 8 do guia 28 dias em casa: Semana 1, Aprender os movimentos, com as 5 sessões, voltas e repetições",
-        "lightbox": "img/guia-p08-lg.webp"
-    },
-    "hero.guia.caption": "Página 8, do guia real",
-    "programa.kicker": "O programa",
-    "programa.h2": "O que é o 28 dias em casa",
-    "programa.lead": "Há exercícios publicados por todo o lado. O que costuma faltar é uma ordem. O 28 dias em casa tira a escolha do caminho: abres o PDF na semana em que estás e a sessão do dia está lá, com exercícios, voltas, repetições ou tempos.",
-    "programa.photo": {
-        "src": "img/cms/programa.photo.webp",
-        "label": "Sala de casa, tapete e cadeira",
-        "note": "Espaço de treino doméstico: tapete, cadeira firme encostada à parede",
-        "mode": "both"
-    },
-    "programa.media.mode": "off",
-    "programa.media.single": { "src": "", "alt": "" },
-    "programa.media.s1": { "src": "", "alt": "" },
-    "programa.media.s2": { "src": "", "alt": "" },
-    "programa.media.s3": { "src": "", "alt": "" },
-    "programa.media.s4": { "src": "", "alt": "" },
-    "programa.media.s5": { "src": "", "alt": "" },
-    "programa.card1.photo": { "src": "img/cms/programa.card1.webp", "alt": "Plano de 4 semanas" },
-    "programa.card2.photo": { "src": "img/cms/programa.card2.webp", "alt": "Exercícios explicados" },
-    "programa.card3.photo": { "src": "img/cms/programa.card3.webp", "alt": "Aquecimento e alongamentos" },
-    "programa.card4.photo": { "src": "img/cms/programa.card4.webp", "alt": "Calendário de acompanhamento" },
-    "programa.card5.photo": { "src": "img/cms/programa.card5.webp", "alt": "Hábitos saudáveis" },
-    "programa.card6.photo": { "src": "img/cms/programa.card6.webp", "alt": "Escala de esforço de 0 a 10" },
-    "paraquem.slide.1": { "src": "", "alt": "" },
-    "paraquem.slide.2": { "src": "", "alt": "" },
-    "paraquem.slide.3": { "src": "", "alt": "" },
-    "paraquem.slide.4": { "src": "", "alt": "" },
-    "paraquem.slide.5": { "src": "", "alt": "" },
-    "paraquem.slide.6": { "src": "", "alt": "" },
-    "receitas.photo": {
-        "src": "img/cms/receitas.photo.webp",
-        "label": "28 Dias de Receitas",
-        "note": "Capa do guia de receitas",
-        "mode": "image"
-    },
-    "receitas.slide.1": { "src": "", "alt": "" },
-    "receitas.slide.2": { "src": "", "alt": "" },
-    "receitas.slide.3": { "src": "", "alt": "" },
-    "receitas.slide.4": { "src": "", "alt": "" },
-    "receitas.slide.5": { "src": "", "alt": "" },
-    "receitas.slide.6": { "src": "", "alt": "" },
-    "programa.split.h3": "Não precisas de ginásio, de pesos nem de horário marcado",
-    "como.kicker": "4 semanas",
-    "como.h2": "Como funcionam as quatro semanas",
-    "como.lead": "Cada semana tem 5 sessões. Nos outros dois dias, descansas ou fazes uma caminhada tranquila e mobilidade suave. Se precisares de repetir uma semana, adapta o calendário.",
-    "como.calendario.img": {
-        "src": "img/guia-p13.webp",
-        "alt": "Página 13 do guia 28 dias em casa: Calendário das 4 semanas com espaço O meu compromisso"
-    },
-    "como.calendario.caption": "Página 13: calendário das 4 semanas e o espaço «O meu compromisso».",
-    "incluido.h2": "O que vais receber",
-    "incluido.lead": "Um PDF A4 de 15 páginas. Tudo o que está nesta lista faz parte do guia; nada aqui é material que não existe.",
-    "incluido.sample.h3": "Vê o interior antes de decidires",
-    "incluido.sample.p": "Duas páginas reais do guia. Toca para ampliar.",
-    "incluido.sample.p08": {
-        "src": "img/guia-p08.webp",
-        "alt": "Página 8 do guia 28 dias em casa: Semana 1, Aprender os movimentos, com as 5 sessões, voltas e repetições",
-        "lightbox": "img/guia-p08-lg.webp"
-    },
-    "incluido.sample.p13": {
-        "src": "img/guia-p13.webp",
-        "alt": "Página 13 do guia 28 dias em casa: Calendário das 4 semanas com espaço O meu compromisso",
-        "lightbox": "img/guia-p13-lg.webp"
-    },
-    "depoimentos.kicker": "Testemunhos",
-    "depoimentos.h2": "Quem já seguiu o guia",
-    "depoimentos.empty.title": "Ainda não há testemunhos publicados nesta página.",
-    "depoimentos.empty.text": "Este espaço está reservado para depoimentos reais e autorizados dos leitores do guia. Preferimos deixá-lo vazio a inventar pessoas, fotografias, avaliações ou resultados.",
-    "depoimentos.card1.quote": "",
-    "depoimentos.card1.name": "",
-    "depoimentos.card1.meta": "",
-    "depoimentos.card1.photo": {
-        "src": "",
-        "alt": ""
-    },
-    "depoimentos.card2.quote": "",
-    "depoimentos.card2.name": "",
-    "depoimentos.card2.meta": "",
-    "depoimentos.card2.photo": {
-        "src": "",
-        "alt": ""
-    },
-    "depoimentos.card3.quote": "",
-    "depoimentos.card3.name": "",
-    "depoimentos.card3.meta": "",
-    "depoimentos.card3.photo": {
-        "src": "",
-        "alt": ""
-    },
-    "faq.kicker": "Dúvidas",
-    "faq.h2": "Perguntas frequentes",
-    "faq.q01": "Como recebo o guia?",
-    "faq.a01": "O acesso fica disponível logo após a confirmação do pagamento, na área de membros da Kiwify. A Kiwify envia o link de acesso para o e-mail que indicaste no checkout.",
-    "faq.q02": "Inclui vídeos?",
-    "faq.a02": "Não. Esta versão é um PDF com fotografias de referência.",
-    "faq.q03": "Preciso de material?",
-    "faq.a03": "Não precisas de pesos nem máquinas. O guia pede roupa confortável, água, espaço livre numa superfície estável e não escorregadia, e uma cadeira firme, sem rodas, encostada à parede. A flexão inclinada faz-se com as mãos numa bancada firme ou na parede.",
-    "faq.q04": "Quanto tempo demora cada sessão?",
-    "faq.a04": "Aquecimento de 5 minutos, parte principal de 12 a 20 minutos e retorno à calma de 3 a 5 minutos. O tempo é uma referência: podes começar com menos.",
-    "faq.q05": "Serve para quem está a começar?",
-    "faq.a05": "Sim, há um nível iniciante. Começa por esse nível se tiveres dúvidas, respeita os teus limites e interrompe qualquer exercício em caso de dor ou mal-estar.",
-    "faq.q06": "E se já treino?",
-    "faq.a06": "O plano usa movimentos básicos. Os níveis intermédio e avançado aumentam as voltas e as repetições para quem já tem alguma regularidade.",
-    "faq.q07": "Posso imprimir?",
-    "faq.a07": "Sim, para uso pessoal. Não é permitido revender nem partilhar o ficheiro.",
-    "faq.q08": "O que acontece depois dos 28 dias?",
-    "faq.a08": "O guia termina com uma revisão das 4 semanas. Podes repetir as sessões que forem confortáveis, ajustando a progressão à tua condição. Depois de descarregares o PDF, o ficheiro fica contigo.",
-    "faq.q09": "É um pagamento mensal?",
-    "faq.a09": "Não. É um pagamento único de 14,90 €.",
-    "faq.q10": "E se não for o que eu esperava?",
-    "faq.a10": "Tens 14 dias a contar da compra para pedir o reembolso, sem indicar o motivo, por e-mail para <a href=\"mailto:contatomarcospaulo1002@gmail.com\">contatomarcospaulo1002@gmail.com</a> (também podes usar <a href=\"https://reembolso.kiwify.com.br\" rel=\"noopener noreferrer\" target=\"_blank\">reembolso.kiwify.com.br</a>, mas o pedido por e-mail é aceite durante os 14 dias). Vale para o guia e para o guia de receitas, em separado ou em conjunto. O reembolso é feito pelo mesmo meio de pagamento, e o acesso à área de membros é retirado.",
-    "oferta.h2": "28 dias em casa",
-    "oferta.sub": "Guia em PDF com fotografias de referência",
-    "oferta.preco": "14,90 €",
-    "oferta.cta.text": "Quero o guia por 14,90 €",
-    "oferta.cta.href": "https://pay.kiwify.com/5NJmQkR",
-    "final.h2": "Começa hoje o teu 28 Dias em Casa",
-    "final.sub": "4 semanas escritas. A sessão 1 já está na página 8. Sem procurar exercícios, sem pesos, sem sair de casa.",
-    "final.cta.text": "Quero o guia 28 dias em casa por 14,90 €",
-    "final.cta.href": "https://pay.kiwify.com/5NJmQkR",
-    "gallery.photos.title": "Algumas histórias <span class=\"heading-accent\">no programa</span>",
-    "gallery.photos.lead": "Fotografias autorizadas pelas pessoas que aparecem. Desliza para o lado — o carrossel também avança sozinho.",
-    "gallery.photos.cta.text": "Quero o guia 28 dias em casa por 14,90 €",
-    "gallery.photos.cta.href": "https://pay.kiwify.com/5NJmQkR",
-    "gallery.comments.title": "O que dizem <span class=\"heading-accent\">sobre o guia</span>",
-    "gallery.comments.lead": "Capturas ou textos autorizados. Desliza com o dedo no telemóvel.",
-    "gallery.comments.cta.text": "Quero começar o plano",
-    "gallery.comments.cta.href": "https://pay.kiwify.com/5NJmQkR",
-    "gallery.photos.s1.before": {
-        "src": "img/gallery-demo/antes-1.svg",
-        "alt": "Exemplo: fotografia antes (substituir no painel admin)"
-    },
-    "gallery.photos.s1.after": {
-        "src": "img/gallery-demo/depois-1.svg",
-        "alt": "Exemplo: fotografia depois (substituir no painel admin)"
-    },
-    "gallery.photos.s1.caption": "Exemplo de slide — troca por fotos autorizadas no admin (slide 1).",
-    "gallery.comments.s1.image": {
-        "src": "img/gallery-demo/comentario-1.svg",
-        "alt": "Exemplo de mensagem autorizada (substituir no painel admin)"
-    },
-    "gallery.comments.s1.text": "",
-    "gallery.photos.s2.before": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s2.after": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s2.caption": "",
-    "gallery.comments.s2.image": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.comments.s2.text": "",
-    "gallery.photos.s3.before": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s3.after": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s3.caption": "",
-    "gallery.comments.s3.image": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.comments.s3.text": "",
-    "gallery.photos.s4.before": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s4.after": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s4.caption": "",
-    "gallery.comments.s4.image": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.comments.s4.text": "",
-    "gallery.photos.s5.before": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s5.after": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s5.caption": "",
-    "gallery.comments.s5.image": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.comments.s5.text": "",
-    "gallery.photos.s6.before": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s6.after": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.photos.s6.caption": "",
-    "gallery.comments.s6.image": {
-        "src": "",
-        "alt": ""
-    },
-    "gallery.comments.s6.text": "",
-    "video.como.title": "",
-    "video.como.embed": "",
-    "video.como.mp4": "",
-    "video.hero.title": "",
-    "video.hero.embed": "",
-    "video.hero.mp4": ""
+  "_meta": {
+    "source": "extract-content.php",
+    "updatedAt": "2026-11-13T21:33:59.724579-03:00"
+  },
+  "faq.h2": "Perguntas frequentes",
+  "como.h2": "Como funcionam as quatro semanas",
+  "faq.a01": "O acesso fica disponível logo após a confirmação do pagamento, na área de membros da Hotmart. A Hotmart envia o link de acesso para o e-mail que indicaste no checkout.",
+  "faq.a02": "Não. Esta versão é um PDF com fotografias de referência.",
+  "faq.a03": "Não precisas de pesos nem máquinas. O guia pede roupa confortável, água, espaço livre numa superfície estável e não escorregadia, e uma cadeira firme, sem rodas, encostada à parede. A flexão inclinada faz-se com as mãos numa bancada firme ou na parede.",
+  "faq.a04": "Aquecimento de 5 minutos, parte principal de 12 a 20 minutos e retorno à calma de 3 a 5 minutos. O tempo é uma referência: podes começar com menos.",
+  "faq.a05": "Sim, há um nível iniciante. Começa por esse nível se tiveres dúvidas, respeita os teus limites e interrompe qualquer exercício em caso de dor ou mal-estar.",
+  "faq.a06": "O plano usa movimentos básicos. Os níveis intermédio e avançado aumentam as voltas e as repetições para quem já tem alguma regularidade.",
+  "faq.a07": "Sim, para uso pessoal. Não é permitido revender nem partilhar o ficheiro.",
+  "faq.a08": "O guia termina com uma revisão das 4 semanas. Podes repetir as sessões que forem confortáveis, ajustando a progressão à tua condição. Depois de descarregares o PDF, o ficheiro fica contigo.",
+  "faq.a09": "Não. É um pagamento único de 14,90 €.",
+  "faq.a10": "Tens 14 dias a contar da compra para pedir o reembolso, sem indicar o motivo, por e-mail para <a href=\"mailto:contatomarcospaulo1002@gmail.com\">contatomarcospaulo1002@gmail.com</a> (também podes usar <a href=\"https://refund.hotmart.com\" rel=\"noopener noreferrer\" target=\"_blank\">refund.hotmart.com</a>, mas o pedido por e-mail é aceite durante os 14 dias). Vale para o guia e para o guia de receitas, em separado ou em conjunto. O reembolso é feito pelo mesmo meio de pagamento, e o acesso à área de membros é retirado.",
+  "faq.q01": "Como recebo o guia?",
+  "faq.q02": "Inclui vídeos?",
+  "faq.q03": "Preciso de material?",
+  "faq.q04": "Quanto tempo demora cada sessão?",
+  "faq.q05": "Serve para quem está a começar?",
+  "faq.q06": "E se já treino?",
+  "faq.q07": "Posso imprimir?",
+  "faq.q08": "O que acontece depois dos 28 dias?",
+  "faq.q09": "É um pagamento mensal?",
+  "faq.q10": "E se não for o que eu esperava?",
+  "hero.h1": "Transforma 4 semanas num plano que já está escrito.",
+  "final.h2": "Começa hoje o teu 28 Dias em Casa",
+  "como.lead": "Cada semana tem 5 sessões. Nos outros dois dias, descansas ou fazes uma caminhada tranquila e mobilidade suave. Se precisares de repetir uma semana, adapta o calendário.",
+  "final.sub": "4 semanas escritas. A sessão 1 já está na página 8. Sem procurar exercícios, sem pesos, sem sair de casa.",
+  "hero.lead": "28 dias em casa: 20 sessões em 4 semanas, 5 por semana. Três níveis, sessões de 20 a 30 minutos e exercícios para fazer em casa, sem pesos nem máquinas.",
+  "niveis.h2": "Para quem é o programa",
+  "oferta.h2": "28 dias em casa",
+  "seo.title": "28 dias em casa — guia de treino em PDF",
+  "faq.kicker": "Dúvidas",
+  "oferta.sub": "Guia em PDF com fotografias de referência",
+  "sticky.cta": "Quero o guia",
+  "como.kicker": "4 semanas",
+  "garantia.h2": "Garantia de reembolso de 14 dias",
+  "garantia.p1": "Vale para o guia 28 dias em casa e para o guia de receitas. Podes pedir o reembolso nos 14 dias seguintes à compra, sem indicar o motivo, por e-mail para <a href=\"/cdn-cgi/l/email-protection#4c2f2322382d3823212d3e2f233f3c2d3920237d7c7c7e0c2b212d2520622f2321\"><span class=\"__cf_email__\" data-cfemail=\"5e3d31302a3f2a31333f2c3d312d2e3f2b32316f6e6e6c1e39333f3732703d3133\">[email&nbsp;protected]</span></a>, com o e-mail usado na compra.",
+  "garantia.p2": "Também podes usar <a href=\"https://refund.hotmart.com\" rel=\"noopener noreferrer\" target=\"_blank\">refund.hotmart.com</a>, mas o pedido por e-mail é aceite durante os 14 dias. O reembolso é feito pelo mesmo meio de pagamento e o acesso à área de membros é retirado. Vê a cláusula 6 dos <a href=\"termos.html\">Termos e Condições</a>.",
+  "garantia.p3": "Esta garantia está alinhada com o direito legal de livre resolução de 14 dias nas compras à distância. Pagamento processado pela Hotmart.",
+  "hero.pill.1": "4 semanas",
+  "hero.pill.2": "3 níveis",
+  "hero.pill.3": "Sem pesos",
+  "hero.stat.1": "20 sessões",
+  "hero.stat.2": "4 semanas",
+  "hero.stat.3": "3 níveis",
+  "incluido.h2": "O que vais receber",
+  "niveis.lead": "As sessões são as mesmas nos três níveis. O que muda é o número de voltas, as repetições e as pausas.",
+  "niveis.no.1": "Para quem procura aulas em vídeo, treino ao vivo ou apoio individual. Esta versão é um guia escrito, com fotografias de referência.",
+  "niveis.no.2": "Para quem precisa de um plano adaptado a uma condição de saúde, lesão ou gravidez. Nesses casos, procura um profissional de saúde ou de exercício qualificado.",
+  "niveis.no.3": "Para quem espera uma mudança garantida em 28 dias. O guia organiza 4 semanas de treino; não promete resultados.",
+  "programa.h2": "O que é o 28 dias em casa",
+  "receitas.h2": "28 Dias de Receitas",
+  "final.point1": "20 sessões em 4 semanas",
+  "final.point2": "3 níveis de dificuldade",
+  "final.point3": "Sem pesos nem máquinas",
+  "final.point4": "Pagamento único de 14,90 €",
+  "final.point5": "Reembolso de 14 dias",
+  "hero.eyebrow": "<span class=\"dot\" aria-hidden=\"true\"></span>Guia em PDF · 15 páginas",
+  "hero.point.1": "<span class=\"tick\" aria-hidden=\"true\"></span>4 semanas de treino organizado, com a sessão do dia já decidida",
+  "hero.point.2": "<span class=\"tick\" aria-hidden=\"true\"></span>Sessões de 20 a 30 minutos: 5 de aquecimento, 12 a 20 de parte principal, 3 a 5 de retorno à calma",
+  "hero.point.3": "<span class=\"tick\" aria-hidden=\"true\"></span>3 níveis de dificuldade: iniciante, intermédio e avançado",
+  "hero.point.4": "<span class=\"tick\" aria-hidden=\"true\"></span>Exercícios para fazer em casa, sem pesos nem máquinas",
+  "hero.trust.1": "Pagamento único de 14,90 €, IVA incluído",
+  "hero.trust.2": "Reembolso de 14 dias",
+  "hero.trust.3": "Acesso na Hotmart após o pagamento",
+  "niveis.no.h3": "Para quem não é",
+  "niveis.yes.1": "Para quem prefere treinar em casa, ao seu ritmo e no seu horário.",
+  "niveis.yes.2": "Para quem quer 4 semanas com sequência definida, em vez de procurar exercícios todos os dias.",
+  "niveis.yes.3": "Para quem gosta de ter o plano em papel ou num ficheiro, sem depender de uma aplicação.",
+  "niveis.yes.4": "Para quem está a começar, a retomar ou já treina, graças aos três níveis.",
+  "oferta.extra": "Guia de receitas <strong>não incluído</strong>: é um extra opcional de 7,90&nbsp;€, disponível no checkout.",
+  "oferta.item1": "20 sessões em 4 semanas, 5 por semana, sem pesos nem máquinas",
+  "oferta.item2": "Níveis iniciante, intermédio e avançado",
+  "oferta.item3": "4 exercícios base com fotografia e execução passo a passo",
+  "oferta.item4": "Aquecimento, retorno à calma e escala de esforço",
+  "oferta.item5": "Calendário de treinos e registo de treino",
+  "oferta.item6": "Recuperação e hábitos: sono, hidratação, alimentação e consistência",
+  "oferta.meta1": "Pagamento único · IVA incluído",
+  "oferta.meta2": "Sem subscrição nem renovação",
+  "oferta.nota1": "Pagamento processado pela Hotmart (cartão ou Apple Pay)",
+  "oferta.nota2": "Acesso na área de membros após a confirmação",
+  "oferta.nota3": "Reembolso de 14 dias, sem indicar o motivo",
+  "oferta.preco": "14,90 €",
+  "sticky.preco": "14,90&nbsp;€ <span>pagamento único</span>",
+  "como.passos.1": "<strong>Compra e acesso.</strong> O acesso fica disponível logo após a confirmação do pagamento, na área de membros da Hotmart. A Hotmart envia-te o link de acesso por e-mail.",
+  "como.passos.2": "<strong>Descarrega ou imprime.</strong> O ficheiro fica contigo.",
+  "como.passos.3": "<strong>Lê as indicações iniciais</strong> e escolhe o teu nível.",
+  "como.passos.4": "<strong>Imprime o calendário</strong> e afixa num sítio à vista.",
+  "como.passos.5": "<strong>Em cada dia de treino:</strong> aquecimento, parte principal, retorno à calma, visto no calendário.",
+  "hero.cta.href": "https://pay.hotmart.com/T108490682Y",
+  "hero.cta.text": "Quero o guia 28 dias em casa por 14,90 €",
+  "incluido.lead": "Um PDF A4 de 15 páginas. Tudo o que está nesta lista faz parte do guia; nada aqui é material que não existe.",
+  "niveis.kicker": "Níveis",
+  "niveis.yes.h3": "Para quem é",
+  "oferta.kicker": "A tua oferta",
+  "programa.lead": "Há exercícios publicados por todo o lado. O que costuma faltar é uma ordem. O 28 dias em casa tira a escolha do caminho: abres o PDF na semana em que estás e a sessão do dia está lá, com exercícios, voltas, repetições ou tempos.",
+  "receitas.lead": "Um PDF de 15 páginas com 28 receitas simples: 7 pequenos-almoços, 7 almoços, 7 jantares e 7 lanches, com ingredientes comuns em Portugal. Estão organizadas numa semana-tipo que podes repetir ou trocar ao longo das 4 semanas, com uma lista de compras semanal de base para facilitar as idas ao supermercado.",
+  "receitas.nota": "Opção disponível no checkout, <strong>adicional ao guia</strong>.",
+  "como.passos.h3": "Como funciona, do pagamento ao primeiro treino",
+  "depoimentos.h2": "Quem já seguiu o guia",
+  "final.cta.href": "https://pay.hotmart.com/T108490682Y",
+  "final.cta.text": "Quero o guia 28 dias em casa por 14,90 €",
+  "header.nav.faq": "Perguntas frequentes",
+  "incluido.item1": "<strong>Guia principal em PDF</strong>, A4, 15 páginas, com fotografias de referência",
+  "incluido.item2": "<strong>Plano de treino de 4 semanas:</strong> 20 sessões, 5 por semana",
+  "incluido.item3": "<strong>Biblioteca de exercícios:</strong> 4 exercícios base com execução passo a passo, uma versão mais fácil e outra mais desafiante",
+  "incluido.item4": "<strong>Calendário de treinos</strong> e registo de treino",
+  "incluido.item5": "<strong>Aquecimento e retorno à calma</strong>, com escala de esforço de 0 a 10",
+  "incluido.item6": "<strong>Recuperação e hábitos:</strong> sono, hidratação, alimentação e consistência",
+  "programa.photo": {
+    "src": "img/cms/programa.photo.webp?v=1794415558b797",
+    "mode": "both",
+    "note": "Espaço de treino doméstico: tapete, cadeira firme encostada à parede",
+    "label": "Sala de casa, tapete e cadeira"
+  },
+  "receitas.item1": "7 pequenos-almoços, 7 almoços, 7 jantares e 7 lanches",
+  "receitas.item2": "Semana-tipo que podes repetir ou trocar",
+  "receitas.item3": "Lista de compras semanal de base",
+  "receitas.photo": {
+    "src": "img/cms/receitas.photo.webp?v=1794419945994e",
+    "mode": "both",
+    "note": "Refeição caseira em prato",
+    "label": "Refeição simples"
+  },
+  "receitas.preco": "7,90&nbsp;€ <span>IVA incluído</span>",
+  "video.como.mp4": "",
+  "video.hero.mp4": "",
+  "como.semana1.h3": "Semana 1",
+  "como.semana2.h3": "Semana 2",
+  "como.semana3.h3": "Semana 3",
+  "como.semana4.h3": "Semana 4",
+  "header.cta.href": "https://pay.hotmart.com/T108490682Y",
+  "header.cta.text": "Quero o guia",
+  "header.nav.como": "Como funciona",
+  "hero.guia.thumb": {
+    "alt": "Página 8 do guia 28 dias em casa: Semana 1, Aprender os movimentos, com as 5 sessões, voltas e repetições",
+    "src": "img/guia-p08.webp",
+    "lightbox": "img/guia-p08-lg.webp"
+  },
+  "hero.photo.hero": {
+    "src": "img/cms/hero.photo.hero.webp?v=179450490449ff&t=1794504904123",
+    "mode": "both",
+    "note": "Pessoa adulta a treinar em casa, enquadramento vertical",
+    "label": "Treino em casa — agachamento ou prancha"
+  },
+  "incluido.kicker": "Incluído",
+  "oferta.cta.href": "https://pay.hotmart.com/T108490682Y",
+  "oferta.cta.text": "Quero o guia por 14,90 €",
+  "oferta.includes": "Inclui",
+  "programa.kicker": "O programa",
+  "receitas.kicker": "Extra opcional no checkout",
+  "seo.description": "Plano de treino de 4 semanas em PDF: 20 sessões, três níveis, sem pesos nem máquinas. Pagamento único.",
+  "como.semana1.num": "1",
+  "como.semana2.num": "2",
+  "como.semana3.num": "3",
+  "como.semana4.num": "4",
+  "paraquem.slide.1": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "paraquem.slide.2": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "paraquem.slide.3": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "paraquem.slide.4": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "paraquem.slide.5": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "paraquem.slide.6": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "programa.card1.p": "20 sessões, 5 por semana, com dois dias de descanso ou caminhada tranquila. Sem pesos nem máquinas.",
+  "programa.card2.p": "4 exercícios base com fotografia: agachamento, flexão inclinada, ponte de glúteos e bird-dog, com execução passo a passo e pontos de atenção.",
+  "programa.card3.p": "A mesma sequência para começar e terminar cada sessão, para não teres de pensar nisso.",
+  "programa.card4.p": "Assinalas cada sessão concluída e anotas data, nível, esforço e notas. Os dias de descanso também contam.",
+  "programa.card5.p": "Notas práticas sobre sono, hidratação, alimentação e consistência, para organizar a semana.",
+  "programa.card6.p": "Para controlares a intensidade de cada sessão e ajustares ao teu nível.",
+  "receitas.slide.1": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "receitas.slide.2": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "receitas.slide.3": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "receitas.slide.4": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "receitas.slide.5": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "receitas.slide.6": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "video.como.embed": "",
+  "video.como.title": "",
+  "video.hero.embed": "",
+  "video.hero.title": "",
+  "como.semana1.meta": "Guião na página 8",
+  "como.semana1.text": "As 5 sessões da semana, com voltas e repetições, e como ajustar ao teu nível.",
+  "como.semana2.meta": "Plano de 4 semanas",
+  "como.semana2.text": "Continuação do plano de 4 semanas, com as sessões da semana e o ajuste de volume ao teu nível.",
+  "como.semana3.meta": "Plano de 4 semanas",
+  "como.semana3.text": "Continuação do plano de 4 semanas, com as sessões da semana e o ajuste de volume ao teu nível.",
+  "como.semana4.meta": "Revisão na página 15",
+  "como.semana4.text": "Última semana do plano, que termina com uma revisão das 4 semanas e o registo do teu percurso.",
+  "header.brand.logo": {
+    "alt": "",
+    "src": "img/cms/header.brand.logo.webp?v=17944210578bb5",
+    "lightbox": "img/cms/header.brand.logo.webp?v=17944210578bb5"
+  },
+  "header.brand.mark": "28",
+  "header.brand.text": "dias em casa",
+  "header.nav.oferta": "Oferta e preço",
+  "hero.guia.caption": "Página 8, do guia real",
+  "incluido.sample.p": "Duas páginas reais do guia. Toca para ampliar.",
+  "niveis.avancado.p": "Até 3 voltas, apenas se mantiveres a técnica e recuperares bem. Aumenta apenas uma variável de cada vez.",
+  "programa.card1.h3": "Plano de 4 semanas",
+  "programa.card2.h3": "Exercícios explicados",
+  "programa.card3.h3": "Aquecimento e alongamentos",
+  "programa.card4.h3": "Calendário de acompanhamento",
+  "programa.card5.h3": "Hábitos saudáveis",
+  "programa.card6.h3": "Escala de esforço de 0 a 10",
+  "programa.cta.href": "https://pay.hotmart.com/T108490682Y",
+  "programa.cta.text": "Quero o guia por 14,90&nbsp;€",
+  "programa.media.s1": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "programa.media.s2": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "programa.media.s3": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "programa.media.s4": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "programa.media.s5": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "programa.media.s6": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "programa.split.h3": "Não precisas de ginásio, de pesos nem de horário marcado",
+  "programa.split.p1": "Precisas de espaço livre, de uma cadeira firme encostada à parede e de tempo para uma sessão. A flexão inclinada faz-se com as mãos numa bancada firme ou na parede.",
+  "programa.split.p2": "Formato: um PDF A4 de 15 páginas, para ver no telemóvel, no tablet, no computador ou imprimir.",
+  "como.semana1.title": "Aprender os movimentos",
+  "depoimentos.kicker": "Testemunhos",
+  "incluido.sample.h3": "Vê o interior antes de decidires",
+  "niveis.avancado.h3": "Avançado",
+  "niveis.iniciante.p": "1 a 2 voltas e pausas maiores. Começa por este nível se tiveres dúvidas sobre o teu ponto de partida.",
+  "como.calendario.img": {
+    "alt": "Página 13 do guia 28 dias em casa: Calendário das 4 semanas com espaço O meu compromisso",
+    "src": "img/guia-p13.webp"
+  },
+  "gallery.photos.lead": "Fotografias autorizadas pelas pessoas que aparecem. Desliza para o lado — o carrossel também avança sozinho.",
+  "header.nav.faq.href": "#faq",
+  "header.nav.incluido": "O que está incluído",
+  "header.nav.programa": "O programa",
+  "header.nav.receitas": "Guia de receitas",
+  "incluido.sample.p08": {
+    "alt": "Página 8 do guia 28 dias em casa: Semana 1, Aprender os movimentos, com as 5 sessões, voltas e repetições",
+    "src": "img/guia-p08.webp",
+    "lightbox": "img/guia-p08-lg.webp"
+  },
+  "incluido.sample.p13": {
+    "alt": "Página 13 do guia 28 dias em casa: Calendário das 4 semanas com espaço O meu compromisso",
+    "src": "img/guia-p13.webp",
+    "lightbox": "img/guia-p13-lg.webp"
+  },
+  "niveis.avancado.tag": "Nível 3",
+  "niveis.iniciante.h3": "Iniciante",
+  "niveis.intermedio.p": "2 voltas. Para quem já tem alguma regularidade e quer aumentar o volume sem mudar de movimentos.",
+  "programa.media.mode": "off",
+  "receitas.disclaimer": "São ideias de cozinha prática para organizar a semana. Não são um plano alimentar, não substituem um nutricionista e não fazem promessas de peso ou de saúde.",
+  "gallery.photos.title": "Algumas histórias <span class=\"heading-accent\">no programa</span>",
+  "header.nav.como.href": "#como-funciona",
+  "incluido.p08.caption": "Página 8: Semana 1, as 5 sessões com voltas e repetições.",
+  "niveis.iniciante.tag": "Nível 1",
+  "niveis.intermedio.h3": "Intermédio",
+  "programa.card1.photo": {
+    "alt": "Plano de 4 semanas",
+    "src": "img/cms/programa.card1.webp",
+    "lightbox": ""
+  },
+  "programa.card2.photo": {
+    "alt": "Exercícios explicados",
+    "src": "img/cms/programa.card2.webp",
+    "lightbox": ""
+  },
+  "programa.card3.photo": {
+    "alt": "Aquecimento e alongamentos",
+    "src": "img/cms/programa.card3.webp",
+    "lightbox": ""
+  },
+  "programa.card4.photo": {
+    "alt": "Calendário de acompanhamento",
+    "src": "img/cms/programa.card4.webp",
+    "lightbox": ""
+  },
+  "programa.card5.photo": {
+    "alt": "Hábitos saudáveis",
+    "src": "img/cms/programa.card5.webp",
+    "lightbox": ""
+  },
+  "programa.card6.photo": {
+    "alt": "Escala de esforço de 0 a 10",
+    "src": "img/cms/programa.card6.webp",
+    "lightbox": ""
+  },
+  "gallery.comments.lead": "Capturas ou textos autorizados. Desliza com o dedo no telemóvel.",
+  "niveis.avancado.photo": {
+    "src": "img/cms/niveis.avancado.photo.webp?v=17944121976b23",
+    "mode": "image",
+    "note": "Pessoa a treinar, prancha ou bird-dog no tapete",
+    "label": "Nível avançado"
+  },
+  "niveis.intermedio.tag": "Nível 2",
+  "programa.media.single": {
+    "alt": "",
+    "src": "",
+    "lightbox": ""
+  },
+  "depoimentos.card1.meta": "",
+  "depoimentos.card1.name": "",
+  "depoimentos.card2.meta": "",
+  "depoimentos.card2.name": "",
+  "depoimentos.card3.meta": "",
+  "depoimentos.card3.name": "",
+  "depoimentos.empty.text": "Este espaço está reservado para depoimentos reais e autorizados dos leitores do guia. Preferimos deixá-lo vazio a inventar pessoas, fotografias, avaliações ou resultados.",
+  "gallery.comments.title": "O que dizem <span class=\"heading-accent\">sobre o guia</span>",
+  "niveis.iniciante.photo": {
+    "src": "img/cms/niveis.iniciante.photo.webp?v=17944121239483",
+    "mode": "image",
+    "note": "Pessoa a começar, agachamento apoiada numa cadeira",
+    "label": "Nível iniciante"
+  },
+  "como.calendario.caption": "Página 13: calendário das 4 semanas e o espaço «O meu compromisso».",
+  "depoimentos.card1.photo": {
+    "alt": "",
+    "src": ""
+  },
+  "depoimentos.card1.quote": "",
+  "depoimentos.card2.photo": {
+    "alt": "",
+    "src": ""
+  },
+  "depoimentos.card2.quote": "",
+  "depoimentos.card3.photo": {
+    "alt": "",
+    "src": ""
+  },
+  "depoimentos.card3.quote": "",
+  "depoimentos.empty.title": "Ainda não há testemunhos publicados nesta página.",
+  "gallery.photos.cta.href": "https://pay.hotmart.com/T108490682Y",
+  "gallery.photos.cta.text": "Quero o guia 28 dias em casa por 14,90 €",
+  "gallery.photos.s1.after": {
+    "alt": "Exemplo: fotografia depois (substituir no painel admin)",
+    "src": "img/cms/gallery.photos.s1.after.webp?v=17944167271e29",
+    "lightbox": "img/cms/gallery.photos.s1.after.webp?v=17944167271e29"
+  },
+  "gallery.photos.s2.after": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.photos.s3.after": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.photos.s4.after": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.photos.s5.after": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.photos.s6.after": {
+    "alt": "",
+    "src": ""
+  },
+  "niveis.intermedio.photo": {
+    "src": "img/cms/niveis.intermedio.photo.webp?v=1794415436cb41",
+    "mode": "image",
+    "note": "Pessoa a treinar, flexão inclinada na bancada",
+    "label": "Nível intermédio"
+  },
+  "gallery.comments.s1.text": "",
+  "gallery.comments.s2.text": "",
+  "gallery.comments.s3.text": "",
+  "gallery.comments.s4.text": "",
+  "gallery.comments.s5.text": "",
+  "gallery.comments.s6.text": "",
+  "gallery.photos.s1.before": {
+    "alt": "Exemplo: fotografia antes (substituir no painel admin)",
+    "src": "img/cms/gallery.photos.s1.before.webp?v=1794416622802b",
+    "lightbox": "img/cms/gallery.photos.s1.before.webp?v=1794416622802b"
+  },
+  "gallery.photos.s2.before": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.photos.s3.before": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.photos.s4.before": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.photos.s5.before": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.photos.s6.before": {
+    "alt": "",
+    "src": ""
+  },
+  "header.nav.incluido.href": "#incluido",
+  "header.nav.programa.href": "#programa",
+  "gallery.comments.cta.href": "https://pay.hotmart.com/T108490682Y",
+  "gallery.comments.cta.text": "Quero começar o plano",
+  "gallery.comments.s1.image": {
+    "alt": "Exemplo de mensagem autorizada (substituir no painel admin)",
+    "src": "img/gallery-demo/comentario-1.svg"
+  },
+  "gallery.comments.s2.image": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.comments.s3.image": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.comments.s4.image": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.comments.s5.image": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.comments.s6.image": {
+    "alt": "",
+    "src": ""
+  },
+  "gallery.photos.s1.caption": "",
+  "gallery.photos.s2.caption": "",
+  "gallery.photos.s3.caption": "",
+  "gallery.photos.s4.caption": "",
+  "gallery.photos.s5.caption": "",
+  "gallery.photos.s6.caption": "",
+  "incluido.sample.p08.caption": "<strong>Página 8, Semana 1, Aprender os movimentos:</strong> as 5 sessões da semana, com voltas e repetições, e como ajustar ao teu nível. <span class=\"zoom-hint\">Toca para ampliar</span>",
+  "incluido.sample.p13.caption": "<strong>Página 13, Calendário das 4 semanas:</strong> para assinalares cada sessão concluída, com o espaço «O meu compromisso». <span class=\"zoom-hint\">Toca para ampliar</span>"
 }
