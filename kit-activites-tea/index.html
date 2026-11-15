@@ -5,74 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Kit d’activités TEA — 100 fiches PDF à imprimer</title>
   <meta name="description" content="Matériel pédagogique et ludique : 100 fiches PDF à imprimer pour enfants TEA/TSA et familles. 17 €. Ne remplace pas un suivi médical."/>
-  <meta name="theme-color" content="#05070d"/>
+  <meta name="theme-color" content="#ffffff"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     :root{
-      --navy:#05070d; --navy2:#0a1020; --navy3:#0e1626;
-      --ciano:#5ef0e0; --azul:#2c7bff; --azul2:#8b7bff;
-      --texto:#eaf2ff; --suave:#9fb2cc; --linha:rgba(120,170,255,.18);
-      --grad:linear-gradient(95deg,#5ef0e0 0%,#3fc8ff 45%,#8b7bff 100%);
-      --grad2:linear-gradient(95deg,#0aa5c9 0%,#2c7bff 55%,#6a5bff 100%);
-      --card:linear-gradient(165deg,rgba(139,123,255,.18),rgba(14,22,36,.92) 55%);
-      --raio:18px;
+      --branco:#ffffff;
+      --lavanda:#f4ecfd;
+      --lavanda2:#ede0fb;
+      --roxo:#8020ec;
+      --roxo-esc:#5f14b8;
+      --roxo-claro:#a855f7;
+      --amarelo:#fde114;
+      --coral:#f1736f;
+      --coral-esc:#e96957;
+      --tinta:#1c1230;
+      --texto:#3d3352;
+      --suave:#6b5f80;
+      --linha:#e8dcf7;
+      --grad:linear-gradient(100deg,#8020ec 0%,#a855f7 55%,#c084fc 100%);
+      --grad-coral:linear-gradient(100deg,#f1736f 0%,#e96957 100%);
+      --sombra:0 18px 44px rgba(128,32,236,.13);
+      --sombra-forte:0 26px 60px rgba(128,32,236,.22);
+      --raio:26px;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
-      margin:0; background:var(--navy); color:var(--texto);
+      margin:0; background:var(--branco); color:var(--texto);
       font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-      line-height:1.62; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+      line-height:1.65; -webkit-font-smoothing:antialiased; overflow-x:hidden;
     }
     img{max-width:100%; display:block; height:auto}
-    a{color:var(--ciano)}
+    a{color:var(--roxo)}
     .wrap{width:100%; max-width:1080px; margin:0 auto; padding:0 20px}
     .estreito{max-width:780px}
 
     /* ---------- fundo ---------- */
     .fundo{position:fixed; inset:0; z-index:-2; background:
-      radial-gradient(60% 45% at 78% 6%, rgba(139,123,255,.26), transparent 70%),
-      radial-gradient(50% 40% at 10% 20%, rgba(94,240,224,.12), transparent 72%),
-      radial-gradient(70% 50% at 50% 100%, rgba(30,91,255,.20), transparent 70%),
-      var(--navy);}
-    .grelha{position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.45;
-      background-image:linear-gradient(rgba(120,170,255,.07) 1px,transparent 1px),
-                       linear-gradient(90deg,rgba(120,170,255,.07) 1px,transparent 1px);
-      background-size:56px 56px;
-      mask-image:radial-gradient(70% 60% at 50% 20%,#000 20%,transparent 85%);
-      -webkit-mask-image:radial-gradient(70% 60% at 50% 20%,#000 20%,transparent 85%);}
+      radial-gradient(52% 38% at 88% 2%, rgba(168,85,247,.13), transparent 70%),
+      radial-gradient(46% 34% at 4% 12%, rgba(253,225,20,.16), transparent 72%),
+      radial-gradient(60% 40% at 50% 100%, rgba(128,32,236,.07), transparent 70%),
+      var(--branco);}
+    .grelha{display:none}
 
     /* ---------- tipografia ---------- */
-    h1{font-size:clamp(1.85rem,5.2vw,3.1rem); line-height:1.1; font-weight:900; letter-spacing:-.02em; margin:0 0 18px}
-    h2{font-size:clamp(1.35rem,3.4vw,2rem); line-height:1.18; font-weight:800; letter-spacing:-.01em; margin:0 0 14px}
-    h3{font-size:1.05rem; font-weight:700; margin:0 0 8px}
+    h1{font-size:clamp(1.9rem,5.4vw,3.2rem); line-height:1.1; font-weight:900; letter-spacing:-.025em; margin:0 0 18px; color:var(--tinta)}
+    h2{font-size:clamp(1.4rem,3.6vw,2.1rem); line-height:1.18; font-weight:800; letter-spacing:-.015em; margin:0 0 14px; color:var(--tinta)}
+    h3{font-size:1.06rem; font-weight:700; margin:0 0 8px; color:var(--tinta)}
     p{margin:0 0 14px}
     .grad-txt{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
-    .olho{display:inline-flex; align-items:center; gap:8px; font-size:.72rem; font-weight:700;
-      letter-spacing:.16em; text-transform:uppercase; color:var(--ciano);
-      border:1px solid rgba(94,240,224,.35); background:rgba(94,240,224,.07);
-      padding:7px 14px; border-radius:999px; margin-bottom:20px}
-    .olho::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--ciano);
-      box-shadow:0 0 10px var(--ciano); animation:pisca 2.2s ease-in-out infinite}
-    @keyframes pisca{0%,100%{opacity:1}50%{opacity:.25}}
+    .olho{display:inline-flex; align-items:center; gap:8px; font-size:.72rem; font-weight:800;
+      letter-spacing:.15em; text-transform:uppercase; color:var(--roxo);
+      border:1.5px solid var(--lavanda2); background:var(--lavanda);
+      padding:8px 16px; border-radius:999px; margin-bottom:20px}
+    .olho::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--amarelo);
+      box-shadow:0 0 0 3px rgba(253,225,20,.28); animation:pisca 2.2s ease-in-out infinite}
+    @keyframes pisca{0%,100%{opacity:1}50%{opacity:.35}}
     .sub{font-size:clamp(1rem,2.2vw,1.16rem); color:var(--suave); max-width:640px}
+    .sub strong{color:var(--tinta)}
     .sec{padding:clamp(52px,8vw,96px) 0; position:relative}
     .sec-topo{text-align:center; margin-bottom:clamp(28px,4vw,46px)}
     .sec-topo .sub{margin:0 auto}
+    .sec-lavanda{background:var(--lavanda)}
 
     /* ---------- botões ---------- */
     .cta{
       display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      background:var(--grad); color:#04121c; font-weight:800; font-size:1.02rem;
-      padding:17px 34px; border-radius:999px; text-decoration:none; border:0; cursor:pointer;
-      box-shadow:0 10px 34px rgba(139,123,255,.42), inset 0 1px 0 rgba(255,255,255,.5);
+      background:var(--grad-coral); color:#fff; font-weight:800; font-size:1.04rem;
+      padding:18px 36px; border-radius:999px; text-decoration:none; border:0; cursor:pointer;
+      box-shadow:0 14px 34px rgba(233,105,87,.36), inset 0 1px 0 rgba(255,255,255,.35);
       transition:transform .18s ease, box-shadow .18s ease; position:relative; overflow:hidden;
     }
-    .cta:hover{transform:translateY(-2px); box-shadow:0 16px 44px rgba(139,123,255,.55), inset 0 1px 0 rgba(255,255,255,.6)}
+    .cta:hover{transform:translateY(-2px); box-shadow:0 20px 44px rgba(233,105,87,.46), inset 0 1px 0 rgba(255,255,255,.45)}
     .cta::after{content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
-      background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+      background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);
       transform:skewX(-18deg); animation:brilho 3.6s ease-in-out infinite}
     @keyframes brilho{0%{left:-60%}55%{left:130%}100%{left:130%}}
     .cta[aria-disabled="true"]{opacity:.9}
@@ -80,10 +88,10 @@
     .cta-nota{font-size:.82rem; color:var(--suave); text-align:center}
 
     /* ---------- cartões ---------- */
-    .card{background:var(--card); border:1px solid var(--linha); border-radius:var(--raio);
-      padding:24px; backdrop-filter:blur(6px)}
-    .g2{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px}
-    .g3{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px}
+    .card{background:var(--branco); border:1.5px solid var(--linha); border-radius:var(--raio);
+      padding:26px; box-shadow:var(--sombra)}
+    .g2{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px}
+    .g3{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px}
 
     .hero-grade{display:grid; grid-template-columns:1fr; gap:38px; align-items:center}
     @media(min-width:900px){
@@ -91,86 +99,92 @@
     }
 
     /* ---------- faixa rolante ---------- */
-    .faixa{overflow:hidden; border-top:1px solid var(--linha); border-bottom:1px solid var(--linha);
-      background:rgba(10,16,32,.6); padding:16px 0; position:relative}
+    .faixa{overflow:hidden; border-top:1.5px solid var(--linha); border-bottom:1.5px solid var(--linha);
+      background:var(--lavanda); padding:16px 0; position:relative}
     .faixa::before,.faixa::after{content:""; position:absolute; top:0; bottom:0; width:90px; z-index:2; pointer-events:none}
-    .faixa::before{left:0; background:linear-gradient(90deg,var(--navy),transparent)}
-    .faixa::after{right:0; background:linear-gradient(270deg,var(--navy),transparent)}
+    .faixa::before{left:0; background:linear-gradient(90deg,var(--lavanda),transparent)}
+    .faixa::after{right:0; background:linear-gradient(270deg,var(--lavanda),transparent)}
     .faixa-trilho{display:flex; gap:44px; width:max-content; animation:rolar 34s linear infinite}
     .faixa:hover .faixa-trilho{animation-play-state:paused}
     @keyframes rolar{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    .faixa-item{display:flex; align-items:center; gap:10px; color:var(--suave);
-      font-size:.86rem; font-weight:600; white-space:nowrap}
-    .faixa-item svg{width:22px; height:22px; color:var(--ciano); flex:0 0 auto}
+    .faixa-item{display:flex; align-items:center; gap:10px; color:var(--roxo-esc);
+      font-size:.86rem; font-weight:700; white-space:nowrap}
+    .faixa-item svg{width:22px; height:22px; color:var(--roxo); flex:0 0 auto}
 
     /* ---------- carrossel de páginas ---------- */
-    .carrossel{display:flex; gap:16px; overflow-x:auto; padding:6px 20px 22px;
+    .carrossel{display:flex; gap:18px; overflow-x:auto; padding:6px 20px 22px;
       scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
-      scrollbar-width:thin; scrollbar-color:rgba(94,240,224,.4) transparent}
+      scrollbar-width:thin; scrollbar-color:rgba(128,32,236,.35) transparent}
     .carrossel::-webkit-scrollbar{height:6px}
-    .carrossel::-webkit-scrollbar-thumb{background:rgba(94,240,224,.4); border-radius:99px}
+    .carrossel::-webkit-scrollbar-thumb{background:rgba(128,32,236,.35); border-radius:99px}
     .carrossel figure{flex:0 0 auto; width:min(74vw,300px); margin:0; scroll-snap-align:center}
-    .carrossel img{border-radius:12px; border:1px solid var(--linha);
-      box-shadow:0 18px 40px rgba(0,0,0,.55); background:#fff}
-    .carrossel figcaption{font-size:.76rem; color:var(--suave); text-align:center; margin-top:9px}
+    .carrossel img{border-radius:18px; border:1.5px solid var(--linha);
+      box-shadow:0 18px 40px rgba(128,32,236,.16); background:#fff}
+    .carrossel figcaption{font-size:.78rem; color:var(--suave); text-align:center; margin-top:10px; font-weight:600}
     .dica-rolar{text-align:center; font-size:.78rem; color:var(--suave); margin-top:2px}
 
-    /* ---------- mockup ---------- */
-    .mockup{border-radius:var(--raio); overflow:hidden; border:1px solid var(--linha);
-      box-shadow:0 30px 70px rgba(0,0,0,.6)}
+    /* ---------- mockup / ilustrações ---------- */
+    .mockup{border-radius:var(--raio); overflow:hidden; border:1.5px solid var(--linha);
+      box-shadow:var(--sombra-forte); background:var(--branco)}
+    .ilu{border-radius:var(--raio); overflow:hidden; border:1.5px solid var(--linha);
+      box-shadow:var(--sombra); background:var(--branco); margin:0}
+    .ilu img{width:100%}
+    .ilu figcaption{font-size:.8rem; color:var(--suave); padding:12px 16px; text-align:center; font-weight:600}
 
     /* ---------- lista de benefícios ---------- */
-    .lista{list-style:none; padding:0; margin:0; display:grid; gap:14px}
+    .lista{list-style:none; padding:0; margin:0; display:grid; gap:15px}
     .lista li{display:flex; gap:13px; align-items:flex-start; font-size:.97rem}
-    .lista .marca{flex:0 0 auto; width:26px; height:26px; border-radius:50%;
-      background:rgba(94,240,224,.14); border:1px solid rgba(94,240,224,.4);
-      display:grid; place-items:center; color:var(--ciano); font-size:.8rem; font-weight:800; margin-top:2px}
-    .lista strong{color:#fff}
+    .lista .marca{flex:0 0 auto; width:28px; height:28px; border-radius:50%;
+      background:var(--lavanda); border:1.5px solid var(--lavanda2);
+      display:grid; place-items:center; color:var(--roxo); font-size:.8rem; font-weight:800; margin-top:2px}
+    .lista strong{color:var(--tinta)}
 
     /* ---------- passos ---------- */
     .passo{position:relative; padding-left:0}
-    .passo .num{font-size:2.1rem; font-weight:900; line-height:1;
+    .passo .num{font-size:2.2rem; font-weight:900; line-height:1;
       background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:10px}
 
     /* ---------- preço ---------- */
-    .preco-card{max-width:520px; margin:0 auto; text-align:center; padding:clamp(28px,5vw,44px);
-      background:linear-gradient(165deg,rgba(139,123,255,.24),rgba(10,16,32,.95) 60%);
-      border:1px solid rgba(94,240,224,.28); border-radius:24px;
-      box-shadow:0 30px 80px rgba(106,91,255,.28), inset 0 1px 0 rgba(255,255,255,.12)}
-    .preco-valor{font-size:clamp(2.6rem,9vw,3.6rem); font-weight:900; line-height:1; letter-spacing:-.03em; margin:6px 0 4px}
-    .preco-tag{font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ciano); font-weight:700}
-    .preco-lista{list-style:none; padding:0; margin:22px 0 0; display:grid; gap:9px; text-align:left; font-size:.9rem; color:var(--suave)}
-    .preco-lista li::before{content:"✓"; color:var(--ciano); font-weight:800; margin-right:9px}
+    .preco-card{max-width:520px; margin:0 auto; text-align:center; padding:clamp(28px,5vw,46px);
+      background:var(--branco);
+      border:2px solid var(--lavanda2); border-radius:32px;
+      box-shadow:0 30px 80px rgba(128,32,236,.18), inset 0 1px 0 rgba(255,255,255,.9)}
+    .preco-valor{font-size:clamp(2.8rem,9vw,3.8rem); font-weight:900; line-height:1; letter-spacing:-.03em; margin:6px 0 4px}
+    .preco-tag{font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--roxo); font-weight:800}
+    .preco-lista{list-style:none; padding:0; margin:22px 0 0; display:grid; gap:10px; text-align:left; font-size:.9rem; color:var(--suave)}
+    .preco-lista li::before{content:"✓"; color:var(--roxo); font-weight:800; margin-right:9px}
 
     /* ---------- avisos ---------- */
-    .aviso{border-left:3px solid rgba(94,240,224,.5); background:rgba(94,240,224,.05);
-      padding:14px 18px; border-radius:0 12px 12px 0; font-size:.9rem; color:var(--suave); margin:14px 0}
-    .aviso strong{color:#fff}
+    .aviso{border-left:4px solid var(--amarelo); background:#fffbe0;
+      padding:15px 18px; border-radius:0 16px 16px 0; font-size:.9rem; color:var(--texto); margin:14px 0}
+    .aviso strong{color:var(--tinta)}
 
     /* ---------- FAQ ---------- */
-    details{border:1px solid var(--linha); border-radius:14px; padding:16px 18px;
-      background:rgba(14,22,36,.6); margin-bottom:10px}
-    details[open]{border-color:rgba(94,240,224,.35)}
+    details{border:1.5px solid var(--linha); border-radius:18px; padding:17px 20px;
+      background:var(--branco); margin-bottom:12px; box-shadow:0 6px 18px rgba(128,32,236,.05)}
+    details[open]{border-color:var(--lavanda2); background:var(--lavanda)}
     summary{cursor:pointer; font-weight:700; font-size:.96rem; list-style:none; display:flex;
-      justify-content:space-between; gap:14px; align-items:center}
+      justify-content:space-between; gap:14px; align-items:center; color:var(--tinta)}
     summary::-webkit-details-marker{display:none}
-    summary::after{content:"+"; color:var(--ciano); font-size:1.3rem; font-weight:400; line-height:1}
+    summary::after{content:"+"; color:var(--roxo); font-size:1.35rem; font-weight:400; line-height:1}
     details[open] summary::after{content:"–"}
     details p{margin:12px 0 0; font-size:.9rem; color:var(--suave)}
 
     /* ---------- rodapé ---------- */
-    footer{border-top:1px solid var(--linha); padding:40px 0 120px; font-size:.82rem; color:var(--suave)}
-    footer a{color:var(--suave); text-decoration:underline}
+    footer{border-top:1.5px solid var(--linha); padding:44px 0 120px; font-size:.82rem; color:var(--suave); background:var(--lavanda)}
+    footer a{color:var(--roxo); text-decoration:underline}
+    footer strong{color:var(--tinta)}
 
     /* ---------- barra fixa mobile ---------- */
     .barra{position:fixed; left:0; right:0; bottom:0; z-index:900;
-      background:rgba(5,7,13,.92); backdrop-filter:blur(14px);
-      border-top:1px solid var(--linha); padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-      display:flex; align-items:center; gap:14px; justify-content:space-between}
+      background:rgba(255,255,255,.96); backdrop-filter:blur(14px);
+      border-top:1.5px solid var(--linha); padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+      display:flex; align-items:center; gap:14px; justify-content:space-between;
+      box-shadow:0 -8px 30px rgba(128,32,236,.10)}
     .barra .p{font-size:.78rem; color:var(--suave); line-height:1.3}
-    .barra .p b{display:block; font-size:1.05rem; color:#fff}
+    .barra .p b{display:block; font-size:1.05rem; color:var(--tinta)}
     .barra .cta{padding:13px 22px; font-size:.9rem; flex:0 0 auto}
-    @media(min-width:820px){.barra{display:none} footer{padding-bottom:40px}}
+    @media(min-width:820px){.barra{display:none} footer{padding-bottom:44px}}
 
     /* ---------- animações de entrada ---------- */
     .sobe{opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease}
@@ -182,7 +196,7 @@
     }
 
     /* ---------- cena vectorial ---------- */
-    .cena{width:100%; max-width:420px; margin:0 auto; color:var(--ciano); opacity:.9}
+    .cena{width:100%; max-width:420px; margin:0 auto; color:var(--roxo); opacity:.95}
     .cena .agulha{animation:cose 3.4s ease-in-out infinite}
     @keyframes cose{0%,100%{transform:translate(0,0)}50%{transform:translate(14px,16px)}}
     .cena .linha{animation:tremelic 4s ease-in-out infinite}
@@ -192,11 +206,10 @@
     .cena .cadernos{animation:respira 5s ease-in-out infinite}
     @keyframes respira{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
   </style>
-  <script src="checkout-config.js?v=20261115b"></script>
+  <script src="checkout-config.js?v=20261115c"></script>
 </head>
 <body>
 <div class="fundo"></div>
-<div class="grelha"></div>
 
 <!-- ================= HERO ================= -->
 <header class="sec" style="padding-top:clamp(40px,7vw,72px)">
@@ -205,7 +218,7 @@
       <div class="sobe">
         <span class="olho">Matériel pédagogique et ludique</span>
         <h1>Kit d'activités TEA — <span class="grad-txt">100 fiches PDF à imprimer</span>, classées par niveau</h1>
-        <p class="sub">Téléchargement immédiat · impression à domicile · <strong style="color:#fff">17 €</strong> · contenu <strong style="color:#fff">pédagogique et récréatif</strong> (ne remplace pas un suivi médical ou paramédical).</p>
+        <p class="sub">Téléchargement immédiat · impression à domicile · <strong>17 €</strong> · contenu <strong>pédagogique et récréatif</strong> (ne remplace pas un suivi médical ou paramédical).</p>
         <div class="cta-bloco" style="align-items:flex-start; margin-top:30px">
           <a class="cta" data-checkout href="#checkout-pending-funil-b3">Obtenir le kit PDF</a>
           <span class="cta-nota">100 fiches · téléchargement immédiat · paiement unique</span>
@@ -277,7 +290,7 @@
 </section>
 
 <!-- ================= APERÇU ================= -->
-<section class="sec" id="apercu" style="padding-left:0;padding-right:0">
+<section class="sec sec-lavanda" id="apercu" style="padding-left:0;padding-right:0">
   <div class="wrap estreito sec-topo sobe">
     <span class="olho">Aperçu des fiches</span>
     <h2>Des fiches réelles, <span class="grad-txt">pas des promesses</span></h2>
@@ -297,54 +310,43 @@
   <p class="dica-rolar">← Faites glisser →</p>
 </section>
 
-<!-- ================= CENAS ================= -->
+<!-- ================= ILUSTRAÇÕES ================= -->
 <section class="sec" aria-label="Illustrations du contenu">
   <div class="wrap">
     <div class="sec-topo sobe">
       <span class="olho">Les types d'activités</span>
       <h2>Trois familles, un seul cahier</h2>
+      <p class="sub">Graphisme, découpage et séquences : chaque fiche travaille un geste simple, avec un pas-à-pas visuel.</p>
     </div>
     <div class="g3">
-      <div class="card sobe" style="text-align:center">
-        <svg class="cena" viewBox="0 0 400 200" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="70" y="60" width="120" height="90" rx="4" fill="rgba(255,255,255,.05)"/>
-          <rect x="210" y="60" width="120" height="90" rx="4" fill="rgba(255,255,255,.05)"/>
-          <path d="M190 60 V150 M210 60 V150" opacity=".5"/>
-          <path d="M92 84 H168 M92 100 H168 M92 116 H150" opacity=".35"/>
-          <path d="M232 84 H308 M232 100 H308 M232 116 H290" opacity=".35"/>
-          <g class="linha"><path d="M190 70 C170 40, 230 30, 210 70" stroke-dasharray="6 6"/></g>
-          <g class="agulha"><path d="M150 20 L196 66"/><ellipse cx="146" cy="16" rx="6" ry="3" transform="rotate(45 146 16)"/></g>
-        </svg>
-        <h3 style="margin-top:14px">Graphisme</h3>
-        <p style="font-size:.88rem; color:var(--suave); margin:0">Tracer, suivre, compléter.</p>
-      </div>
-      <div class="card sobe" style="text-align:center">
-        <svg class="cena" viewBox="0 0 400 200" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <g class="papel"><path d="M120 40 H250 L290 80 V190 H120 Z" fill="rgba(255,255,255,.05)"/><path d="M250 40 V80 H290" opacity=".6"/></g>
-          <g class="regua"><rect x="60" y="200" width="280" height="26" rx="4" fill="rgba(255,255,255,.05)"/><path d="M90 200 V214 M130 200 V210 M170 200 V214 M210 200 V210 M250 200 V214 M290 200 V210" opacity=".5"/></g>
-          <g class="tesoura"><circle cx="90" cy="120" r="14"/><circle cx="90" cy="70" r="14"/><path d="M102 112 L180 60"/><path d="M102 78 L180 130"/></g>
-        </svg>
-        <h3 style="margin-top:14px">Découpage</h3>
-        <p style="font-size:.88rem; color:var(--suave); margin:0">Bandes, vignettes, puzzles.</p>
-      </div>
-      <div class="card sobe" style="text-align:center">
-        <svg class="cena" viewBox="0 0 400 200" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <g class="cadernos">
-            <rect x="60" y="70" width="80" height="110" rx="5" fill="rgba(94,240,224,.10)" stroke="rgba(94,240,224,.5)"/>
-            <rect x="160" y="50" width="80" height="130" rx="5" fill="rgba(139,123,255,.12)" stroke="rgba(139,123,255,.55)"/>
-            <rect x="260" y="80" width="80" height="100" rx="5" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.35)"/>
-            <path d="M60 90 H140 M160 70 H240 M260 100 H340" opacity=".4"/>
-          </g>
-        </svg>
-        <h3 style="margin-top:14px">Séquences</h3>
-        <p style="font-size:.88rem; color:var(--suave); margin:0">Remettre les étapes dans l'ordre.</p>
-      </div>
+      <figure class="ilu sobe">
+        <img src="assets/ilu-1.webp" width="1200" height="800" loading="lazy" alt="Illustration : activités de graphisme et de repérage visuel"/>
+        <figcaption>Graphisme — tracer, suivre, compléter</figcaption>
+      </figure>
+      <figure class="ilu sobe">
+        <img src="assets/ilu-2.webp" width="1200" height="675" loading="lazy" alt="Illustration : activités de découpage et d'assemblage"/>
+        <figcaption>Découpage — bandes, vignettes, puzzles</figcaption>
+      </figure>
+      <figure class="ilu sobe">
+        <img src="assets/ilu-3.webp" width="1200" height="800" loading="lazy" alt="Illustration : activités de séquences et de routines"/>
+        <figcaption>Séquences — remettre les étapes dans l'ordre</figcaption>
+      </figure>
+    </div>
+    <div class="g2" style="margin-top:20px">
+      <figure class="ilu sobe">
+        <img src="assets/ilu-4.webp" width="1200" height="800" loading="lazy" alt="Illustration : jeux d'association et de classement par niveau"/>
+        <figcaption>Association — relier, classer, comparer</figcaption>
+      </figure>
+      <figure class="ilu sobe">
+        <img src="assets/ilu-5.webp" width="1200" height="800" loading="lazy" alt="Illustration : tableaux visuels et routines du quotidien"/>
+        <figcaption>Routines — tableaux visuels du quotidien</figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
 <!-- ================= FORMAT ================= -->
-<section class="sec">
+<section class="sec sec-lavanda">
   <div class="wrap">
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:34px; align-items:center">
       <div class="sobe">
@@ -384,7 +386,7 @@
 </section>
 
 <!-- ================= PRIX ================= -->
-<section class="sec" id="offre">
+<section class="sec sec-lavanda" id="offre">
   <div class="wrap">
     <div class="preco-card sobe">
       <span class="preco-tag">Kit complet</span>
@@ -425,11 +427,11 @@
 <!-- ================= RODAPÉ ================= -->
 <footer>
   <div class="wrap estreito">
-    <p style="color:#fff; font-weight:700; margin-bottom:6px">Kit d'activités TEA</p>
+    <p style="color:var(--tinta); font-weight:800; margin-bottom:6px">Kit d'activités TEA</p>
     <p>Matériel pédagogique et ludique — 100 fiches PDF à imprimer, classées par niveau. Prix unique 17 €.</p>
-    <p><strong style="color:#fff">Ne remplace pas un suivi médical ou paramédical.</strong> Pas de diagnostic, pas de programme de « guérison ».</p>
+    <p><strong>Ne remplace pas un suivi médical ou paramédical.</strong> Pas de diagnostic, pas de programme de « guérison ».</p>
     <p>Données personnelles : utilisation conforme au RGPD. Cookies et Pixel Meta : <a href="#" data-cookie-settings>gérer mes préférences</a>.</p>
-    <p style="margin-top:18px; font-size:.76rem; opacity:.7">© 2026 — Tous droits réservés. Les visuels présentés sont des illustrations du contenu du kit.</p>
+    <p style="margin-top:18px; font-size:.76rem; opacity:.75">© 2026 — Tous droits réservés. Les visuels présentés sont des illustrations du contenu du kit.</p>
   </div>
 </footer>
 
@@ -440,10 +442,10 @@
 </div>
 
 <!-- ================= BANNER COOKIES ================= -->
-<div id="cookie-banner" hidden aria-hidden="true" style="position:fixed;left:0;right:0;bottom:0;background:#0a1020;color:#eaf2ff;padding:16px 18px;font-size:.86rem;z-index:9999;box-shadow:0 -4px 30px rgba(0,0,0,.6);border-top:1px solid rgba(120,170,255,.25)">
+<div id="cookie-banner" hidden aria-hidden="true" style="position:fixed;left:0;right:0;bottom:0;background:#ffffff;color:#3d3352;padding:16px 18px;font-size:.86rem;z-index:9999;box-shadow:0 -8px 34px rgba(128,32,236,.18);border-top:1.5px solid #e8dcf7">
   <p style="margin:0 0 12px; max-width:760px">Nous utilisons le Pixel Meta pour mesurer l'efficacité des publicités. Accepter ou refuser (RGPD).</p>
-  <button type="button" id="cookie-accept" style="margin-right:8px;padding:10px 20px;background:linear-gradient(95deg,#5ef0e0,#8b7bff);color:#04121c;border:0;border-radius:999px;font-weight:800;cursor:pointer">Accepter</button>
-  <button type="button" id="cookie-refuse" style="padding:10px 20px;background:#1a2438;color:#eaf2ff;border:1px solid rgba(120,170,255,.3);border-radius:999px;font-weight:600;cursor:pointer">Refuser</button>
+  <button type="button" id="cookie-accept" style="margin-right:8px;padding:10px 20px;background:linear-gradient(100deg,#f1736f,#e96957);color:#fff;border:0;border-radius:999px;font-weight:800;cursor:pointer">Accepter</button>
+  <button type="button" id="cookie-refuse" style="padding:10px 20px;background:#f4ecfd;color:#5f14b8;border:1.5px solid #e8dcf7;border-radius:999px;font-weight:700;cursor:pointer">Refuser</button>
 </div>
 
 <script>
@@ -462,8 +464,8 @@
 })();
 </script>
 
-<script src="checkout-link.js?v=20261115b"></script>
-<script src="utm.js?v=20261115b"></script>
-<script src="cookies.js?v=20261115b"></script>
+<script src="checkout-link.js?v=20261115c"></script>
+<script src="utm.js?v=20261115c"></script>
+<script src="cookies.js?v=20261115c"></script>
 </body>
 </html>
