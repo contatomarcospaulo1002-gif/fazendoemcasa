@@ -5,58 +5,472 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Reliure artisanale — carnets et agendas faits main</title>
   <meta name="description" content="Formation reliure FR : débuter sans machine coûteuse. Carnets et agendas, 19 €. Hobby — aucun revenu garanti."/>
+  <meta name="theme-color" content="#05070d"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    :root { --accent: #7a4f2e; --text: #1a1a1a; --muted: #555; }
-    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 0 auto; padding: 20px 18px 110px; line-height: 1.55; color: var(--text); font-size: 1rem; }
-    h1 { font-size: clamp(1.35rem, 4.5vw, 1.7rem); line-height: 1.22; }
-    h2 { font-size: 1.05rem; margin-top: 1.35rem; }
-    .subhead { font-size: 1.02rem; color: var(--muted); margin-top: 0.5rem; }
-    .price { font-size: 1.3rem; font-weight: 700; margin: 18px 0 8px; }
-    .cta {
-      display: block; text-align: center; background: var(--accent); color: #fff;
-      padding: 15px 16px; border-radius: 8px; text-decoration: none; margin: 20px 0; font-weight: 600;
+    :root{
+      --navy:#05070d; --navy2:#0a1020; --navy3:#0e1626;
+      --ciano:#4ff0f5; --azul:#2c7bff; --azul2:#4194ff;
+      --texto:#eaf2ff; --suave:#9fb2cc; --linha:rgba(120,170,255,.18);
+      --grad:linear-gradient(95deg,#4ff0f5 0%,#2cc4ff 45%,#4194ff 100%);
+      --grad2:linear-gradient(95deg,#0aa5c9 0%,#2c7bff 55%,#1e5bff 100%);
+      --card:linear-gradient(165deg,rgba(44,123,255,.20),rgba(14,22,36,.92) 55%);
+      --raio:18px;
     }
-    .cta[aria-disabled="true"] { opacity: 0.88; }
-    .warn { background: #f8f2eb; border-left: 4px solid var(--accent); padding: 12px 14px; font-size: 0.95rem; margin: 16px 0; line-height: 1.45; }
-    .note { font-size: 0.9rem; color: var(--muted); }
-    ul { padding-left: 1.15rem; }
-    ul li { margin-bottom: 0.45rem; }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; background:var(--navy); color:var(--texto);
+      font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+      line-height:1.62; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+    }
+    img{max-width:100%; display:block; height:auto}
+    a{color:var(--ciano)}
+    .wrap{width:100%; max-width:1080px; margin:0 auto; padding:0 20px}
+    .estreito{max-width:780px}
+
+    /* ---------- fundo ---------- */
+    .fundo{position:fixed; inset:0; z-index:-2; background:
+      radial-gradient(60% 45% at 78% 6%, rgba(44,123,255,.30), transparent 70%),
+      radial-gradient(50% 40% at 10% 20%, rgba(79,240,245,.12), transparent 72%),
+      radial-gradient(70% 50% at 50% 100%, rgba(30,91,255,.20), transparent 70%),
+      var(--navy);}
+    .grelha{position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.45;
+      background-image:linear-gradient(rgba(120,170,255,.07) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(120,170,255,.07) 1px,transparent 1px);
+      background-size:56px 56px;
+      mask-image:radial-gradient(70% 60% at 50% 20%,#000 20%,transparent 85%);
+      -webkit-mask-image:radial-gradient(70% 60% at 50% 20%,#000 20%,transparent 85%);}
+
+    /* ---------- tipografia ---------- */
+    h1{font-size:clamp(1.85rem,5.2vw,3.1rem); line-height:1.1; font-weight:900; letter-spacing:-.02em; margin:0 0 18px}
+    h2{font-size:clamp(1.35rem,3.4vw,2rem); line-height:1.18; font-weight:800; letter-spacing:-.01em; margin:0 0 14px}
+    h3{font-size:1.05rem; font-weight:700; margin:0 0 8px}
+    p{margin:0 0 14px}
+    .grad-txt{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+    .olho{display:inline-flex; align-items:center; gap:8px; font-size:.72rem; font-weight:700;
+      letter-spacing:.16em; text-transform:uppercase; color:var(--ciano);
+      border:1px solid rgba(79,240,245,.35); background:rgba(79,240,245,.07);
+      padding:7px 14px; border-radius:999px; margin-bottom:20px}
+    .olho::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--ciano);
+      box-shadow:0 0 10px var(--ciano); animation:pisca 2.2s ease-in-out infinite}
+    @keyframes pisca{0%,100%{opacity:1}50%{opacity:.25}}
+    .sub{font-size:clamp(1rem,2.2vw,1.16rem); color:var(--suave); max-width:640px}
+    .sec{padding:clamp(52px,8vw,96px) 0; position:relative}
+    .sec-topo{text-align:center; margin-bottom:clamp(28px,4vw,46px)}
+    .sec-topo .sub{margin:0 auto}
+
+    /* ---------- botões ---------- */
+    .cta{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      background:var(--grad); color:#04121c; font-weight:800; font-size:1.02rem;
+      padding:17px 34px; border-radius:999px; text-decoration:none; border:0; cursor:pointer;
+      box-shadow:0 10px 34px rgba(44,123,255,.42), inset 0 1px 0 rgba(255,255,255,.5);
+      transition:transform .18s ease, box-shadow .18s ease; position:relative; overflow:hidden;
+    }
+    .cta:hover{transform:translateY(-2px); box-shadow:0 16px 44px rgba(44,123,255,.55), inset 0 1px 0 rgba(255,255,255,.6)}
+    .cta::after{content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+      background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+      transform:skewX(-18deg); animation:brilho 3.6s ease-in-out infinite}
+    @keyframes brilho{0%{left:-60%}55%{left:130%}100%{left:130%}}
+    .cta[aria-disabled="true"]{opacity:.9}
+    .cta-bloco{display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:26px}
+    .cta-nota{font-size:.82rem; color:var(--suave); text-align:center}
+
+    /* ---------- cartões ---------- */
+    .card{background:var(--card); border:1px solid var(--linha); border-radius:var(--raio);
+      padding:24px; backdrop-filter:blur(6px)}
+    .g2{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px}
+    .g3{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px}
+
+    .hero-grade{display:grid; grid-template-columns:1fr; gap:38px; align-items:center}
+    @media(min-width:900px){
+      .hero-grade{grid-template-columns:1.05fr .95fr; gap:52px}
+    }
+
+    /* ---------- faixa rolante ---------- */
+    .faixa{overflow:hidden; border-top:1px solid var(--linha); border-bottom:1px solid var(--linha);
+      background:rgba(10,16,32,.6); padding:16px 0; position:relative}
+    .faixa::before,.faixa::after{content:""; position:absolute; top:0; bottom:0; width:90px; z-index:2; pointer-events:none}
+    .faixa::before{left:0; background:linear-gradient(90deg,var(--navy),transparent)}
+    .faixa::after{right:0; background:linear-gradient(270deg,var(--navy),transparent)}
+    .faixa-trilho{display:flex; gap:44px; width:max-content; animation:rolar 34s linear infinite}
+    .faixa:hover .faixa-trilho{animation-play-state:paused}
+    @keyframes rolar{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .faixa-item{display:flex; align-items:center; gap:10px; color:var(--suave);
+      font-size:.86rem; font-weight:600; white-space:nowrap}
+    .faixa-item svg{width:22px; height:22px; color:var(--ciano); flex:0 0 auto}
+
+    /* ---------- carrossel de páginas ---------- */
+    .carrossel{display:flex; gap:16px; overflow-x:auto; padding:6px 20px 22px;
+      scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+      scrollbar-width:thin; scrollbar-color:rgba(79,240,245,.4) transparent}
+    .carrossel::-webkit-scrollbar{height:6px}
+    .carrossel::-webkit-scrollbar-thumb{background:rgba(79,240,245,.4); border-radius:99px}
+    .carrossel figure{flex:0 0 auto; width:min(74vw,300px); margin:0; scroll-snap-align:center}
+    .carrossel img{border-radius:12px; border:1px solid var(--linha);
+      box-shadow:0 18px 40px rgba(0,0,0,.55); background:#fff}
+    .carrossel figcaption{font-size:.76rem; color:var(--suave); text-align:center; margin-top:9px}
+    .dica-rolar{text-align:center; font-size:.78rem; color:var(--suave); margin-top:2px}
+
+    /* ---------- mockup ---------- */
+    .mockup{border-radius:var(--raio); overflow:hidden; border:1px solid var(--linha);
+      box-shadow:0 30px 70px rgba(0,0,0,.6)}
+
+    /* ---------- lista de benefícios ---------- */
+    .lista{list-style:none; padding:0; margin:0; display:grid; gap:14px}
+    .lista li{display:flex; gap:13px; align-items:flex-start; font-size:.97rem}
+    .lista .marca{flex:0 0 auto; width:26px; height:26px; border-radius:50%;
+      background:rgba(79,240,245,.14); border:1px solid rgba(79,240,245,.4);
+      display:grid; place-items:center; color:var(--ciano); font-size:.8rem; font-weight:800; margin-top:2px}
+    .lista strong{color:#fff}
+
+    /* ---------- passos ---------- */
+    .passo{position:relative; padding-left:0}
+    .passo .num{font-size:2.1rem; font-weight:900; line-height:1;
+      background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:10px}
+
+    /* ---------- preço ---------- */
+    .preco-card{max-width:520px; margin:0 auto; text-align:center; padding:clamp(28px,5vw,44px);
+      background:linear-gradient(165deg,rgba(44,123,255,.26),rgba(10,16,32,.95) 60%);
+      border:1px solid rgba(79,240,245,.28); border-radius:24px;
+      box-shadow:0 30px 80px rgba(30,91,255,.28), inset 0 1px 0 rgba(255,255,255,.12)}
+    .preco-valor{font-size:clamp(2.6rem,9vw,3.6rem); font-weight:900; line-height:1; letter-spacing:-.03em; margin:6px 0 4px}
+    .preco-tag{font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ciano); font-weight:700}
+    .preco-lista{list-style:none; padding:0; margin:22px 0 0; display:grid; gap:9px; text-align:left; font-size:.9rem; color:var(--suave)}
+    .preco-lista li::before{content:"✓"; color:var(--ciano); font-weight:800; margin-right:9px}
+
+    /* ---------- avisos ---------- */
+    .aviso{border-left:3px solid rgba(79,240,245,.5); background:rgba(79,240,245,.05);
+      padding:14px 18px; border-radius:0 12px 12px 0; font-size:.9rem; color:var(--suave); margin:14px 0}
+    .aviso strong{color:#fff}
+
+    /* ---------- FAQ ---------- */
+    details{border:1px solid var(--linha); border-radius:14px; padding:16px 18px;
+      background:rgba(14,22,36,.6); margin-bottom:10px}
+    details[open]{border-color:rgba(79,240,245,.35)}
+    summary{cursor:pointer; font-weight:700; font-size:.96rem; list-style:none; display:flex;
+      justify-content:space-between; gap:14px; align-items:center}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+"; color:var(--ciano); font-size:1.3rem; font-weight:400; line-height:1}
+    details[open] summary::after{content:"–"}
+    details p{margin:12px 0 0; font-size:.9rem; color:var(--suave)}
+
+    /* ---------- rodapé ---------- */
+    footer{border-top:1px solid var(--linha); padding:40px 0 120px; font-size:.82rem; color:var(--suave)}
+    footer a{color:var(--suave); text-decoration:underline}
+
+    /* ---------- barra fixa mobile ---------- */
+    .barra{position:fixed; left:0; right:0; bottom:0; z-index:900;
+      background:rgba(5,7,13,.92); backdrop-filter:blur(14px);
+      border-top:1px solid var(--linha); padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+      display:flex; align-items:center; gap:14px; justify-content:space-between}
+    .barra .p{font-size:.78rem; color:var(--suave); line-height:1.3}
+    .barra .p b{display:block; font-size:1.05rem; color:#fff}
+    .barra .cta{padding:13px 22px; font-size:.9rem; flex:0 0 auto}
+    @media(min-width:820px){.barra{display:none} footer{padding-bottom:40px}}
+
+    /* ---------- animações de entrada ---------- */
+    .sobe{opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease}
+    .sobe.vis{opacity:1; transform:none}
+    @media(prefers-reduced-motion:reduce){
+      .sobe{opacity:1; transform:none; transition:none}
+      .faixa-trilho,.cta::after,.olho::before{animation:none}
+      html{scroll-behavior:auto}
+    }
+
+    /* ---------- cena vectorial ---------- */
+    .cena{width:100%; max-width:420px; margin:0 auto; color:var(--ciano); opacity:.9}
+    .cena .agulha{animation:cose 3.4s ease-in-out infinite}
+    @keyframes cose{0%,100%{transform:translate(0,0)}50%{transform:translate(14px,16px)}}
+    .cena .linha{animation:tremelic 4s ease-in-out infinite}
+    @keyframes tremelic{0%,100%{opacity:.55}50%{opacity:1}}
+    .cena .tesoura{animation:corta 3s ease-in-out infinite; transform-origin:90px 95px}
+    @keyframes corta{0%,100%{transform:rotate(0)}50%{transform:rotate(-7deg)}}
+    .cena .cadernos{animation:respira 5s ease-in-out infinite}
+    @keyframes respira{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
   </style>
-  <script src="checkout-config.js"></script>
+  <script src="checkout-config.js?v=20261115b"></script>
 </head>
 <body>
-  <h1>Reliure artisanale à la maison — apprenez sans machine coûteuse</h1>
-  <p class="subhead">Téléchargement immédiat · premiers carnets et agendas · <strong>19 €</strong> · <strong>hobby et savoir-faire</strong> ; une activité payée reste possible plus tard, <strong>sans revenu garanti</strong>.</p>
+<div class="fundo"></div>
+<div class="grelha"></div>
 
-  <h2>Ce que contient la formation</h2>
-  <ul>
-    <li><strong>Formation numérique FR</strong> : reliure artisanale (brochure, couverture, assemblage) — pensée pour <strong>débuter avec outils accessibles</strong>, pas une ligne de production professionnelle.</li>
-    <li><strong>Le cœur du programme :</strong> apprendre <strong>sans machine de reliure coûteuse</strong> ; presse artisanale, gabarits et matériel du commerce d’art, selon les leçons.</li>
-    <li><strong>Projets concrets :</strong> carnets, agendas ou cahiers personnalisés — à garder, offrir ou, <strong>si vous le souhaitez</strong>, proposer en petite série (<strong>sans chiffre ni rendement promis</strong>).</li>
-    <li><strong>20 leçons vidéo en format vertical</strong> + <strong>un cahier de cours PDF de 22 pages</strong> (sommaire + leçons) à imprimer en A4 — accès immédiat par téléchargement.</li>
-    <li><strong>Format des vidéos :</strong> courtes, verticales, avec musique de fond et <strong>sans commentaire parlé</strong> ; le détail de chaque leçon est écrit dans le cahier PDF.</li>
-    <li><strong>19 €</strong> — <strong>prix unique affiché</strong> (pas d’ancre « avant 3 160 € » du combo BR).</li>
-    <li><strong>14 jours</strong> droit de rétractation UE sur la vente à distance — conditions précisées au moment du paiement.</li>
-  </ul>
+<!-- ================= HERO ================= -->
+<header class="sec" style="padding-top:clamp(40px,7vw,72px)">
+  <div class="wrap">
+    <div class="hero-grade">
+      <div class="sobe">
+        <span class="olho">Formation reliure artisanale</span>
+        <h1>Reliure artisanale à la maison — apprenez <span class="grad-txt">sans machine coûteuse</span></h1>
+        <p class="sub">Téléchargement immédiat · premiers carnets et agendas · <strong style="color:#fff">19 €</strong> · <strong style="color:#fff">hobby et savoir-faire</strong> ; une activité payée reste possible plus tard, <strong style="color:#fff">sans revenu garanti</strong>.</p>
+        <div class="cta-bloco" style="align-items:flex-start; margin-top:30px">
+          <a class="cta" data-checkout href="#checkout-pending-funil-b3">Voir la formation</a>
+          <span class="cta-nota">20 leçons vidéo + cahier PDF de 22 pages · paiement unique</span>
+        </div>
+      </div>
 
-  <p class="warn"><strong>Pas inclus :</strong> pack de 17 cours BR, garantie de commandes clients, certification professionnelle, franchise.</p>
-  <p class="warn"><strong>Transparence :</strong> résultats variables ; le marché et votre pratique déterminent toute vente éventuelle.</p>
+      <div class="sobe" style="position:relative">
+        <div class="mockup">
+          <img src="assets/mockup-livro.webp" width="1200" height="900" loading="eager"
+               alt="Aperçu de la formation Reliure artisanale : couverture et page intérieure du cahier de cours"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
-  <p class="price">19 € — paiement unique · TVA selon plateforme de paiement</p>
+<!-- ================= FAIXA ROLANTE ================= -->
+<div class="faixa" aria-hidden="true">
+  <div class="faixa-trilho">
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20 L17 7"/><ellipse cx="19" cy="5" rx="2.5" ry="1.5" transform="rotate(-45 19 5)"/></svg>Brochure cousue</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="18" r="2.4"/><circle cx="6" cy="6" r="2.4"/><path d="M8 16 L21 4"/><path d="M8 8 L21 20"/></svg>Coupe du papier</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="1.6"/><path d="M5 7 H19"/><path d="M9 11 H16"/><path d="M9 15 H16"/></svg>Carnets</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3 H14 L19 8 V21 H6 Z"/><path d="M14 3 V8 H19"/></svg>Agendas</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="9" width="20" height="6" rx="1"/><path d="M6 9 V12"/><path d="M10 9 V11"/><path d="M14 9 V12"/><path d="M18 9 V11"/></svg>Gabarits</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="7" y="4" width="10" height="17" rx="2"/><path d="M7 9 H17"/><path d="M7 15 H17"/></svg>Presse artisanale</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12 H22"/><path d="M12 4 L20 12 L12 20"/></svg>Couverture</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3 L14.5 9 L21 9.6 L16 14 L17.4 20.5 L12 17.2 L6.6 20.5 L8 14 L3 9.6 L9.5 9 Z"/></svg>Finition</span>
+    <!-- duplicado para o ciclo ficar contínuo -->
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20 L17 7"/><ellipse cx="19" cy="5" rx="2.5" ry="1.5" transform="rotate(-45 19 5)"/></svg>Brochure cousue</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="18" r="2.4"/><circle cx="6" cy="6" r="2.4"/><path d="M8 16 L21 4"/><path d="M8 8 L21 20"/></svg>Coupe du papier</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="1.6"/><path d="M5 7 H19"/><path d="M9 11 H16"/><path d="M9 15 H16"/></svg>Carnets</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3 H14 L19 8 V21 H6 Z"/><path d="M14 3 V8 H19"/></svg>Agendas</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="9" width="20" height="6" rx="1"/><path d="M6 9 V12"/><path d="M10 9 V11"/><path d="M14 9 V12"/><path d="M18 9 V11"/></svg>Gabarits</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="7" y="4" width="10" height="17" rx="2"/><path d="M7 9 H17"/><path d="M7 15 H17"/></svg>Presse artisanale</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12 H22"/><path d="M12 4 L20 12 L12 20"/></svg>Couverture</span>
+    <span class="faixa-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3 L14.5 9 L21 9.6 L16 14 L17.4 20.5 L12 17.2 L6.6 20.5 L8 14 L3 9.6 L9.5 9 Z"/></svg>Finition</span>
+  </div>
+</div>
 
-  <a class="cta" data-checkout href="#checkout-pending-funil-b3">Voir la formation</a>
+<!-- ================= CE QUE CONTIENT ================= -->
+<section class="sec" id="contenu">
+  <div class="wrap">
+    <div class="sec-topo sobe">
+      <span class="olho">Le programme</span>
+      <h2>Ce que contient la formation</h2>
+      <p class="sub">Brochure, couverture, assemblage — pensé pour débuter avec des outils accessibles.</p>
+    </div>
 
-  <p class="note">Formation loisir / savoir-faire — <strong>aucun revenu garanti</strong>, pas d’urgence fictive.</p>
-  <p class="note">Données personnelles : utilisation conforme au RGPD. Cookies et Pixel Meta : <a href="#" data-cookie-settings>gérer mes préférences</a>.</p>
+    <div class="g2" style="margin-bottom:26px">
+      <div class="card sobe">
+        <ul class="lista">
+          <li><span class="marca">1</span><span><strong>Formation numérique FR</strong> : reliure artisanale (brochure, couverture, assemblage) — pensée pour <strong>débuter avec outils accessibles</strong>, pas une ligne de production professionnelle.</span></li>
+          <li><span class="marca">2</span><span><strong>Le cœur du programme :</strong> apprendre <strong>sans machine de reliure coûteuse</strong> ; presse artisanale, gabarits et matériel du commerce d'art, selon les leçons.</span></li>
+          <li><span class="marca">3</span><span><strong>Projets concrets :</strong> carnets, agendas ou cahiers personnalisés — à garder, offrir ou, <strong>si vous le souhaitez</strong>, proposer en petite série (<strong>sans chiffre ni rendement promis</strong>).</span></li>
+        </ul>
+      </div>
+      <div class="card sobe">
+        <ul class="lista">
+          <li><span class="marca">4</span><span><strong>20 leçons vidéo en format vertical</strong> + <strong>un cahier de cours PDF de 22 pages</strong> (sommaire + leçons) à imprimer en A4 — accès immédiat par téléchargement.</span></li>
+          <li><span class="marca">5</span><span><strong>Format des vidéos :</strong> courtes, verticales, avec musique de fond et <strong>sans commentaire parlé</strong> ; le détail de chaque leçon est écrit dans le cahier PDF.</span></li>
+          <li><span class="marca">6</span><span><strong>19 €</strong> — <strong>prix unique affiché</strong> (pas d'ancre « avant 3 160 € » du combo BR).</span></li>
+          <li><span class="marca">7</span><span><strong>14 jours</strong> droit de rétractation UE sur la vente à distance — conditions précisées au moment du paiement.</span></li>
+        </ul>
+      </div>
+    </div>
 
-  <div id="cookie-banner" hidden aria-hidden="true" style="position:fixed;left:0;right:0;bottom:0;background:#111;color:#eee;padding:14px 16px;font-size:0.88rem;z-index:9999;box-shadow:0 -4px 20px rgba(0,0,0,.15)">
-    <p style="margin:0 0 10px">Nous utilisons le Pixel Meta pour mesurer l’efficacité des publicités. Accepter ou refuser (RGPD).</p>
-    <button type="button" id="cookie-accept" style="margin-right:8px;padding:8px 14px;background:var(--accent);color:#fff;border:0;border-radius:6px">Accepter</button>
-    <button type="button" id="cookie-refuse" style="padding:8px 14px;background:#444;color:#fff;border:0;border-radius:6px">Refuser</button>
+    <div class="sobe">
+      <p class="aviso"><strong>Pas inclus :</strong> pack de 17 cours BR, garantie de commandes clients, certification professionnelle, franchise.</p>
+      <p class="aviso"><strong>Transparence :</strong> résultats variables ; le marché et votre pratique déterminent toute vente éventuelle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DEMONSTRAÇÃO: PÁGINAS REAIS ================= -->
+<section class="sec" id="apercu" style="padding-left:0;padding-right:0">
+  <div class="wrap estreito sec-topo sobe">
+    <span class="olho">Aperçu du cahier</span>
+    <h2>Des pages réelles, <span class="grad-txt">pas des promesses</span></h2>
+    <p class="sub">Un extrait du cahier de cours, extrait du PDF livré (22 pages au total). Faites défiler.</p>
   </div>
 
-  <script src="checkout-link.js"></script>
-  <script src="utm.js"></script>
-  <script src="cookies.js"></script>
+  <div class="carrossel sobe" role="region" aria-label="Aperçu des pages du cahier de cours">
+    <figure><img src="assets/p03.webp" width="900" height="1273" loading="lazy" alt="Page du cahier de cours — extrait du PDF livré"/><figcaption>Leçon 1</figcaption></figure>
+    <figure><img src="assets/p04.webp" width="900" height="1273" loading="lazy" alt="Page du cahier de cours — extrait du PDF livré"/><figcaption>Leçon 2</figcaption></figure>
+    <figure><img src="assets/p05.webp" width="900" height="1273" loading="lazy" alt="Page du cahier de cours — extrait du PDF livré"/><figcaption>Leçon 3</figcaption></figure>
+    <figure><img src="assets/p06.webp" width="900" height="1273" loading="lazy" alt="Page du cahier de cours — extrait du PDF livré"/><figcaption>Leçon 4</figcaption></figure>
+    <figure><img src="assets/p08.webp" width="900" height="1273" loading="lazy" alt="Page du cahier de cours — extrait du PDF livré"/><figcaption>Leçon 5</figcaption></figure>
+    <figure><img src="assets/p10.webp" width="900" height="1273" loading="lazy" alt="Page du cahier de cours — extrait du PDF livré"/><figcaption>Leçon 6</figcaption></figure>
+    <figure><img src="assets/p21.webp" width="900" height="1273" loading="lazy" alt="Page du cahier de cours — extrait du PDF livré"/><figcaption>Leçon 7</figcaption></figure>
+    <figure><img src="assets/p22.webp" width="900" height="1273" loading="lazy" alt="Page du cahier de cours — extrait du PDF livré"/><figcaption>Leçon 8</figcaption></figure>
+  </div>
+  <p class="dica-rolar">← Faites glisser →</p>
+</section>
+
+<!-- ================= ANIMAÇÕES VECTORIAIS ================= -->
+<section class="sec" aria-label="Illustrations du geste de reliure">
+  <div class="wrap">
+    <div class="sec-topo sobe">
+      <span class="olho">Le geste</span>
+      <h2>Ce que vos mains vont apprendre</h2>
+      <p class="sub">Les gestes de base de la reliure artisanale, illustrés étape par étape.</p>
+    </div>
+
+    <div class="g3">
+      <div class="card sobe" style="text-align:center">
+        <svg class="cena" viewBox="0 0 400 200" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="70" y="60" width="120" height="90" rx="4" fill="rgba(255,255,255,.05)"/>
+          <rect x="210" y="60" width="120" height="90" rx="4" fill="rgba(255,255,255,.05)"/>
+          <path d="M190 60 V150 M210 60 V150" opacity=".5"/>
+          <path d="M92 84 H168 M92 100 H168 M92 116 H150" opacity=".35"/>
+          <path d="M232 84 H308 M232 100 H308 M232 116 H290" opacity=".35"/>
+          <g class="linha"><path d="M190 70 C170 40, 230 30, 210 70" stroke-dasharray="6 6"/></g>
+          <g class="agulha"><path d="M150 20 L196 66"/><ellipse cx="146" cy="16" rx="6" ry="3" transform="rotate(45 146 16)"/></g>
+        </svg>
+        <h3 style="margin-top:14px">La couture du cahier</h3>
+        <p style="font-size:.88rem; color:var(--suave); margin:0">Point par point, sans machine.</p>
+      </div>
+
+      <div class="card sobe" style="text-align:center">
+        <svg class="cena" viewBox="0 0 400 200" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <g class="papel"><path d="M120 40 H250 L290 80 V190 H120 Z" fill="rgba(255,255,255,.05)"/><path d="M250 40 V80 H290" opacity=".6"/></g>
+          <g class="regua"><rect x="60" y="200" width="280" height="26" rx="4" fill="rgba(255,255,255,.05)"/><path d="M90 200 V214 M130 200 V210 M170 200 V214 M210 200 V210 M250 200 V214 M290 200 V210" opacity=".5"/></g>
+          <g class="tesoura"><circle cx="90" cy="120" r="14"/><circle cx="90" cy="70" r="14"/><path d="M102 112 L180 60"/><path d="M102 78 L180 130"/></g>
+        </svg>
+        <h3 style="margin-top:14px">La coupe juste</h3>
+        <p style="font-size:.88rem; color:var(--suave); margin:0">Mesurer, tracer, couper droit.</p>
+      </div>
+
+      <div class="card sobe" style="text-align:center">
+        <svg class="cena" viewBox="0 0 400 200" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <g class="cadernos">
+            <rect x="60" y="70" width="80" height="110" rx="5" fill="rgba(79,240,245,.10)" stroke="rgba(79,240,245,.5)"/>
+            <rect x="160" y="50" width="80" height="130" rx="5" fill="rgba(44,123,255,.12)" stroke="rgba(44,123,255,.55)"/>
+            <rect x="260" y="80" width="80" height="100" rx="5" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.35)"/>
+            <path d="M60 90 H140 M160 70 H240 M260 100 H340" opacity=".4"/>
+          </g>
+        </svg>
+        <h3 style="margin-top:14px">Le carnet fini</h3>
+        <p style="font-size:.88rem; color:var(--suave); margin:0">Un objet à garder ou à offrir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FORMAT ================= -->
+<section class="sec">
+  <div class="wrap">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:34px; align-items:center">
+      <div class="sobe">
+        <span class="olho">Format</span>
+        <h2>À lire sur téléphone, à imprimer en A4</h2>
+        <p class="sub">Le cahier de cours est un PDF : ouvrez-le sur téléphone, tablette ou ordinateur, ou imprimez-le pour écrire dessus pendant les leçons.</p>
+        <ul class="lista" style="margin-top:24px">
+          <li><span class="marca">✓</span><span><strong>22 pages</strong> — sommaire + 20 leçons</span></li>
+          <li><span class="marca">✓</span><span><strong>20 vidéos verticales</strong> — courtes, avec musique de fond</span></li>
+          <li><span class="marca">✓</span><span><strong>Accès immédiat</strong> après le paiement</span></li>
+          <li><span class="marca">✓</span><span><strong>Sans commentaire parlé</strong> — tout est écrit dans le cahier</span></li>
+        </ul>
+      </div>
+      <div class="sobe">
+        <div class="mockup">
+          <img src="assets/mockup-dispositivos.webp" width="1200" height="744" loading="lazy"
+               alt="Le cahier de cours affiché sur tablette et la couverture sur téléphone"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMMENT ÇA MARCHE ================= -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-topo sobe">
+      <span class="olho">Comment ça marche</span>
+      <h2>Trois étapes, rien de plus</h2>
+    </div>
+    <div class="g3">
+      <div class="card passo sobe"><div class="num">01</div><h3>Vous payez</h3><p style="font-size:.9rem;color:var(--suave);margin:0">Paiement unique de 19 € sur la plateforme sécurisée. TVA selon la plateforme de paiement.</p></div>
+      <div class="card passo sobe"><div class="num">02</div><h3>Vous recevez l'accès</h3><p style="font-size:.9rem;color:var(--suave);margin:0">Les 20 leçons vidéo et le cahier PDF de 22 pages, immédiatement après le paiement.</p></div>
+      <div class="card passo sobe"><div class="num">03</div><h3>Vous pratiquez</h3><p style="font-size:.9rem;color:var(--suave);margin:0">Vous suivez les leçons dans l'ordre, avec le cahier imprimé à côté de vous.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRIX / CTA ================= -->
+<section class="sec" id="offre">
+  <div class="wrap">
+    <div class="preco-card sobe">
+      <span class="preco-tag">Accès complet</span>
+      <div class="preco-valor grad-txt">19 €</div>
+      <p style="color:var(--suave); font-size:.9rem; margin:0">paiement unique · TVA selon plateforme de paiement</p>
+      <ul class="preco-lista">
+        <li>20 leçons vidéo en format vertical</li>
+        <li>Cahier de cours PDF de 22 pages</li>
+        <li>Accès immédiat par téléchargement</li>
+        <li>14 jours de droit de rétractation UE</li>
+      </ul>
+      <div class="cta-bloco">
+        <a class="cta" data-checkout href="#checkout-pending-funil-b3" style="width:100%">Voir la formation</a>
+        <span class="cta-nota">Formation loisir / savoir-faire — <strong>aucun revenu garanti</strong>, pas d'urgence fictive.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="sec">
+  <div class="wrap estreito">
+    <div class="sec-topo sobe">
+      <span class="olho">Questions</span>
+      <h2>Questions fréquentes</h2>
+    </div>
+    <div class="sobe">
+      <details><summary>Faut-il une machine de reliure ?</summary><p>Non. Le programme est justement construit pour débuter sans machine de reliure coûteuse : presse artisanale, gabarits et matériel du commerce d'art, selon les leçons.</p></details>
+      <details><summary>Les vidéos sont-elles commentées ?</summary><p>Non. Les vidéos sont courtes, verticales, avec une musique de fond et sans commentaire parlé. Le détail de chaque leçon est écrit dans le cahier PDF de 22 pages.</p></details>
+      <details><summary>Combien de temps ai-je accès ?</summary><p>L'accès est immédiat après le paiement, par téléchargement. Les conditions exactes de durée d'accès sont précisées au moment du paiement.</p></details>
+      <details><summary>Puis-je vendre mes carnets ensuite ?</summary><p>Vous pouvez proposer vos créations en petite série si vous le souhaitez. Aucun chiffre, rendement ou garantie de commandes n'est promis : les résultats dépendent du marché et de votre pratique.</p></details>
+      <details><summary>Puis-je me rétracter ?</summary><p>Oui. Vous disposez de 14 jours de droit de rétractation UE sur la vente à distance. Les conditions sont précisées au moment du paiement.</p></details>
+      <details><summary>Est-ce une certification professionnelle ?</summary><p>Non. C'est une formation loisir / savoir-faire. Elle ne délivre pas de certification professionnelle et ne garantit aucun revenu.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RODAPÉ ================= -->
+<footer>
+  <div class="wrap estreito">
+    <p style="color:#fff; font-weight:700; margin-bottom:6px">Reliure artisanale à la maison</p>
+    <p>Formation numérique en français — 20 leçons vidéo + cahier de cours PDF de 22 pages. Prix unique 19 €.</p>
+    <p>Formation loisir / savoir-faire — <strong style="color:#fff">aucun revenu garanti</strong>, pas d'urgence fictive.</p>
+    <p>Données personnelles : utilisation conforme au RGPD. Cookies et Pixel Meta : <a href="#" data-cookie-settings>gérer mes préférences</a>.</p>
+    <p style="margin-top:18px; font-size:.76rem; opacity:.7">© 2026 — Tous droits réservés. Les visuels présentés sont des illustrations du contenu de la formation.</p>
+  </div>
+</footer>
+
+<!-- ================= BARRA FIXA ================= -->
+<div class="barra">
+  <div class="p">Accès complet<b>19 €</b></div>
+  <a class="cta" data-checkout href="#checkout-pending-funil-b3">Voir la formation</a>
+</div>
+
+<!-- ================= BANNER COOKIES ================= -->
+<div id="cookie-banner" hidden aria-hidden="true" style="position:fixed;left:0;right:0;bottom:0;background:#0a1020;color:#eaf2ff;padding:16px 18px;font-size:.86rem;z-index:9999;box-shadow:0 -4px 30px rgba(0,0,0,.6);border-top:1px solid rgba(120,170,255,.25)">
+  <p style="margin:0 0 12px; max-width:760px">Nous utilisons le Pixel Meta pour mesurer l'efficacité des publicités. Accepter ou refuser (RGPD).</p>
+  <button type="button" id="cookie-accept" style="margin-right:8px;padding:10px 20px;background:linear-gradient(95deg,#4ff0f5,#2c7bff);color:#04121c;border:0;border-radius:999px;font-weight:800;cursor:pointer">Accepter</button>
+  <button type="button" id="cookie-refuse" style="padding:10px 20px;background:#1a2438;color:#eaf2ff;border:1px solid rgba(120,170,255,.3);border-radius:999px;font-weight:600;cursor:pointer">Refuser</button>
+</div>
+
+<script>
+(function(){
+  var alvos = document.querySelectorAll('.sobe');
+  if (!('IntersectionObserver' in window)) {
+    alvos.forEach(function(el){ el.classList.add('vis'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entradas){
+    entradas.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+  alvos.forEach(function(el){ obs.observe(el); });
+})();
+</script>
+
+<script src="checkout-link.js?v=20261115b"></script>
+<script src="utm.js?v=20261115b"></script>
+<script src="cookies.js?v=20261115b"></script>
 </body>
 </html>
