@@ -27,6 +27,7 @@ foreach ([
     'admin/(content|site-map)\.json',
     '_probe\.txt',
     'index\.html\.bak\.',
+    'user/api/(bootstrap|members)\.php',
 ] as $pattern) {
     $t->ok('regra presente: ' . $pattern, str_contains($htaccess, $pattern));
 }

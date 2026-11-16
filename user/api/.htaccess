@@ -1,0 +1,17 @@
+# API da área de membros — fazendoemcasa.com
+#
+# bootstrap.php e members.php são bibliotecas internas, não endpoints.
+# Só login.php, logout.php, session.php e profile.php devem responder
+# pela web. Os restantes ficam inacessíveis.
+
+<IfModule mod_authz_core.c>
+  <FilesMatch "^(bootstrap|members)\.php$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "^(bootstrap|members)\.php$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
