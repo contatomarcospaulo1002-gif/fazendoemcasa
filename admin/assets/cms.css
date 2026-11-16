@@ -218,3 +218,43 @@ a{color:inherit;text-decoration:none}
   .cms-top{flex-direction:column;align-items:stretch}
   .cms-top-actions .cms-btn{flex:1}
 }
+/* ---------- Páginas do projeto ---------- */
+.cms-crumb{font-size:12px;color:var(--cms-muted);font-family:ui-monospace,Consolas,monospace;margin-bottom:2px}
+.cms-stat-sm{font-size:14px!important;font-weight:600!important;margin-top:6px!important}
+.cms-select{min-width:150px;cursor:pointer}
+.cms-card-flush{padding:0;overflow:hidden}
+
+.cms-page-row{
+  display:flex;align-items:center;gap:12px;padding:11px 16px;
+  border-top:1px solid var(--cms-border);font-size:13px;
+}
+.cms-page-row:first-child{border-top:0}
+.cms-page-row:hover{background:var(--cms-panel)}
+
+.cms-kind{
+  flex:0 0 auto;width:46px;text-align:center;padding:3px 0;border-radius:5px;
+  font-size:10.5px;font-weight:700;letter-spacing:.03em;
+  background:var(--cms-panel);color:var(--cms-muted);
+}
+.cms-kind-html{background:#e8f0fb;color:#2a5b9e}
+.cms-kind-php{background:#efe8fb;color:#5b3a9e}
+.cms-kind-css{background:#e6f4f7;color:#1f6b7a}
+.cms-kind-js{background:#fdf6e6;color:#8a6320}
+.cms-kind-json{background:#eef2ee;color:#4a5c4f}
+
+.cms-page-main{flex:1;min-width:0}
+.cms-page-path{
+  font-family:ui-monospace,Consolas,monospace;font-size:12.5px;
+  word-break:break-all;line-height:1.35;
+}
+.cms-page-title{font-size:12px;color:var(--cms-muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.cms-page-metrics{
+  display:flex;gap:12px;flex:0 0 auto;font-size:11.5px;
+  color:var(--cms-muted);font-variant-numeric:tabular-nums;
+}
+
+@media (max-width:700px){
+  .cms-page-metrics{display:none}
+  .cms-page-row{gap:8px;padding:10px 12px}
+}

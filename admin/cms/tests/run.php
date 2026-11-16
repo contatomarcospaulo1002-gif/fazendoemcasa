@@ -37,9 +37,11 @@ $suites = [
     ],
     'discovery' => [
         'DiscoveryEngineTest.php',
+        'AnalyzersTest.php',
     ],
     'repository' => [
         'ProjectRepositoryTest.php',
+        'ScannerIntegrationTest.php',
     ],
 ];
 

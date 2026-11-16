@@ -1,15 +1,16 @@
 "use strict";
 
 /**
- * Central de Projetos ó front-end.
+ * Central de Projetos ‚Äî front-end.
  * Todo dado vem da API /admin/api/cms-projects.php.
- * Nenhum caminho de arquivo È montado no cliente.
+ * Nenhum caminho de arquivo √© montado no cliente.
  */
 (function () {
   var API = "/admin/api/cms-projects.php";
-  var state = { projects: [], csrf: "", filter: "" };
+  var state = { projects: [], stats: {}, csrf: "", filter: "" };
 
   function $(id) { return document.getElementById(id); }
+
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -60,16 +61,16 @@
   }
 
   function fmtDate(iso) {
-    if (!iso) return "ó";
+    if (!iso) return "‚Äî";
     var d = new Date(String(iso).replace(" ", "T") + (String(iso).indexOf("T") < 0 ? "Z" : ""));
-    if (isNaN(d.getTime())) return "ó";
+    if (isNaN(d.getTime())) return "‚Äî";
     return d.toLocaleDateString("pt-PT", { day: "2-digit", month: "2-digit", year: "numeric" });
   }
 
   function cardHtml(p) {
     var active = p.status === "active";
-    var scanned = p.last_scan_at ? "Mapeado" : "N„o mapeado";
-    var scanClass = p.last_scan_at ? "is-scan" : "is-new";
+    var scanned = p.last_scan_at ? "Mapeado" : "N√£o mapeado";
+    var st = state.stats[Number(p.id)] || { pages: 0, elements: 0, images: 0 };
     return (
       '<article class="cms-project' + (active ? "" : " is-off") + '" data-id="' + p.id + '">' +
         '<div class="cms-project-head">' +
@@ -82,15 +83,15 @@
             '<span class="cms-badge-dot"></span>' + (active ? "Ativo" : "Desativado") +
           "</span>" +
         "</div>" +
-        '<p class="cms-project-desc">' + esc(p.description || "Sem descriÁ„o.") + "</p>" +
+        '<p class="cms-project-desc">' + esc(p.description || "Sem descri√ß√£o.") + "</p>" +
         '<div class="cms-project-meta">' +
-          "<div><span>P·ginas</span><strong>ó</strong></div>" +
-          "<div><span>Elementos</span><strong>ó</strong></div>" +
-          "<div><span>Atualizado</span><strong>" + fmtDate(p.updated_at) + "</strong></div>" +
+          "<div><span>P√°ginas</span><strong>" + st.pages + "</strong></div>" +
+          "<div><span>Elementos</span><strong>" + st.elements + "</strong></div>" +
+          "<div><span>Imagens</span><strong>" + st.images + "</strong></div>" +
           "<div><span>Mapeamento</span><strong>" + scanned + "</strong></div>" +
         "</div>" +
         '<div class="cms-project-actions">' +
-          '<button type="button" class="cms-btn cms-btn-primary" data-act="manage" disabled title="FASE 3">Gerir</button>' +
+          '<button type="button" class="cms-btn cms-btn-primary" data-act="manage">Gerir</button>' +
           (p.base_url ? '<a class="cms-btn cms-btn-ghost" href="' + esc(p.base_url) + '" target="_blank" rel="noopener">Ver site</a>' : "") +
           '<button type="button" class="cms-btn cms-btn-ghost" data-act="edit">Editar</button>' +
           '<button type="button" class="cms-btn cms-btn-ghost" data-act="toggle">' + (active ? "Desativar" : "Ativar") + "</button>" +
@@ -112,7 +113,7 @@
     if (!list.length) {
       grid.innerHTML = state.projects.length
         ? '<p class="cms-empty">Nenhum projeto corresponde ao filtro.</p>'
-        : '<p class="cms-empty">Ainda n„o h· projetos. Usa <strong>Descobrir projetos</strong> ou <strong>+ Adicionar projeto</strong>.</p>';
+        : '<p class="cms-empty">Ainda n√£o h√° projetos. Usa <strong>Descobrir projetos</strong> ou <strong>+ Adicionar projeto</strong>.</p>';
     } else {
       grid.innerHTML = list.map(cardHtml).join("");
     }
@@ -129,9 +130,11 @@
     if ($("stat-scanned")) $("stat-scanned").textContent = scanned;
   }
 
+
   function load() {
     return api("").then(function (data) {
       state.projects = data.projects || [];
+      state.stats = data.stats || {};
       state.csrf = data.csrfToken || "";
       render();
     }).catch(function (e) {
@@ -141,7 +144,7 @@
       }
       alertMsg(e.message, "error");
       var grid = $("projects-grid");
-      if (grid) grid.innerHTML = '<p class="cms-empty">N?o foi poss?vel carregar os projetos.</p>';
+      if (grid) grid.innerHTML = '<p class="cms-empty">N√£o foi poss√≠vel carregar os projetos.</p>';
     });
   }
 
@@ -203,7 +206,7 @@
     var list = $("discover-list");
     if (!panel || !list) return;
     panel.classList.remove("is-hidden");
-    list.innerHTML = '<p class="cms-hint">A analisar a raiz autorizada?</p>';
+    list.innerHTML = '<p class="cms-hint">A analisar a raiz autorizada‚Ä¶</p>';
 
     api("?discover=1").then(function (data) {
       var cands = data.candidates || [];
@@ -215,7 +218,7 @@
         var tags = [];
         if (c.has_assets) tags.push('<span class="cms-badge is-scan">' + c.asset_count + " assets</span>");
         tags.push('<span class="cms-badge is-disabled">' + c.file_count + " arquivos</span>");
-        if (c.already_registered) tags.push('<span class="cms-badge is-active">J? cadastrado</span>');
+        if (c.already_registered) tags.push('<span class="cms-badge is-active">J√° cadastrado</span>');
         else tags.push('<span class="cms-badge is-new">Novo</span>');
 
         return (
@@ -249,7 +252,7 @@
     });
   }
 
-  /* ---------- A??es do card ---------- */
+  /* ---------- A√ß√µes do card ---------- */
   function onGridClick(ev) {
     var btn = ev.target.closest("[data-act]");
     if (!btn) return;
@@ -262,6 +265,10 @@
     var act = btn.getAttribute("data-act");
     if (act === "edit") {
       openModal(project);
+      return;
+    }
+    if (act === "manage") {
+      window.location.href = "/admin/cms-project.php?id=" + encodeURIComponent(id);
       return;
     }
     if (act === "toggle") {

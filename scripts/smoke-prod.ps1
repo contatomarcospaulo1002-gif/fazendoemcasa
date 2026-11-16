@@ -13,8 +13,11 @@ $checks = @(
   @{ Path = '/admin/cms/Core/PathGuard.php'; Expect = 'not200' },
   @{ Path = '/admin/cms/views/central.php'; Expect = 'not200' },
   @{ Path = '/admin/cms/bin/migrate.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/Scanner/HtmlAnalyzer.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/views/project-pages.php'; Expect = 'not200' },
   @{ Path = '/admin/tools/extract-content.php'; Expect = 'not200' },
   @{ Path = '/admin/assets/cms.css'; Expect = '200' },
+  @{ Path = '/admin/assets/cms-pages.js'; Expect = '200' },
   @{ Path = '/'; Expect = '200' },
   @{ Path = '/robots.txt'; Expect = '200' },
   @{ Path = '/sitemap.xml'; Expect = '200' }

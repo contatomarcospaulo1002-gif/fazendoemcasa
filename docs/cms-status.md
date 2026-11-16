@@ -1,6 +1,6 @@
 # Acompanhamento — Central CMS multi-projeto
 
-Atualizado: 2026-11-16 · Fase atual: **FASE 1 concluída**
+Atualizado: 2026-11-16 · Fase atual: **FASE 2 concluída**
 
 Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 [roadmap](cms-roadmap.md) · [decisões](cms-decisions.md) ·
@@ -14,7 +14,7 @@ Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 |---|---|---|---|
 | 0 | Auditoria | ✅ concluída | n/a |
 | 1 | Central de Projetos | ✅ concluída | 124/124 |
-| 2 | Scanner | ⬜ não iniciada | 0/8 |
+| 2 | Scanner | ✅ concluída | 66/66 |
 | 3 | Content Registry | ⬜ não iniciada | 0/6 |
 | 4 | Editor Visual | ⬜ não iniciada | 0/4 |
 | 5 | Biblioteca de Mídia | ⬜ não iniciada | 0/5 |
@@ -73,13 +73,13 @@ CLI (`php -l` limpo nos 11; mensagens de uso normais ao executar).
 | B5 | Sem CSRF | 🟠 | ✅ **corrigido** (FASE 1) |
 | B6 | Sem isolamento de caminho | 🔴 | ✅ **corrigido** (FASE 1.3) |
 | B2 | Schema sem `project_id` | 🔴 | ✅ **corrigido** (FASE 1.2) |
-| B3 | `site-map.json` único | 🔴 | FASE 2–3 |
+| B3 | `site-map.json` único | 🔴 | ✅ **corrigido** (FASE 2) |
 | B4 | Publicação reescreve HTML inteiro | 🔴 | FASE 6 |
 | B7 | Upload só base64 | 🟠 | FASE 5 |
 | B8 | Sem biblioteca de mídia | 🟠 | FASE 5 |
 | B9 | Salvar = publicar | 🟠 | FASE 4 |
 | B10 | Sem permissões | 🟠 | FASE 7 |
-| B11 | Sem scanner | 🔴 | FASE 2 |
+| B11 | Sem scanner | 🔴 | ✅ **corrigido** (FASE 2) |
 | B12 | `admin.js` monolítico | 🟠 | FASE 4 |
 
 ---
