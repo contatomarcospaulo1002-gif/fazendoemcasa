@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require __DIR__ . '/_guard.php';
+
 $root = dirname(__DIR__, 2);
 $mapPath = dirname(__DIR__) . '/site-map.json';
 $indexPath = $root . '/index.html';

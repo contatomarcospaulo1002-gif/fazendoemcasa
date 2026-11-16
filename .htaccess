@@ -12,6 +12,10 @@ Options -Indexes
   RewriteRule ^scripts/ - [F,L]
   RewriteRule ^docker/ - [F,L]
   RewriteRule ^admin/var/ - [F,L]
+  # Scripts de manutenção: somente CLI (ver admin/tools/_guard.php)
+  RewriteRule ^admin/tools/ - [F,L]
+  # Código interno do CMS multi-projeto: nunca servido diretamente
+  RewriteRule ^admin/cms/ - [F,L]
 
   # Ficheiros de configuração e ambiente
   RewriteRule (^|/)\.env$ - [F,L]

@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require __DIR__ . '/_guard.php';
+
 $root = dirname(__DIR__);
 $projectRoot = dirname($root);
 $sqlFile = $projectRoot . '/scripts/vps/03-member-users.sql';

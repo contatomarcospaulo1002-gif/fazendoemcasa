@@ -1,0 +1,115 @@
+# Acompanhamento — Central CMS multi-projeto
+
+Atualizado: 2026-11-16 · Fase atual: **FASE 1 concluída**
+
+Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
+[roadmap](cms-roadmap.md) · [decisões](cms-decisions.md) ·
+[segurança](cms-security.md) · [testes](cms-testing.md)
+
+---
+
+## Estado das fases
+
+| Fase | Nome | Estado | Testes |
+|---|---|---|---|
+| 0 | Auditoria | ✅ concluída | n/a |
+| 1 | Central de Projetos | ✅ concluída | 124/124 |
+| 2 | Scanner | ⬜ não iniciada | 0/8 |
+| 3 | Content Registry | ⬜ não iniciada | 0/6 |
+| 4 | Editor Visual | ⬜ não iniciada | 0/4 |
+| 5 | Biblioteca de Mídia | ⬜ não iniciada | 0/5 |
+| 6 | Publicação | ⬜ não iniciada | 0/5 |
+| 7 | Histórico / Backup | ⬜ não iniciada | 0/4 |
+| 8 | Testes finais | ⬜ não iniciada | 0/5 |
+
+---
+
+## Item 1.0 — concluído ✅
+
+**Objetivo:** eliminar o B1 (scripts de manutenção executáveis pela web).
+
+**Implementação — três camadas:**
+
+1. `admin/tools/_guard.php` — `if (PHP_SAPI !== 'cli') { 404; exit; }`
+2. `admin/tools/.htaccess` — `Require all denied`
+3. `.htaccess` da raiz — `RewriteRule ^admin/tools/ - [F,L]`
+   (mais `^admin/cms/` já preparado para a FASE 1.1)
+
+Guard aplicado nos **11 scripts** de `admin/tools/`.
+
+**Testes:** `php admin/cms/tests/security-tools-guard.php --base=...`
+
+```
+Camada 1 (guard em todos os 11 scripts) .......... 12 OK
+Camada 2 (.htaccess tools + raiz) ................  5 OK
+Camada 3 (simulação SAPI não-CLI) ................  1 OK
+Camada 4 (HTTP real, 7 alvos) ....................  7 OK
+                                     TOTAL: 25/25 ✅
+```
+
+**Regressão verificada** (HTTP 200 mantido):
+
+| URL | Antes | Depois |
+|---|---|---|
+| `/admin/` | 200 | 200 ✅ |
+| `/admin/api/session.php` | 200 | 200 ✅ |
+| `/admin/api/content.php` | 200 | 200 ✅ |
+| `/` | 200 | 200 ✅ |
+| `/kit-activites-tea/` | 200 | 200 ✅ |
+| `/reliure-artisanale/` | 200 | 200 ✅ |
+| `/privacidade.html`, `/termos.html` | 200 | 200 ✅ |
+| `/admin/tools/extract-content.php` | **200 (executava!)** | **404** ✅ |
+
+**Efeito colateral verificado:** os scripts continuam funcionando via
+CLI (`php -l` limpo nos 11; mensagens de uso normais ao executar).
+
+---
+
+## Bloqueios abertos
+
+| ID | Bloqueio | Severidade | Onde corrige |
+|---|---|---|---|
+| B1 | `admin/tools/*.php` executável pela web | 🔴 | ✅ **corrigido** (25/25) |
+| B5 | Sem CSRF | 🟠 | ✅ **corrigido** (FASE 1) |
+| B6 | Sem isolamento de caminho | 🔴 | ✅ **corrigido** (FASE 1.3) |
+| B2 | Schema sem `project_id` | 🔴 | ✅ **corrigido** (FASE 1.2) |
+| B3 | `site-map.json` único | 🔴 | FASE 2–3 |
+| B4 | Publicação reescreve HTML inteiro | 🔴 | FASE 6 |
+| B7 | Upload só base64 | 🟠 | FASE 5 |
+| B8 | Sem biblioteca de mídia | 🟠 | FASE 5 |
+| B9 | Salvar = publicar | 🟠 | FASE 4 |
+| B10 | Sem permissões | 🟠 | FASE 7 |
+| B11 | Sem scanner | 🔴 | FASE 2 |
+| B12 | `admin.js` monolítico | 🟠 | FASE 4 |
+
+---
+
+## Incidente registrado
+
+**2026-11-16 10:36** — durante a auditoria, `GET
+/admin/tools/extract-content.php` retornou 200 e regravou
+`admin/content.json` em produção.
+
+- Detectado por `git status` no servidor.
+- Restaurado com `git checkout -- admin/content.json`.
+- MD5 conferido: `6ce9bd5ae93449e0c9d4d7d342d630c2` (igual ao HEAD).
+- Nenhum outro arquivo afetado.
+- Causa raiz: B1.
+
+---
+
+## Próximo passo
+
+FASE 1, começando por **1.0** (bloquear `admin/tools/`), porque é a
+correção de um risco ativo em produção e não depende de nada do resto.
+
+Ordem proposta dentro da FASE 1:
+
+1. `1.0` bloqueio de `admin/tools/` — 2 arquivos, testável de imediato
+2. `1.1` bootstrap + autoload
+3. `1.2` migrations
+4. `1.3` `ProjectGuard` + testes de path traversal
+5. `1.4`–`1.5` discovery + exclusões
+6. `1.6` API
+7. `1.7`–`1.8` UI
+8. `1.9` suíte de testes da fase

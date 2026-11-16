@@ -8,6 +8,13 @@ $checks = @(
   @{ Path = '/scripts/deploy.ps1'; Expect = 'not200' },
   @{ Path = '/admin/api/'; Expect = 'noindex' },
   @{ Path = '/admin/api/session.php'; Expect = 'json' },
+  # CMS multi-projeto: código interno nunca servido (FASE 1)
+  @{ Path = '/admin/cms/bootstrap.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/Core/PathGuard.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/views/central.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/bin/migrate.php'; Expect = 'not200' },
+  @{ Path = '/admin/tools/extract-content.php'; Expect = 'not200' },
+  @{ Path = '/admin/assets/cms.css'; Expect = '200' },
   @{ Path = '/'; Expect = '200' },
   @{ Path = '/robots.txt'; Expect = '200' },
   @{ Path = '/sitemap.xml'; Expect = '200' }

@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require __DIR__ . '/_guard.php';
+
 $path = dirname(__DIR__) . '/content.json';
 $content = json_decode((string) file_get_contents($path), true);
 

@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require __DIR__ . '/_guard.php';
+
 /**
  * Criar administrador do painel /admin.
  *
