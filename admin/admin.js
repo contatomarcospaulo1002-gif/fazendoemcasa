@@ -2303,11 +2303,24 @@
 
   function loadContentPayload() {
     if (state.php && state.authenticated) {
+      // Passa pela API: o ficheiro admin/content.json já não é servido pela web.
       return api("content.php").then(function (res) {
         return res.content || {};
       });
     }
+    // Sem PHP no servidor o painel é estático (file://), lendo do disco.
     return fetch("content.json").then(function (r) {
+      return r.json();
+    });
+  }
+
+  function loadSiteMap() {
+    if (state.php) {
+      return api("site-map.php").then(function (res) {
+        return res.map || { groups: [] };
+      });
+    }
+    return fetch("site-map.json").then(function (r) {
       return r.json();
     });
   }
@@ -2317,9 +2330,7 @@
     if (state.appBootstrapped) return;
     state.appBootstrapped = true;
     Promise.all([
-      fetch("site-map.json").then(function (r) {
-        return r.json();
-      }),
+      loadSiteMap(),
       loadContentPayload(),
       loadIndexDoc(),
     ])

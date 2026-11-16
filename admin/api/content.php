@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 require __DIR__ . '/bootstrap.php';
 
+// Conteúdo do site é dado interno: exige sessão autenticada.
+admin_require_auth();
+
 $content = null;
 $source = 'file';
 

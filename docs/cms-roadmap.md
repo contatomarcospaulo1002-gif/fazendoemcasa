@@ -151,9 +151,40 @@ pedido) executado ponta a ponta em `kit-activites-tea`.
 
 | Item | Motivo |
 |---|---|
-| `_probe.txt` em produção | resíduo; remover no próximo deploy |
-| `painel` symlink não versionado | decidir se mantém |
-| 3 WebP não versionados em `img/cms/` | uploads feitos direto em produção |
-| `admin/tools/error_log` público | bloqueio entra na FASE 1 |
+| ~~`_probe.txt` em produção~~ | ✅ removido (2026-11-16) |
+| ~~`painel` symlink não versionado~~ | ✅ removido; `/painel` agora é redirect 301 para `/admin` |
+| ~~3 WebP não versionados em `img/cms/`~~ | ✅ versionados (2026-11-16) |
+| ~~`admin/tools/error_log` público~~ | ✅ removido + bloqueio na FASE 1 |
 | `member_users` vazia | área de membros sem uso |
-| `index.html.bak.*` em produção | limpar após FASE 6 |
+| ~~`index.html.bak.*` em produção~~ | ✅ removidos (2026-11-16) |
+
+---
+
+## Correções de exposição (2026-11-16)
+
+Auditoria pós-FASE 2 encontrou dados internos servidos sem sessão.
+Corrigido em três camadas, com teste dedicado (`ExposureGuardTest`).
+
+| Achado | Antes | Depois |
+|---|---|---|
+| `/admin/content.json` | 200 · 24 KB públicos | 403 |
+| `/admin/site-map.json` | 200 · 91 KB públicos | 403 |
+| `/admin/api/content.php` | 200 · conteúdo completo sem sessão | 401 |
+| `/painel/*` (symlink) | 200 · furava todas as regras | 301 → `/admin` |
+| `/_probe.txt` | 200 | 403 + removido |
+| `index.html.bak.*` | 200 | 403 + removidos |
+
+**Causa raiz do `/painel`:** o symlink apontava para `admin/`, mas o
+Apache aplica `RewriteRule` sobre a URL pedida, não sobre o destino do
+link. Nenhuma regra `^admin/...` valia para `/painel/...`. Substituir o
+symlink por redirect elimina a classe inteira do problema.
+
+**Causa raiz do `content.php`:** `admin_require_auth()` liberava acesso
+quando `require_pin` era `false`. Agora a sessão é sempre obrigatória
+para dados internos; `require_pin => false` apenas dispensa o PIN no
+login, não a sessão.
+
+**Bug adicional encontrado:** tabela `cms_content` ausente causava
+`PDOException` não tratada, devolvendo HTML com o caminho absoluto do
+servidor. Corrigido com `try/catch` no carregamento e handler global que
+converte qualquer excepção em JSON genérico (`display_errors=0`).
