@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
 
+// Nunca expor caminhos absolutos nem stack traces em resposta HTTP.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
 $root = dirname(__DIR__);
 $projectRoot = dirname($root);
 
@@ -46,6 +50,23 @@ function admin_json(array $payload, int $code = 200): void
     exit;
 }
 
+/*
+ * Qualquer excepção não tratada vira JSON genérico. Sem isto o PHP devolve
+ * HTML com o caminho absoluto do servidor no corpo da resposta.
+ */
+set_exception_handler(static function (\Throwable $e): void {
+    error_log('admin api: ' . $e->getMessage());
+    if (!headers_sent()) {
+        header('Content-Type: application/json; charset=utf-8');
+    }
+    admin_json(['ok' => false, 'error' => 'Erro interno.'], 500);
+});
+
+set_error_handler(static function (int $no, string $msg, string $file, int $line): bool {
+    error_log(sprintf('admin api php: %s em %s:%d', $msg, basename($file), $line));
+    return true;
+});
+
 function admin_require_auth(): void
 {
     if (admin_accounts_enabled()) {
@@ -54,9 +75,9 @@ function admin_require_auth(): void
         }
         return;
     }
-    if (!admin_pin_required()) {
-        return;
-    }
+    // Sem contas, a sessão do PIN é obrigatória. 'admin_ok' só é definido
+    // por login.php (PIN válido) ou por session.php em modo local explícito
+    // ('require_pin' => false). Sem sessão, nunca há acesso a dados internos.
     if (empty($_SESSION['admin_ok'])) {
         admin_json(['ok' => false, 'error' => 'Não autenticado.'], 401);
     }

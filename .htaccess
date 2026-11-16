@@ -22,8 +22,23 @@ Options -Indexes
   RewriteRule (^|/)docker\.env$ - [F,L]
   RewriteRule (^|/)admin/config\.local\.php$ - [F,L]
 
+  # Dados internos do painel: nunca servidos como ficheiro estático.
+  # O conteúdo legítimo chega ao painel por admin/api/content.php (com sessão).
+  RewriteRule ^admin/(content|site-map)\.json$ - [F,L]
+  RewriteRule ^admin/content\.json\.bak - [F,L]
+
+  # Alias legado /painel -> admin. Substituído por redirect 301: manter o
+  # symlink obrigava a duplicar todas as regras de bloqueio (e qualquer
+  # regra nova seria esquecida).
+  RewriteRule ^painel/?$ /admin/ [R=301,L]
+  RewriteRule ^painel/(.*)$ /admin/$1 [R=301,L]
+
+  # Resíduos de diagnóstico
+  RewriteRule ^_probe\.txt$ - [F,L]
+
   # Backups gerados pelo CMS
   RewriteRule ^index\.html\.bak\. - [F,L]
+  RewriteRule (^|/)\.tmp- - [F,L]
 </IfModule>
 
 <IfModule mod_headers.c>

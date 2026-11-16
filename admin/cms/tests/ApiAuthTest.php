@@ -166,6 +166,25 @@ $r = $s->request('/admin/api/cms-projects.php?discover=1');
 ok('discover retorna 200', $r['code'] === 200, 'code=' . $r['code']);
 ok('discover retorna lista', is_array($r['json']['candidates'] ?? null));
 
+echo "\n== Dados internos exigem sessão ==\n";
+$r = $s->request('/admin/api/content.php');
+ok('content.php autenticado retorna 200', $r['code'] === 200, 'code=' . $r['code']);
+ok('content.php devolve conteúdo', is_array($r['json']['content'] ?? null));
+
+$r = $s->request('/admin/api/site-map.php');
+ok('site-map.php autenticado retorna 200', $r['code'] === 200, 'code=' . $r['code']);
+ok('site-map.php devolve mapa', is_array($r['json']['map'] ?? null));
+
+// Sem sessão: novo cliente, sem cookies.
+$anon = new HttpSession($base);
+$r = $anon->request('/admin/api/content.php');
+ok('content.php sem sessão retorna 401', $r['code'] === 401, 'code=' . $r['code']);
+ok('content.php sem sessão não vaza conteúdo', !isset($r['json']['content']));
+
+$r = $anon->request('/admin/api/site-map.php');
+ok('site-map.php sem sessão retorna 401', $r['code'] === 401, 'code=' . $r['code']);
+ok('site-map.php sem sessão não vaza mapa', !isset($r['json']['map']));
+
 // --- Limpeza ---
 Db::exec('DELETE FROM cms_projects');
 Db::exec('DELETE FROM admin_users WHERE login = :l', ['l' => $login]);

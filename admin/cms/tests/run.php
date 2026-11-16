@@ -34,6 +34,7 @@ $suites = [
         'PathGuardTest.php',
         'security-tools-guard.php',
         'DenyDirectTest.php',
+        'ExposureGuardTest.php',
     ],
     'discovery' => [
         'DiscoveryEngineTest.php',

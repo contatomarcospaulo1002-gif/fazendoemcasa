@@ -16,6 +16,18 @@ $checks = @(
   @{ Path = '/admin/cms/Scanner/HtmlAnalyzer.php'; Expect = 'not200' },
   @{ Path = '/admin/cms/views/project-pages.php'; Expect = 'not200' },
   @{ Path = '/admin/tools/extract-content.php'; Expect = 'not200' },
+  # Dados internos do painel (pendência S1: conteúdo público sem sessão)
+  @{ Path = '/admin/content.json'; Expect = 'not200' },
+  @{ Path = '/admin/site-map.json'; Expect = 'not200' },
+  @{ Path = '/admin/api/content.php'; Expect = 'not200' },
+  # Alias legado /painel: o symlink não herda as regras do admin
+  @{ Path = '/painel/content.json'; Expect = 'not200' },
+  @{ Path = '/painel/config.local.php'; Expect = 'not200' },
+  @{ Path = '/painel/tools/extract-content.php'; Expect = 'not200' },
+  @{ Path = '/painel/cms/bootstrap.php'; Expect = 'not200' },
+  # Resíduos
+  @{ Path = '/_probe.txt'; Expect = 'not200' },
+  @{ Path = '/index.html.bak.20261111-120708'; Expect = 'not200' },
   @{ Path = '/admin/assets/cms.css'; Expect = '200' },
   @{ Path = '/admin/assets/cms-pages.js'; Expect = '200' },
   @{ Path = '/'; Expect = '200' },

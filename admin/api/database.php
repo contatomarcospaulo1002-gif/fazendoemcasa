@@ -67,7 +67,12 @@ function cms_load_document_from_db(): ?array
     if (!$pdo) {
         return null;
     }
-    $stmt = $pdo->query('SELECT document FROM cms_content WHERE id = 1 LIMIT 1');
+    try {
+        $stmt = $pdo->query('SELECT document FROM cms_content WHERE id = 1 LIMIT 1');
+    } catch (PDOException) {
+        // Tabela ainda não criada: o chamador cai para o ficheiro.
+        return null;
+    }
     $row = $stmt ? $stmt->fetch() : false;
     if (!$row || !isset($row['document'])) {
         return [];
