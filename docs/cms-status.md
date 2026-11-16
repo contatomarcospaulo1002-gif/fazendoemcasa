@@ -24,6 +24,48 @@ Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 
 ---
 
+## Auditoria de exposição — 2026-11-16
+
+Revisão pós-FASE 2 encontrou **dados internos servidos sem sessão**.
+Todos os itens fechados e cobertos por teste.
+
+| Achado | Antes | Depois |
+|---|---|---|
+| `/admin/content.json` | 200 · 24 KB | **403** |
+| `/admin/site-map.json` | 200 · 91 KB | **403** |
+| `/admin/api/content.php` | 200 · conteúdo completo | **401** |
+| `/painel/*` (symlink para admin) | 200 · furava tudo | **301 → /admin** |
+| `/_probe.txt` | 200 | **403** + removido |
+| `index.html.bak.*` | 200 | **403** + removidos |
+| `/user/api/bootstrap.php` | 200 (0 bytes) | **403** |
+| `/user/api/members.php` | 200 (0 bytes) | **403** |
+
+**Por que o `/painel` era grave:** o Apache aplica `RewriteRule` sobre a
+URL pedida, não sobre o destino do symlink. Nenhuma regra `^admin/...`
+valia para `/painel/...`. Remover o symlink e usar redirect 301 elimina
+a classe inteira do problema em vez de duplicar regras.
+
+**Por que o `content.php` era grave:** `admin_require_auth()` liberava
+acesso quando `require_pin` era `false`. Agora a sessão é sempre
+obrigatória para dados internos; `require_pin => false` só dispensa o
+PIN no login.
+
+**Bug extra encontrado:** tabela `cms_content` ausente disparava
+`PDOException` não tratada, devolvendo HTML com o **caminho absoluto do
+servidor**. Corrigido com `try/catch` e handler global
+(`display_errors=0`, excepções → JSON genérico).
+
+**Estado verificado em produção (deploy `1713082`):**
+
+```
+Smoke ......................... 29/29
+Suíte completa ............... 226/226
+git status no servidor ....... limpo
+Migrations ................... 2 aplicadas, 0 pendentes
+```
+
+---
+
 ## Item 1.0 — concluído ✅
 
 **Objetivo:** eliminar o B1 (scripts de manutenção executáveis pela web).
