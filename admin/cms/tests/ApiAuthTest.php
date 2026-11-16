@@ -131,6 +131,19 @@ ok('criação retorna 200', $r['code'] === 200, 'code=' . $r['code'] . ' body=' 
 $idX = (int) ($r['json']['project']['id'] ?? 0);
 ok('projeto criado tem id', $idX > 0);
 
+// Concede permissão de owner ao admin de teste (o modelo exige linha
+// explícita quando cms_users_permissions existe).
+if (Db::tableExists('cms_users_permissions')) {
+    $adminRow = Db::one('SELECT id FROM admin_users WHERE login = :l', ['l' => $login]);
+    if ($adminRow !== null) {
+        Db::exec(
+            'INSERT INTO cms_users_permissions (user_id, project_id, role)
+             VALUES (:u, NULL, :r)',
+            ['u' => (int) $adminRow['id'], 'r' => 'owner']
+        );
+    }
+}
+
 echo "\n== Path traversal via API ==\n";
 $r = $s->request(
     '/admin/api/cms-projects.php',
@@ -185,8 +198,45 @@ $r = $anon->request('/admin/api/site-map.php');
 ok('site-map.php sem sessão retorna 401', $r['code'] === 401, 'code=' . $r['code']);
 ok('site-map.php sem sessão não vaza mapa', !isset($r['json']['map']));
 
+echo "\n== Registry de elementos (FASE 3) ==\n";
+$r = $s->request('/admin/api/cms-elements.php?project=' . $idX);
+ok('GET elementos retorna 200', $r['code'] === 200, 'code=' . $r['code'] . ' body=' . substr($r['body'], 0, 160));
+ok('devolve contagem por nível', is_array($r['json']['counts'] ?? null));
+ok('devolve os 4 níveis', count($r['json']['levels'] ?? []) === 4);
+ok('devolve adaptadores', is_array($r['json']['adapters'] ?? null));
+
+$adapters = $r['json']['adapters'] ?? [];
+$byName = [];
+foreach ($adapters as $a) {
+    $byName[(string) ($a['name'] ?? '')] = $a;
+}
+ok('adaptador html declara escrita', ($byName['html']['can_write'] ?? null) === true);
+ok('adaptador php NÃO declara escrita', ($byName['php']['can_write'] ?? null) === false);
+ok('adaptador css NÃO declara escrita', ($byName['css']['can_write'] ?? null) === false);
+ok('adaptador json declara escrita', ($byName['json']['can_write'] ?? null) === true);
+
+$r = $s->request('/admin/api/cms-elements.php?project=' . $idX . '&action=classify', 'POST', []);
+ok('classify sem CSRF é rejeitado', $r['code'] === 403, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-elements.php?project=' . $idX . '&action=classify', 'POST', [], ['X-CSRF-Token: ' . $token]);
+ok('classify com CSRF retorna 200', $r['code'] === 200, 'code=' . $r['code'] . ' body=' . substr($r['body'], 0, 200));
+ok('classify devolve resultado', is_array($r['json']['result'] ?? null));
+
+$r = $s->request('/admin/api/cms-elements.php?project=' . $idX . '&page=999999');
+ok('página de outro projeto retorna 404', $r['code'] === 404, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-elements.php?project=' . $idX . '&level=inventado');
+ok('nível inválido retorna 400', $r['code'] === 400, 'code=' . $r['code']);
+
+$r = $anon->request('/admin/api/cms-elements.php?project=' . $idX);
+ok('elementos sem sessão retorna 401', $r['code'] === 401, 'code=' . $r['code']);
+ok('elementos sem sessão não vaza dados', !isset($r['json']['counts']));
+
 // --- Limpeza ---
 Db::exec('DELETE FROM cms_projects');
+if (Db::tableExists('cms_users_permissions')) {
+    Db::exec('DELETE FROM cms_users_permissions WHERE user_id NOT IN (SELECT id FROM admin_users)');
+}
 Db::exec('DELETE FROM admin_users WHERE login = :l', ['l' => $login]);
 
 echo "\n";

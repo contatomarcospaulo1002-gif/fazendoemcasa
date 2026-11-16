@@ -1,6 +1,6 @@
 # Acompanhamento — Central CMS multi-projeto
 
-Atualizado: 2026-11-16 · Fase atual: **FASE 2 concluída**
+Atualizado: 2026-11-16 · Fase atual: **FASE 3 concluída**
 
 Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 [roadmap](cms-roadmap.md) · [decisões](cms-decisions.md) ·
@@ -15,7 +15,7 @@ Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 | 0 | Auditoria | ✅ concluída | n/a |
 | 1 | Central de Projetos | ✅ concluída | 124/124 |
 | 2 | Scanner | ✅ concluída | 66/66 |
-| 3 | Content Registry | ⬜ não iniciada | 0/6 |
+| 3 | Content Registry | ✅ concluída | 137/137 |
 | 4 | Editor Visual | ⬜ não iniciada | 0/4 |
 | 5 | Biblioteca de Mídia | ⬜ não iniciada | 0/5 |
 | 6 | Publicação | ⬜ não iniciada | 0/5 |
@@ -142,8 +142,64 @@ CLI (`php -l` limpo nos 11; mensagens de uso normais ao executar).
 
 ## Próximo passo
 
-FASE 1, começando por **1.0** (bloquear `admin/tools/`), porque é a
-correção de um risco ativo em produção e não depende de nada do resto.
+FASE 4 — Editor Visual, sobre o Registry agora pronto.
+
+### FASE 3 — concluída (2026-11-16)
+
+**Entrega:** registro de elementos, classificação em quatro níveis e
+adaptadores de leitura por tecnologia.
+
+| Item | Entrega |
+|---|---|
+| 3.1 | Migration `20261116180000_phase3_elements.php` → `cms_elements` |
+| 3.2 | `Registry/ElementRegistry.php` — upsert por `(page_id, selector, type)` |
+| 3.3 | `Registry/Classifier.php` + `Editability` + `Classification` |
+| 3.4 | `HtmlAdapter`, `ComponentAdapter` |
+| 3.5 | `PhpAdapter`, `CssAdapter`, `JsonAdapter` |
+| 3.6 | `LegacyAdapter` (ponte para `site-map.json`) |
+| 3.7 | UI `/admin/cms-content.php` — tabela de elementos com filtros |
+| 3.8 | 137 verificações novas (unit + integração + HTTP) |
+
+**Decisão central: honestidade dos adaptadores.** Só `html`, `component`,
+`json` e `legacy` declaram `canWrite: true`. `php` e `css` declaram
+`canWrite: false` e todo elemento deles cai para `read_only` com motivo
+explícito. É preferível bloquear do que corromper código-fonte — a
+escrita em PHP exige tokenizer com offsets confiáveis (FASE 6).
+
+**Regra de ouro aplicada:** o `Classifier` só promove a `editable` com
+três provas simultâneas — adaptador escreve, referência estável existe,
+valor é legível. Falhando uma, cai um nível. O motivo nunca é vazio.
+
+**Deduplicação:** quando `html` e `component` produzem o mesmo selector,
+prevalece a classificação **mais restritiva**. Nunca a mais otimista.
+
+**Cobertura adicional no scanner** (sem quebrar contagens existentes):
+
+- `AnalysisResult::candidates` — elementos semânticos sem `data-cms-id`
+  (`h1`–`h4`, `p`, `button`, `label`), listados à parte de `elements`.
+  O Registry os marca como `needs_adapter` com selector posicional.
+- `AnalysisResult::jsonData` — JSON decodificado, antes descartado.
+
+**Bug encontrado em teste de UI e corrigido:** o ramo `GET ?page=`
+de `cms-elements.php` não devolvia `csrfToken`, então o botão
+"Classificar conteúdo" falhava com "Token de segurança ausente".
+Coberto agora por teste HTTP.
+
+**Verificado no navegador:** tabela com 6 elementos na `index.html`
+(4 editáveis, 2 requerem adaptador), filtro por nível funcionando,
+JSON com 3 chaves editáveis, CSS corretamente em somente leitura,
+botão "Conteúdo" em cada linha do inventário.
+
+| Verificação | Resultado |
+|---|---|
+| Suíte completa | **363/363** |
+| Suíte com HTTP | **363/363** |
+| Lint PHP (novos e alterados) | limpo |
+| `git status` | sem resíduos |
+
+---
+
+## Histórico anterior — próximo passo da FASE 1
 
 Ordem proposta dentro da FASE 1:
 

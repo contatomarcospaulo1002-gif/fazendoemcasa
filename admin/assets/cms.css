@@ -258,3 +258,34 @@ a{color:inherit;text-decoration:none}
   .cms-page-metrics{display:none}
   .cms-page-row{gap:8px;padding:10px 12px}
 }
+/* ---------- FASE 3: tabela de elementos ---------- */
+.cms-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.cms-table thead th{
+  text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--cms-muted);
+  padding:10px 14px;border-bottom:1px solid var(--cms-border);
+  background:var(--cms-panel);white-space:nowrap;
+}
+.cms-table tbody td{
+  padding:11px 14px;border-bottom:1px solid var(--cms-border);
+  vertical-align:top;
+}
+.cms-table tbody tr:last-child td{border-bottom:none}
+.cms-table tbody tr:hover{background:var(--cms-panel)}
+.cms-cell-value{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cms-cell-reason{max-width:300px;color:var(--cms-muted);font-size:12.5px}
+
+.cms-badge-editable{background:var(--cms-ok-soft);color:var(--cms-ok)}
+.cms-badge-needs_adapter{background:var(--cms-warn-soft);color:var(--cms-warn)}
+.cms-badge-read_only{background:var(--cms-panel);color:var(--cms-muted)}
+.cms-badge-unconfigured{background:var(--cms-danger-soft);color:var(--cms-danger)}
+
+.cms-alert-success{background:var(--cms-ok-soft);color:var(--cms-ok);border-color:var(--cms-ok)}
+.cms-alert-error{background:var(--cms-danger-soft);color:var(--cms-danger);border-color:var(--cms-danger)}
+
+@media (max-width:900px){
+  .cms-table{display:block;overflow-x:auto;white-space:nowrap}
+  .cms-cell-value,.cms-cell-reason{max-width:none}
+}
+
+.cms-btn-xs{padding:4px 10px;font-size:12px;border-radius:7px;line-height:1.4}

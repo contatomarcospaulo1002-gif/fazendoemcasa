@@ -66,14 +66,21 @@ Criar em `admin/cms/tests/fixtures/` (nunca em produção):
 
 ### FASE 3 — Registry
 
-| # | Teste | Tipo |
-|---|---|---|
-| 3.1 | Elemento com `data-cms-id` → `editable` | unit |
-| 3.2 | Elemento sem adaptador → `read_only` com motivo | unit |
-| 3.3 | Upsert não duplica elemento | integração |
-| 3.4 | `read()` retorna valor atual correto | unit |
-| 3.5 | `write()` altera só o nó alvo | unit |
-| 3.6 | `write()` em `read_only` é bloqueado | **segurança** |
+| # | Teste | Tipo | Estado |
+|---|---|---|---|
+| 3.1 | Elemento com `data-cms-id` → `editable` | unit | ✅ |
+| 3.2 | Elemento sem adaptador → `read_only` com motivo | unit | ✅ |
+| 3.3 | Upsert não duplica elemento | integração | ✅ |
+| 3.4 | `read()` retorna valor atual correto | unit | ✅ `value_current` |
+| 3.5 | `write()` altera só o nó alvo | unit | ⏳ FASE 6 |
+| 3.6 | `write()` em `read_only` é bloqueado | **segurança** | ✅ via `isWritable()` |
+
+**Nota sobre 3.5:** a escrita real em disco entra na FASE 6 com
+`AtomicWriter` e backup obrigatório. A FASE 3 prova a *capacidade*
+(`capability()->canWrite`) e o nível, não a escrita.
+
+Verificações entregues: **137** (Classifier 26, Html/Component 29,
+PHP/CSS/JSON/Legacy 36, integração 23, HTTP 15, exposição 8).
 
 ### FASE 4 — Editor
 

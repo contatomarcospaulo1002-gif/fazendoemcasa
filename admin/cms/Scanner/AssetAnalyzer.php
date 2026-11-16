@@ -84,6 +84,7 @@ final class AssetAnalyzer
             contentHash: $hash,
             sizeBytes: strlen($raw),
             warnings: $this->warnings,
+            jsonData: is_array($decoded) ? $decoded : null,
         );
     }
 

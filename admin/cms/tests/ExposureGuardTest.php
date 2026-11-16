@@ -84,8 +84,23 @@ foreach ([
     '/admin/api/content.php',
     '/painel/content.json',
     '/_probe.txt',
+    '/admin/cms/Registry/Classifier.php',
+    '/admin/cms/views/page-content.php',
 ] as $path) {
     $t->ok('smoke verifica ' . $path, str_contains($smoke, $path));
 }
+
+$t->group('FASE 3 — internos protegidos e endpoints autenticados');
+$t->ok('Registry está sob /admin/cms (regra existente)',
+    str_contains($htaccess, '^admin/cms/'));
+$elementsApi = (string) file_get_contents($root . '/admin/api/cms-elements.php');
+$t->ok('cms-elements.php exige Auth::check', str_contains($elementsApi, 'Auth::check()'));
+$t->ok('cms-elements.php exige CSRF no POST', str_contains($elementsApi, 'Csrf::requireValid()'));
+$t->ok('cms-elements.php checa projeto na página',
+    str_contains($elementsApi, 'project_id = :p'));
+$contentEntry = (string) file_get_contents($root . '/admin/cms-content.php');
+$t->ok('cms-content.php exige Auth::check', str_contains($contentEntry, 'Auth::check()'));
+$t->ok('cms-content.php valida página do projeto',
+    str_contains($contentEntry, 'project_id = :p'));
 
 exit($t->summary());
