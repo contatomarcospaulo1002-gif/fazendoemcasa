@@ -28,6 +28,10 @@ $checks = @(
   # Resíduos
   @{ Path = '/_probe.txt'; Expect = 'not200' },
   @{ Path = '/index.html.bak.20261111-120708'; Expect = 'not200' },
+  # Bibliotecas internas da área de membros
+  @{ Path = '/user/api/bootstrap.php'; Expect = 'not200' },
+  @{ Path = '/user/api/members.php'; Expect = 'not200' },
+  @{ Path = '/user/api/session.php'; Expect = 'json' },
   @{ Path = '/admin/assets/cms.css'; Expect = '200' },
   @{ Path = '/admin/assets/cms-pages.js'; Expect = '200' },
   @{ Path = '/'; Expect = '200' },

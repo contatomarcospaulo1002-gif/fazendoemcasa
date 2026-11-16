@@ -36,6 +36,9 @@ Options -Indexes
   # Resíduos de diagnóstico
   RewriteRule ^_probe\.txt$ - [F,L]
 
+  # Bibliotecas internas da área de membros (não são endpoints)
+  RewriteRule ^user/api/(bootstrap|members)\.php$ - [F,L]
+
   # Backups gerados pelo CMS
   RewriteRule ^index\.html\.bak\. - [F,L]
   RewriteRule (^|/)\.tmp- - [F,L]
