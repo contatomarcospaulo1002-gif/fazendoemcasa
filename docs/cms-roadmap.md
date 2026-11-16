@@ -46,15 +46,15 @@ que `project_id` forjado não acessa pasta alheia.
 
 | ID | Item | Estado |
 |---|---|---|
-| 2.1 | Migrations: `cms_pages`, `cms_scans` | [ ] |
-| 2.2 | `HtmlAnalyzer` (DOMDocument) | [ ] |
-| 2.3 | `PhpAnalyzer` (`token_get_all`) | [ ] |
-| 2.4 | `CssAnalyzer` | [ ] |
-| 2.5 | `JsAnalyzer` + `JsonAnalyzer` | [ ] |
-| 2.6 | `PageDiscovery` (entrypoints, includes, templates) | [ ] |
-| 2.7 | Scanner incremental por `content_hash` | [ ] |
-| 2.8 | UI: Páginas do projeto | [ ] |
-| 2.9 | Testes: descoberta de páginas, imagens, textos | [ ] |
+| 2.1 | Migrations: `cms_pages`, `cms_scans` | [x] |
+| 2.2 | `HtmlAnalyzer` (DOMDocument) | [x] |
+| 2.3 | `PhpAnalyzer` (`token_get_all`) | [x] |
+| 2.4 | `CssAnalyzer` | [x] |
+| 2.5 | `JsAnalyzer` + `JsonAnalyzer` | [x] |
+| 2.6 | `PageDiscovery` (entrypoints, includes, templates) | [x] |
+| 2.7 | Scanner incremental por `content_hash` | [x] |
+| 2.8 | UI: Páginas do projeto | [x] |
+| 2.9 | Testes: descoberta de páginas, imagens, textos | [x] |
 
 **Critério de saída:** mapear as 3 páginas reais (raiz, kit, reliure) e
 listar imagens/textos de cada uma sem executar PHP.

@@ -16,7 +16,7 @@ require_once dirname(__DIR__) . '/_deny-direct.php';
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Central de Projetos</title>
-<link rel="stylesheet" href="/admin/assets/cms.css?v=20261116b">
+<link rel="stylesheet" href="/admin/assets/cms.css?v=20261116d">
 </head>
 <body>
 <div class="cms-shell">
@@ -140,6 +140,6 @@ require_once dirname(__DIR__) . '/_deny-direct.php';
   </div>
 </div>
 
-<script src="/admin/assets/cms.js?v=20261116b"></script>
+<script src="/admin/assets/cms.js?v=20261116d"></script>
 </body>
 </html>

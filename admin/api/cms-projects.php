@@ -45,6 +45,23 @@ $repo = new ProjectRepository($guard);
 
 $method = Http::requireMethod('GET', 'POST');
 
+// Estatísticas agregadas (páginas/elementos) por projeto, se a FASE 2 estiver aplicada.
+$stats = [];
+if (Db::tableExists('cms_pages')) {
+    foreach (Db::all(
+        'SELECT project_id, COUNT(*) AS pages,
+                COALESCE(SUM(element_count),0) AS elements,
+                COALESCE(SUM(image_count),0) AS images
+         FROM cms_pages GROUP BY project_id'
+    ) as $row) {
+        $stats[(int) $row['project_id']] = [
+            'pages' => (int) $row['pages'],
+            'elements' => (int) $row['elements'],
+            'images' => (int) $row['images'],
+        ];
+    }
+}
+
 try {
     if ($method === 'GET') {
         if (isset($_GET['discover'])) {
@@ -62,6 +79,7 @@ try {
 
         Http::ok([
             'projects' => $repo->listAll(),
+            'stats' => $stats,
             'csrfToken' => Csrf::token(),
         ]);
     }
