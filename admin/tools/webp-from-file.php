@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require __DIR__ . '/_guard.php';
+
 /** Uso: php webp-from-file.php <entrada> <saida.webp> [larguraMax] [qualidade0-100] */
 if ($argc < 3) {
     fwrite(STDERR, "Uso: php webp-from-file.php entrada.jpg saida.webp [1200] [82]\n");

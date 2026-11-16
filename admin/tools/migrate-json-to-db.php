@@ -1,19 +1,17 @@
-﻿<?php
+<?php
 declare(strict_types=1);
+
+require __DIR__ . '/_guard.php';
 
 $root = dirname(__DIR__);
 
-if (PHP_SAPI === 'cli') {
-    global $config;
-    $configPath = $root . '/config.local.php';
-    if (!is_file($configPath)) {
-        $configPath = $root . '/config.example.php';
-    }
-    $config = require $configPath;
-    require $root . '/api/database.php';
-} else {
-    require $root . '/api/bootstrap.php';
+global $config;
+$configPath = $root . '/config.local.php';
+if (!is_file($configPath)) {
+    $configPath = $root . '/config.example.php';
 }
+$config = require $configPath;
+require $root . '/api/database.php';
 
 if (!admin_use_database()) {
     fwrite(STDERR, "Ativa use_database no config ou CMS_USE_DATABASE=1\n");
