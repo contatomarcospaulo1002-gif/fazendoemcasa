@@ -1,0 +1,12 @@
+# Código interno do CMS multi-projeto.
+# Nada aqui deve ser servido diretamente pelo Apache.
+# Defesa em profundidade: a raiz já bloqueia ^admin/cms/, e este
+# arquivo garante o bloqueio mesmo se a regra da raiz for removida.
+
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>
