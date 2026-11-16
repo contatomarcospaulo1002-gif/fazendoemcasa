@@ -18,6 +18,8 @@ final class AnalysisResult
      * @param list<array<string, mixed>> $images
      * @param list<array<string, mixed>> $links
      * @param list<string> $warnings
+     * @param list<array<string, mixed>> $candidates
+     * @param array<string, mixed>|null $jsonData
      */
     public function __construct(
         public readonly string $relPath,
@@ -30,6 +32,8 @@ final class AnalysisResult
         public readonly array $links = [],
         public readonly array $warnings = [],
         public readonly ?string $error = null,
+        public readonly array $candidates = [],
+        public readonly ?array $jsonData = null,
     ) {
     }
 
@@ -67,6 +71,8 @@ final class AnalysisResult
             'links' => $this->links,
             'warnings' => $this->warnings,
             'error' => $this->error,
+            'candidates' => $this->candidates,
+            'json_data' => $this->jsonData,
         ];
     }
 }

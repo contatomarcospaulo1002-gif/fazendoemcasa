@@ -41,6 +41,7 @@ final class HtmlAnalyzer
         $hash = hash('sha256', $raw);
         $title = null;
         $elements = [];
+        $candidates = [];
         $images = [];
         $links = [];
 
@@ -81,6 +82,30 @@ final class HtmlAnalyzer
                 'editability' => 'editable',
                 'preview' => $this->preview($node, $type),
                 'has_src' => $node->hasAttribute('src') || $node->hasAttribute('href'),
+            ];
+        }
+
+        // Candidatos semânticos SEM data-cms-id.
+        //
+        // Ficam numa lista separada de `elements` para não alterar as
+        // contagens já consumidas pelo inventário. O Registry lê esta
+        // lista e classifica cada candidato como `needs_adapter`: a
+        // estrutura é reconhecida, mas falta a marcação estável.
+        foreach ($xpath->query('//h1|//h2|//h3|//h4|//p|//button|//label') as $node) {
+            if (!$node instanceof \DOMElement) {
+                continue;
+            }
+            if ($node->hasAttribute('data-cms-id')) {
+                continue;
+            }
+            $text = $this->clean($node->textContent);
+            if ($text === '') {
+                continue;
+            }
+            $candidates[] = [
+                'tag' => strtolower($node->tagName),
+                'preview' => mb_strlen($text) > 120 ? mb_substr($text, 0, 117) . '…' : $text,
+                'has_src' => false,
             ];
         }
 
@@ -134,6 +159,7 @@ final class HtmlAnalyzer
             images: $images,
             links: $links,
             warnings: $this->warnings,
+            candidates: $candidates,
         );
     }
 

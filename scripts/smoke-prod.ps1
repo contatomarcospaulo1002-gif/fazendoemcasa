@@ -15,6 +15,10 @@ $checks = @(
   @{ Path = '/admin/cms/bin/migrate.php'; Expect = 'not200' },
   @{ Path = '/admin/cms/Scanner/HtmlAnalyzer.php'; Expect = 'not200' },
   @{ Path = '/admin/cms/views/project-pages.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/views/page-content.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/Registry/Classifier.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/Registry/Adapters/HtmlAdapter.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/Migrations/20261116180000_phase3_elements.php'; Expect = 'not200' },
   @{ Path = '/admin/tools/extract-content.php'; Expect = 'not200' },
   # Dados internos do painel (pendência S1: conteúdo público sem sessão)
   @{ Path = '/admin/content.json'; Expect = 'not200' },
@@ -34,6 +38,8 @@ $checks = @(
   @{ Path = '/user/api/session.php'; Expect = 'json' },
   @{ Path = '/admin/assets/cms.css'; Expect = '200' },
   @{ Path = '/admin/assets/cms-pages.js'; Expect = '200' },
+  @{ Path = '/admin/assets/cms-content.js'; Expect = '200' },
+  @{ Path = '/admin/api/cms-elements.php'; Expect = 'not200' },
   @{ Path = '/'; Expect = '200' },
   @{ Path = '/robots.txt'; Expect = '200' },
   @{ Path = '/sitemap.xml'; Expect = '200' }

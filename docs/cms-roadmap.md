@@ -65,17 +65,18 @@ listar imagens/textos de cada uma sem executar PHP.
 
 | ID | Item | Estado |
 |---|---|---|
-| 3.1 | Migration: `cms_elements` | [ ] |
-| 3.2 | `ElementRegistry` (upsert por `page_id + selector + type`) | [ ] |
-| 3.3 | `Classifier` (4 níveis de editabilidade) | [ ] |
-| 3.4 | Adaptadores: `HtmlAdapter`, `ComponentAdapter` | [ ] |
-| 3.5 | Adaptadores: `PhpAdapter`, `CssAdapter`, `JsonAdapter` | [ ] |
-| 3.6 | `LegacyAdapter` (ponte para `site-map.json`) | [ ] |
-| 3.7 | UI: estrutura da página (árvore) | [ ] |
-| 3.8 | Testes: registro, classificação, leitura por adaptador | [ ] |
+| 3.1 | Migration: `cms_elements` | [x] |
+| 3.2 | `ElementRegistry` (upsert por `page_id + selector + type`) | [x] |
+| 3.3 | `Classifier` (4 níveis de editabilidade) | [x] |
+| 3.4 | Adaptadores: `HtmlAdapter`, `ComponentAdapter` | [x] |
+| 3.5 | Adaptadores: `PhpAdapter`, `CssAdapter`, `JsonAdapter` | [x] |
+| 3.6 | `LegacyAdapter` (ponte para `site-map.json`) | [x] |
+| 3.7 | UI: estrutura da página (árvore) | [x] |
+| 3.8 | Testes: registro, classificação, leitura por adaptador | [x] |
 
 **Critério de saída:** cada elemento tem nível de editabilidade e motivo;
 nenhum elemento é marcado `editable` sem adaptador que prove escrita.
+✅ **Cumprido** — 363/363, ver [cms-phase3.md](cms-phase3.md).
 
 ---
 

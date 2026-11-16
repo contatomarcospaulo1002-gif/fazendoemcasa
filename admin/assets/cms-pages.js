@@ -66,6 +66,9 @@
 
   var KIND_LABEL = { html: "HTML", php: "PHP", css: "CSS", js: "JS", json: "JSON", other: "Outro" };
 
+  // Só estes tipos têm árvore de conteúdo no Registry.
+  var contentKinds = ["html", "php", "css", "json"];
+
   function rowHtml(p) {
     var kind = String(p.kind || "other");
     var title = p.title ? esc(p.title) : "";
@@ -84,6 +87,11 @@
         (p.status === "error"
           ? '<span class="cms-badge is-new" title="' + esc(p.error_message || "") + '">erro</span>'
           : '<span class="cms-badge is-active">ok</span>') +
+        (contentKinds.indexOf(kind) >= 0
+          ? '<a class="cms-btn cms-btn-ghost cms-btn-xs" href="/admin/cms-content.php?id='
+            + encodeURIComponent(window.CMS_PROJECT_ID) + '&page=' + encodeURIComponent(p.id)
+            + '">Conteúdo</a>'
+          : "") +
       "</div>"
     );
   }
