@@ -102,13 +102,21 @@ final class PatchValidator
             if ($value === '') {
                 return 'URL não pode ficar vazia.';
             }
-            // Aceita caminho relativo ou URL absoluta http(s).
-            if (preg_match('#^(https?://|/|\.\.?/)#i', $value) !== 1) {
-                return 'URL deve ser um caminho relativo ou http(s).';
+            // Aceita caminho relativo (com ou sem barra inicial) ou URL
+            // absoluta http(s). Um caminho relativo simples como
+            // "uploads/foto.png" é legítimo e é o formato que a
+            // biblioteca de mídia produz.
+            $isAbsoluteHttp = preg_match('#^https?://#i', $value) === 1;
+            $isProtocolRelative = str_starts_with($value, '//');
+            $hasScheme = preg_match('#^[a-z][a-z0-9+.\-]*:#i', $value) === 1;
+
+            if ($isProtocolRelative) {
+                return 'URL relativa a protocolo não é permitida.';
             }
-            // Bloqueia esquemas perigosos mesmo em posição relativa.
-            // Normaliza removendo espaços e controlos antes de comparar,
-            // para que "java\tscript:" não escape ao filtro.
+            if ($hasScheme && !$isAbsoluteHttp) {
+                return 'Esquema de URL não permitido.';
+            }
+            // Bloqueia esquemas perigosos mesmo ofuscados com controlos.
             $normalized = strtolower((string) preg_replace('/[\x00-\x20]+/', '', $value));
             if (preg_match('/^(javascript|data|vbscript|file):/', $normalized) === 1) {
                 return 'Esquema de URL não permitido.';

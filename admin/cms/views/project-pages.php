@@ -64,6 +64,7 @@ $projectPath = htmlspecialchars((string) ($projectPath ?? ''), ENT_QUOTES, 'UTF-
         <p class="cms-sub" id="pages-sub">A carregar inventário…</p>
       </div>
       <div class="cms-top-actions">
+        <a class="cms-btn cms-btn-ghost" href="/admin/cms-media.php?id=<?= (int) $projectId ?>">Mídia</a>
         <button type="button" class="cms-btn cms-btn-primary" id="btn-scan">Analisar projeto</button>
       </div>
     </header>

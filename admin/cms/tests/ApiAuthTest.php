@@ -271,6 +271,36 @@ if ($realPage !== null) {
     ok('preview devolve html', is_string($r['json']['html'] ?? null));
 }
 
+echo "\n== Biblioteca de mídia (FASE 5) ==\n";
+$r = $anon->request('/admin/api/cms-media.php?project=' . $idX);
+ok('mídia sem sessão retorna 401', $r['code'] === 401, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-media.php');
+ok('mídia sem project retorna 400', $r['code'] === 400, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-media.php?project=999999');
+ok('projeto inexistente retorna 404', $r['code'] === 404, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-media.php?project=' . $idX);
+ok('lista de mídia retorna 200', $r['code'] === 200, 'code=' . $r['code']);
+ok('lista devolve array', is_array($r['json']['media'] ?? null));
+ok('lista devolve csrfToken', strlen((string) ($r['json']['csrfToken'] ?? '')) === 64);
+
+$r = $s->request('/admin/api/cms-media.php?project=' . $idX . '&action=upload', 'POST', []);
+ok('upload sem CSRF é rejeitado', $r['code'] === 403, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-media.php?project=' . $idX . '&action=upload', 'POST', [], ['X-CSRF-Token: ' . $token]);
+ok('upload sem ficheiro retorna 400', $r['code'] === 400, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-media.php?project=' . $idX . '&action=replace', 'POST', ['mediaId' => 1, 'newPath' => 'x.png', 'scope' => 'all'], ['X-CSRF-Token: ' . $token]);
+ok('replace de mídia inexistente retorna 422', $r['code'] === 422, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-media.php?project=' . $idX . '&action=delete', 'POST', ['mediaId' => 999999], ['X-CSRF-Token: ' . $token]);
+ok('delete de mídia inexistente retorna 404', $r['code'] === 404, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-media.php?project=' . $idX . '&action=inventada', 'POST', [], ['X-CSRF-Token: ' . $token]);
+ok('ação inválida retorna 400', $r['code'] === 400, 'code=' . $r['code']);
+
 // --- Limpeza ---
 Db::exec('DELETE FROM cms_projects');
 if (Db::tableExists('cms_users_permissions')) {
