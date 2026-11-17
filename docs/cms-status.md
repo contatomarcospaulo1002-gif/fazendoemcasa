@@ -1,6 +1,6 @@
 # Acompanhamento — Central CMS multi-projeto
 
-Atualizado: 2026-11-16 · Fase atual: **FASE 4 concluída**
+Atualizado: 2026-11-16 · Fase atual: **FASE 5 concluída**
 
 Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 [roadmap](cms-roadmap.md) · [decisões](cms-decisions.md) ·
@@ -16,7 +16,8 @@ Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 | 1 | Central de Projetos | ✅ concluída | 124/124 |
 | 2 | Scanner | ✅ concluída | 66/66 |
 | 3 | Content Registry | ✅ concluída | 137/137 |
-| 4 | Editor Visual | ✅ concluída | 137/137 |
+| 4 | Editor Visual | ✅ concluída | 477/477 |
+| 5 | Biblioteca de Mídia | ✅ concluída | 531/531 |
 | 5 | Biblioteca de Mídia | ⬜ não iniciada | 0/5 |
 | 6 | Publicação | ⬜ não iniciada | 0/5 |
 | 7 | Histórico / Backup | ⬜ não iniciada | 0/4 |
@@ -142,7 +143,56 @@ CLI (`php -l` limpo nos 11; mensagens de uso normais ao executar).
 
 ## Próximo passo
 
-FASE 5 — Biblioteca de Mídia.
+FASE 6 — Publicação.
+
+### FASE 5 — concluída (2026-11-16)
+
+**Entrega:** biblioteca de mídia com upload validado por conteúdo,
+índice de referências e substituição com escopo explícito.
+
+| Item | Entrega |
+|---|---|
+| 5.1 | Migration `20261116220000_phase5_media.php` |
+| 5.2 | `Media/UploadValidator.php` — MIME por conteúdo (finfo) |
+| 5.3 | `Media/ReferenceIndex.php` — onde cada mídia é usada |
+| 5.4 | `Media/MediaReplacer.php` — escopos single/page/all |
+| 5.5 | UI `/admin/cms-media.php` — grade, filtros, detalhe |
+| 5.6 | 131 verificações novas |
+
+**Regra central:** o tipo vem do conteúdo, nunca do nome. Um `foto.png`
+com PHP dentro é rejeitado; um `malicioso.php` com PNG válido é aceite
+como PNG, porque a extensão de destino é derivada do MIME detectado.
+
+**SVG tratado como código:** validação por parser XML com allowlist de
+elementos e atributos — não por busca de substrings. O achado da revisão
+de segurança (`onload = "…"` com espaços escapava à busca literal) foi
+corrigido: agora o parser entrega os atributos e qualquer `on*` é
+rejeitado, junto com elementos fora da allowlist e `javascript:` em href.
+
+**Segunda barreira:** `.htaccess` na pasta de uploads desativa
+`php_flag engine off` e bloqueia `.php`/`.phar`/`.cgi`.
+
+**Bugs corrigidos:**
+1. Chave única era `(media_id, ref_path)` — três elementos com o mesmo
+   ficheiro registavam apenas um. Passou a `(media_id, element_id)`.
+2. `PatchValidator` rejeitava caminhos relativos simples como
+   `uploads/foto.png`, que é exatamente o formato que a biblioteca
+   produz. A regra foi corrigida para aceitar caminho relativo.
+3. Miniatura apontava para `/loja-demo/uploads/...` incluindo o prefixo
+   do projeto. A API passou a devolver `url` calculado do `base_url`.
+
+**Verificado no navegador:** upload real de PNG via canvas, miniatura
+carregando, reindexação, detalhe listando referências por página
+("3 usos"), e ausência do botão remover em mídia em uso.
+
+| Verificação | Resultado |
+|---|---|
+| Suíte completa | **531/531** |
+| `git status` | sem resíduos |
+
+---
+
+## Histórico — FASE 4
 
 ### FASE 4 — concluída (2026-11-16)
 

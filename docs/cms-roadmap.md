@@ -101,12 +101,16 @@ o rascunho. ✅ **Cumprido** — 462/462, ver [cms-phase4.md](cms-phase4.md).
 
 | ID | Item | Estado |
 |---|---|---|
-| 5.1 | Migrations: `cms_media`, `cms_media_references` | [ ] |
-| 5.2 | Upload real (multipart) + validação MIME | [ ] |
-| 5.3 | `ReferenceIndex` (onde cada imagem é usada) | [ ] |
-| 5.4 | Substituição com escolha de escopo | [ ] |
-| 5.5 | UI: grade, filtros, categorias, não utilizadas | [ ] |
-| 5.6 | Testes: upload, referências, substituição | [ ] |
+| 5.1 | Migrations: `cms_media`, `cms_media_references` | [x] |
+| 5.2 | Upload real (multipart) + validação MIME | [x] |
+| 5.3 | `ReferenceIndex` (onde cada imagem é usada) | [x] |
+| 5.4 | Substituição com escolha de escopo | [x] |
+| 5.5 | UI: grade, filtros, categorias, não utilizadas | [x] |
+| 5.6 | Testes: upload, referências, substituição | [x] |
+
+**Critério de saída:** upload validado por conteúdo; substituição mostra
+o alcance real antes de confirmar. ✅ **Cumprido** — 531/531, ver
+[cms-phase5.md](cms-phase5.md).
 
 ---
 

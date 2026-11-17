@@ -57,7 +57,11 @@ $t->ok('rejeita javascript:', !$r['ok']);
 $r = $v->validate([2 => 'data:text/html;base64,xx'], $elements);
 $t->ok('rejeita data:', !$r['ok']);
 $r = $v->validate([2 => 'sem-barra.png'], $elements);
-$t->ok('rejeita caminho sem prefixo', !$r['ok']);
+$t->ok('aceita caminho relativo simples', $r['ok']);
+$r = $v->validate([2 => 'uploads/foto.png'], $elements);
+$t->ok('aceita caminho de uploads', $r['ok']);
+$r = $v->validate([2 => '//evil.test/x.png'], $elements);
+$t->ok('rejeita URL relativa a protocolo', !$r['ok']);
 
 $t->group('PatchValidator — ofuscação de esquema');
 foreach ([

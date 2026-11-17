@@ -127,6 +127,36 @@ $t->ok('PreviewService valida caminho com realpath', str_contains($previewSvc, '
 $t->ok('PreviewService exige prefixo do projeto',
     str_contains($previewSvc, 'str_starts_with($real, $base'));
 
+$t->group('FASE 5 — mídia protegida');
+$mediaApi = (string) file_get_contents($root . '/admin/api/cms-media.php');
+$t->ok('cms-media.php exige Auth::check', str_contains($mediaApi, 'Auth::check()'));
+$t->ok('cms-media.php exige CSRF no POST', str_contains($mediaApi, 'Csrf::requireValid()'));
+$t->ok('cms-media.php valida projeto', str_contains($mediaApi, 'find($projectId)'));
+
+$mediaEntry = (string) file_get_contents($root . '/admin/cms-media.php');
+$t->ok('cms-media.php (view) exige Auth::check', str_contains($mediaEntry, 'Auth::check()'));
+
+$uploadVal = (string) file_get_contents($root . '/admin/cms/Media/UploadValidator.php');
+$t->ok('valida MIME por conteúdo (finfo)', str_contains($uploadVal, 'finfo'));
+$t->ok('não confia no nome do ficheiro', str_contains($uploadVal, 'ALLOWED'));
+$t->ok('usa parser XML para SVG (allowlist)', str_contains($uploadVal, 'simplexml_load_string'));
+$t->ok('rejeita atributos de evento (on*)', str_contains($uploadVal, "str_starts_with(\$clean, 'on')"));
+$t->ok('rejeita XXE', str_contains($uploadVal, '<!entity'));
+
+$mediaStorage = (string) file_get_contents($root . '/admin/cms/Media/MediaStorage.php');
+$t->ok('nome no disco é gerado', str_contains($mediaStorage, 'random_bytes'));
+$t->ok('escreve .htaccess de proteção', str_contains($mediaStorage, 'php_flag engine off'));
+$t->ok('valida destino dentro do projeto', str_contains($mediaStorage, 'isInsideProject'));
+
+$t->group('FASE 5 — smoke cobre a mídia');
+foreach ([
+    '/admin/cms/Media/MediaStorage.php',
+    '/admin/cms/views/project-media.php',
+    '/admin/api/cms-media.php',
+] as $path) {
+    $t->ok('smoke verifica ' . $path, str_contains($smoke, $path));
+}
+
 $t->group('FASE 4 — smoke cobre o editor');
 foreach ([
     '/admin/cms/Editor/DraftService.php',
