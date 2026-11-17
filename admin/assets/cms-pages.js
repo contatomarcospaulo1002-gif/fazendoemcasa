@@ -92,6 +92,11 @@
             + encodeURIComponent(window.CMS_PROJECT_ID) + '&page=' + encodeURIComponent(p.id)
             + '">Conteúdo</a>'
           : "") +
+        (kind === "html"
+          ? '<a class="cms-btn cms-btn-ghost cms-btn-xs" href="/admin/cms-editor.php?id='
+            + encodeURIComponent(window.CMS_PROJECT_ID) + '&page=' + encodeURIComponent(p.id)
+            + '">Editor</a>'
+          : "") +
       "</div>"
     );
   }

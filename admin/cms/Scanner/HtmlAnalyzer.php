@@ -182,6 +182,11 @@ final class HtmlAnalyzer
         if ($type === 'image') {
             return $node->getAttribute('src');
         }
+        // Para um link, o valor editável é o DESTINO. O texto visível é
+        // outro elemento de conteúdo e não deve ser confundido com o href.
+        if ($type === 'link' && $node->hasAttribute('href')) {
+            return $node->getAttribute('href');
+        }
         $text = $this->clean($node->textContent);
         return mb_strlen($text) > 120 ? mb_substr($text, 0, 117) . '…' : $text;
     }

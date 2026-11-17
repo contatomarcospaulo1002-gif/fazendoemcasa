@@ -42,11 +42,14 @@ $suites = [
         'ClassifierTest.php',
         'AdaptersHtmlTest.php',
         'AdaptersCodeTest.php',
+        'PatchValidatorTest.php',
+        'PreviewRendererTest.php',
     ],
     'repository' => [
         'ProjectRepositoryTest.php',
         'ScannerIntegrationTest.php',
         'RegistryIntegrationTest.php',
+        'EditorIntegrationTest.php',
     ],
 ];
 

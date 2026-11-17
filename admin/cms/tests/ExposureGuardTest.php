@@ -103,4 +103,37 @@ $t->ok('cms-content.php exige Auth::check', str_contains($contentEntry, 'Auth::c
 $t->ok('cms-content.php valida página do projeto',
     str_contains($contentEntry, 'project_id = :p'));
 
+$t->group('FASE 4 — editor protegido e sem escrita em disco');
+$editorApi = (string) file_get_contents($root . '/admin/api/cms-editor.php');
+$t->ok('cms-editor.php exige Auth::check', str_contains($editorApi, 'Auth::check()'));
+$t->ok('cms-editor.php exige CSRF no POST', str_contains($editorApi, 'Csrf::requireValid()'));
+$t->ok('cms-editor.php valida página do projeto', str_contains($editorApi, 'project_id = :p'));
+$t->ok('cms-editor.php NÃO escreve em disco',
+    !str_contains($editorApi, 'file_put_contents') && !str_contains($editorApi, 'fwrite'));
+
+$editorEntry = (string) file_get_contents($root . '/admin/cms-editor.php');
+$t->ok('cms-editor.php (view) exige Auth::check', str_contains($editorEntry, 'Auth::check()'));
+$t->ok('cms-editor.php (view) valida página do projeto',
+    str_contains($editorEntry, 'project_id = :p'));
+
+$draftSvc = (string) file_get_contents($root . '/admin/cms/Editor/DraftService.php');
+$t->ok('DraftService não escreve em disco',
+    !str_contains($draftSvc, 'file_put_contents') && !str_contains($draftSvc, 'fwrite'));
+
+$previewSvc = (string) file_get_contents($root . '/admin/cms/Editor/PreviewService.php');
+$t->ok('PreviewService não escreve em disco',
+    !str_contains($previewSvc, 'file_put_contents') && !str_contains($previewSvc, 'fwrite'));
+$t->ok('PreviewService valida caminho com realpath', str_contains($previewSvc, 'realpath'));
+$t->ok('PreviewService exige prefixo do projeto',
+    str_contains($previewSvc, 'str_starts_with($real, $base'));
+
+$t->group('FASE 4 — smoke cobre o editor');
+foreach ([
+    '/admin/cms/Editor/DraftService.php',
+    '/admin/cms/views/page-editor.php',
+    '/admin/api/cms-editor.php',
+] as $path) {
+    $t->ok('smoke verifica ' . $path, str_contains($smoke, $path));
+}
+
 exit($t->summary());
