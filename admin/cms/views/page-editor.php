@@ -49,6 +49,7 @@ $pagePath = htmlspecialchars((string) ($pagePath ?? ''), ENT_QUOTES, 'UTF-8');
       </div>
       <button type="button" class="cms-btn cms-btn-ghost" id="btn-discard" disabled>Descartar</button>
       <button type="button" class="cms-btn cms-btn-primary" id="btn-save" disabled>Guardar rascunho</button>
+      <button type="button" class="cms-btn cms-btn-publish" id="btn-publish" disabled>Publicar</button>
     </div>
   </header>
 

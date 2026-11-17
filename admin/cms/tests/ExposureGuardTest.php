@@ -148,6 +148,31 @@ $t->ok('nome no disco é gerado', str_contains($mediaStorage, 'random_bytes'));
 $t->ok('escreve .htaccess de proteção', str_contains($mediaStorage, 'php_flag engine off'));
 $t->ok('valida destino dentro do projeto', str_contains($mediaStorage, 'isInsideProject'));
 
+$t->group('FASE 6 — publicação protegida');
+$publishApi = (string) file_get_contents($root . '/admin/api/cms-publish.php');
+$t->ok('cms-publish.php exige Auth::check', str_contains($publishApi, 'Auth::check()'));
+$t->ok('cms-publish.php exige CSRF', str_contains($publishApi, 'Csrf::requireValid()'));
+$t->ok('cms-publish.php exige confirmação explícita', str_contains($publishApi, 'confirm'));
+$t->ok('cms-publish.php valida página do projeto', str_contains($publishApi, 'project_id = :p'));
+
+$publisher = (string) file_get_contents($root . '/admin/cms/Publisher/Publisher.php');
+$t->ok('Publisher faz backup obrigatório', str_contains($publisher, 'snapshot'));
+$t->ok('Publisher verifica pós-escrita', str_contains($publisher, 'postVerify'));
+$t->ok('Publisher tem rollback', str_contains($publisher, 'restore'));
+
+$atomic = (string) file_get_contents($root . '/admin/cms/Publisher/AtomicWriter.php');
+$t->ok('AtomicWriter usa ficheiro temporário', str_contains($atomic, 'cms-tmp'));
+$t->ok('AtomicWriter usa rename', str_contains($atomic, 'rename'));
+$t->ok('AtomicWriter verifica hash pós-escrita', str_contains($atomic, 'hash_file'));
+
+$t->group('FASE 6 — smoke cobre a publicação');
+foreach ([
+    '/admin/cms/Publisher/Publisher.php',
+    '/admin/api/cms-publish.php',
+] as $path) {
+    $t->ok('smoke verifica ' . $path, str_contains($smoke, $path));
+}
+
 $t->group('FASE 5 — smoke cobre a mídia');
 foreach ([
     '/admin/cms/Media/MediaStorage.php',

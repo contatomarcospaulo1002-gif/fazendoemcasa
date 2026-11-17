@@ -453,3 +453,5 @@ a{color:inherit;text-decoration:none}
 .cms-media-unused-note{font-size:13px;color:var(--cms-muted);margin:0 0 12px}
 .cms-btn-danger{background:var(--cms-danger);color:#fff;border-color:var(--cms-danger)}
 .cms-btn-sm{padding:6px 12px;font-size:12.5px}
+.cms-btn-publish{background:var(--cms-ok);color:#fff;border-color:var(--cms-ok)}
+.cms-btn-publish:hover:not(:disabled){filter:brightness(.92)}

@@ -26,6 +26,10 @@ $checks = @(
   @{ Path = '/admin/cms/Media/UploadValidator.php'; Expect = 'not200' },
   @{ Path = '/admin/cms/views/project-media.php'; Expect = 'not200' },
   @{ Path = '/admin/cms/Migrations/20261116220000_phase5_media.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/Publisher/BackupService.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/Publisher/AtomicWriter.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/Publisher/Publisher.php'; Expect = 'not200' },
+  @{ Path = '/admin/cms/Migrations/20261116240000_phase6_publications.php'; Expect = 'not200' },
   @{ Path = '/admin/cms/Migrations/20261116180000_phase3_elements.php'; Expect = 'not200' },
   @{ Path = '/admin/tools/extract-content.php'; Expect = 'not200' },
   # Dados internos do painel (pendência S1: conteúdo público sem sessão)
@@ -56,6 +60,7 @@ $checks = @(
   @{ Path = '/admin/api/cms-elements.php'; Expect = 'not200' },
   @{ Path = '/admin/api/cms-editor.php'; Expect = 'not200' },
   @{ Path = '/admin/api/cms-media.php'; Expect = 'not200' },
+  @{ Path = '/admin/api/cms-publish.php'; Expect = 'not200' },
   @{ Path = '/'; Expect = '200' },
   @{ Path = '/robots.txt'; Expect = '200' },
   @{ Path = '/sitemap.xml'; Expect = '200' }
