@@ -1,6 +1,6 @@
 # Acompanhamento — Central CMS multi-projeto
 
-Atualizado: 2026-11-16 · Fase atual: **FASE 5 concluída**
+Atualizado: 2026-11-16 · Fase atual: **FASE 6 concluída**
 
 Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 [roadmap](cms-roadmap.md) · [decisões](cms-decisions.md) ·
@@ -18,6 +18,7 @@ Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 | 3 | Content Registry | ✅ concluída | 137/137 |
 | 4 | Editor Visual | ✅ concluída | 477/477 |
 | 5 | Biblioteca de Mídia | ✅ concluída | 531/531 |
+| 6 | Publicação | ✅ concluída | 639/639 |
 | 5 | Biblioteca de Mídia | ⬜ não iniciada | 0/5 |
 | 6 | Publicação | ⬜ não iniciada | 0/5 |
 | 7 | Histórico / Backup | ⬜ não iniciada | 0/4 |
@@ -143,7 +144,46 @@ CLI (`php -l` limpo nos 11; mensagens de uso normais ao executar).
 
 ## Próximo passo
 
-FASE 6 — Publicação.
+FASE 7 — Histórico, Backup e Auditoria.
+
+### FASE 6 — concluída (2026-11-16)
+
+**Entrega:** publicação com backup obrigatório, escrita atómica e
+rollback automático. Primeira fase que escreve no disco.
+
+| Item | Entrega |
+|---|---|
+| 6.1 | Migration `20261116240000_phase6_publications.php` |
+| 6.2 | `Publisher/BackupService.php` — snapshot antes de escrever |
+| 6.3 | `Publisher/Publisher.php` + `AtomicWriter.php` |
+| 6.4 | Verificação pós-escrita (hash + re-parse dos valores) |
+| 6.5 | Rollback automático em falha |
+| 6.6 | Botão Publicar com confirmação explícita |
+| 6.7 | 108 verificações novas |
+
+**Barreiras:** backup obrigatório → temporário + rename (atómico) →
+re-parse do disco → rollback se falhar. Auditoria em `cms_publications`
+com hash antes/depois. Confirmado no banco: `disco == hash_after` →
+**true**.
+
+**API exige confirmação explícita:** sem `confirm: true` → 400. Não há
+modo automático nem em lote.
+
+**Bug grave corrigido:** a API dizia `applied` mas o disco não mudava.
+O `PreviewRenderer` injetava `<?xml encoding="utf-8"?>` para forçar
+UTF-8 e removia a declaração só do início da string; o DOM serializava
+a declaração após o DOCTYPE e o regex não apanhava. Corrigido: remover
+o nó de processamento do DOM antes de serializar. Encontrado testando
+no navegador — o teste CLI validava a string, não o efeito no servidor.
+
+| Verificação | Resultado |
+|---|---|
+| Suíte completa | **639/639** |
+| `git status` | sem resíduos |
+
+---
+
+## Histórico — FASE 5
 
 ### FASE 5 — concluída (2026-11-16)
 

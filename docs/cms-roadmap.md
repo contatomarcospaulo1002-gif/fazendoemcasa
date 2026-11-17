@@ -118,13 +118,16 @@ o alcance real antes de confirmar. ✅ **Cumprido** — 531/531, ver
 
 | ID | Item | Estado |
 |---|---|---|
-| 6.1 | Migrations: `cms_publications`, `cms_backups` | [ ] |
-| 6.2 | `BackupService` (snapshot antes de escrever) | [ ] |
-| 6.3 | `Publisher` + `AtomicWriter` | [ ] |
-| 6.4 | Verificação pós-escrita (hash + re-parse) | [ ] |
-| 6.5 | Rollback automático em falha | [ ] |
-| 6.6 | UI: aprovar / publicar / descartar | [ ] |
-| 6.7 | Testes: publicação, rollback, isolamento na publicação | [ ] |
+| 6.1 | Migrations: `cms_publications`, `cms_backups` | [x] |
+| 6.2 | `BackupService` (snapshot antes de escrever) | [x] |
+| 6.3 | `Publisher` + `AtomicWriter` | [x] |
+| 6.4 | Verificação pós-escrita (hash + re-parse) | [x] |
+| 6.5 | Rollback automático em falha | [x] |
+| 6.6 | UI: aprovar / publicar / descartar | [x] |
+| 6.7 | Testes: publicação, rollback, isolamento na publicação | [x] |
+
+**Critério de saída:** publicação com backup, escrita atómica e
+rollback testado. ✅ **Cumprido** — 639/639, ver [cms-phase6.md](cms-phase6.md).
 
 **Critério de saída:** cenário de aceitação completo (itens 1–15 do
 pedido) executado ponta a ponta em `kit-activites-tea`.

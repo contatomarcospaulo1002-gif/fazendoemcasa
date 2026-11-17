@@ -301,6 +301,30 @@ ok('delete de mídia inexistente retorna 404', $r['code'] === 404, 'code=' . $r[
 $r = $s->request('/admin/api/cms-media.php?project=' . $idX . '&action=inventada', 'POST', [], ['X-CSRF-Token: ' . $token]);
 ok('ação inválida retorna 400', $r['code'] === 400, 'code=' . $r['code']);
 
+echo "\n== Publicação (FASE 6) ==\n";
+$r = $anon->request('/admin/api/cms-publish.php?project=' . $idX . '&page=1&action=publish', 'POST', ['confirm' => true]);
+ok('publicar sem sessão retorna 401', $r['code'] === 401, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-publish.php?project=' . $idX . '&page=1&action=publish', 'POST', ['confirm' => true]);
+ok('publicar sem CSRF é rejeitado', $r['code'] === 403, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-publish.php?project=' . $idX . '&page=1&action=publish', 'POST', ['confirm' => true], ['X-CSRF-Token: ' . $token]);
+ok('página inexistente retorna 404', $r['code'] === 404, 'code=' . $r['code']);
+
+$s->request('/admin/api/cms-pages.php?project=' . $idX . '&action=scan', 'POST', [], ['X-CSRF-Token: ' . $token]);
+$realPage = Db::one('SELECT id FROM cms_pages WHERE project_id = :p LIMIT 1', ['p' => $idX]);
+if ($realPage !== null) {
+    $rp = (int) $realPage['id'];
+    $r = $s->request('/admin/api/cms-publish.php?project=' . $idX . '&page=' . $rp . '&action=publish', 'POST', [], ['X-CSRF-Token: ' . $token]);
+    ok('sem confirmação retorna 400', $r['code'] === 400, 'code=' . $r['code']);
+
+    $r = $s->request('/admin/api/cms-publish.php?project=' . $idX . '&page=' . $rp . '&action=publish', 'POST', ['confirm' => true], ['X-CSRF-Token: ' . $token]);
+    ok('sem rascunho retorna 422', $r['code'] === 422, 'code=' . $r['code']);
+
+    $r = $s->request('/admin/api/cms-publish.php?project=' . $idX . '&page=' . $rp, 'POST', ['action' => 'inventada'], ['X-CSRF-Token: ' . $token]);
+    ok('ação inválida retorna 400', $r['code'] === 400, 'code=' . $r['code']);
+}
+
 // --- Limpeza ---
 Db::exec('DELETE FROM cms_projects');
 if (Db::tableExists('cms_users_permissions')) {

@@ -9,6 +9,7 @@
   var badge = null;
   var btnSave = null;
   var btnDiscard = null;
+  var btnPublish = null;
   var frame = null;
   var note = null;
   var device = 'desktop';
@@ -34,6 +35,58 @@
     }
     if (btnSave) { btnSave.disabled = n === 0; }
     if (btnDiscard) { btnDiscard.disabled = n === 0 && Object.keys(state.patch).length === 0; }
+    if (btnPublish) { btnPublish.disabled = Object.keys(state.patch).length === 0; }
+  }
+
+  function publish() {
+    var pending = Object.keys(state.patch).length;
+    if (pending === 0) {
+      showAlert('Nenhuma alteração pendente para publicar.', 'error');
+      return;
+    }
+    if (!global.confirm(
+      'Publicar ' + pending + ' alteração(ões) no site? '
+      + 'O ficheiro atual será copiado para backup antes de escrever.'
+    )) {
+      return;
+    }
+
+    btnPublish.disabled = true;
+    btnPublish.textContent = 'A publicar…';
+
+    fetch('/admin/api/cms-publish.php?project=' + encodeURIComponent(E.projectId)
+      + '&page=' + encodeURIComponent(E.pageId) + '&action=publish', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'X-CSRF-Token': state.csrfToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'publish', confirm: true })
+    }).then(function (res) {
+      return res.json().then(function (data) {
+        if (!res.ok || !data.ok) {
+          var err = new Error(data.error || 'Falha na publicação.');
+          err.payload = data;
+          throw err;
+        }
+        return data;
+      });
+    }).then(function (data) {
+      state.csrfToken = data.csrfToken || state.csrfToken;
+      state.patch = {};
+      state.dirty = {};
+      showAlert('Publicado: ' + data.changed + ' alteração(ões).', 'success');
+      global.CmsEditorTree.render();
+      global.CmsEditorProps.render();
+      refreshDirty();
+      renderPreview();
+    }).catch(function (err) {
+      var detail = err.payload && err.payload.restored
+        ? ' O backup foi restaurado — nenhuma alteração ficou no disco.'
+        : '';
+      showAlert(err.message + detail, 'error');
+    }).finally(function () {
+      btnPublish.textContent = 'Publicar';
+      refreshDirty();
+    });
   }
 
   function applyDevice() {
@@ -127,11 +180,13 @@
     badge = document.getElementById('draft-badge');
     btnSave = document.getElementById('btn-save');
     btnDiscard = document.getElementById('btn-discard');
+    btnPublish = document.getElementById('btn-publish');
     frame = document.getElementById('preview-frame');
     note = document.getElementById('preview-note');
 
     if (btnSave) { btnSave.addEventListener('click', save); }
     if (btnDiscard) { btnDiscard.addEventListener('click', discardAll); }
+    if (btnPublish) { btnPublish.addEventListener('click', publish); }
 
     var filter = document.getElementById('tree-filter');
     if (filter) { filter.addEventListener('input', global.CmsEditorTree.render); }

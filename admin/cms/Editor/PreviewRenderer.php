@@ -42,6 +42,16 @@ final class PreviewRenderer
             return $html;
         }
 
+        // A declaração injetada vira um nó de processamento que saveHTML
+        // devolve no output. Removê-la antes de serializar garante que
+        // o HTML publicado não contém lixo de encoding.
+        $xpath0 = new \DOMXPath($doc);
+        foreach ($xpath0->query('/processing-instruction("xml")') as $pi) {
+            if ($pi->parentNode !== null) {
+                $pi->parentNode->removeChild($pi);
+            }
+        }
+
         $xpath = new \DOMXPath($doc);
         $applied = 0;
 
@@ -76,7 +86,8 @@ final class PreviewRenderer
             return $html;
         }
 
-        // Remove a declaração XML injetada para forçar UTF-8.
+        // Remove a declaração XML caso sobreviva ao patch (quando nada
+        // mudou o original é devolvido antes deste ponto).
         return (string) preg_replace('/^<\?xml[^>]*\?>\s*/', '', $out);
     }
 

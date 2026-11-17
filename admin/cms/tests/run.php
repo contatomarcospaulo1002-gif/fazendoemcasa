@@ -53,6 +53,9 @@ $suites = [
         'EditorIntegrationTest.php',
         'MediaStorageTest.php',
         'MediaReferenceTest.php',
+        'PublisherTest.php',
+        'RollbackTest.php',
+        'PublishLockTest.php',
     ],
 ];
 
