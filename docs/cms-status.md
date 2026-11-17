@@ -1,6 +1,6 @@
 # Acompanhamento — Central CMS multi-projeto
 
-Atualizado: 2026-11-16 · Fase atual: **FASE 3 concluída**
+Atualizado: 2026-11-16 · Fase atual: **FASE 4 concluída**
 
 Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 [roadmap](cms-roadmap.md) · [decisões](cms-decisions.md) ·
@@ -16,7 +16,7 @@ Documentos: [auditoria](cms-audit.md) · [arquitetura](cms-architecture.md) ·
 | 1 | Central de Projetos | ✅ concluída | 124/124 |
 | 2 | Scanner | ✅ concluída | 66/66 |
 | 3 | Content Registry | ✅ concluída | 137/137 |
-| 4 | Editor Visual | ⬜ não iniciada | 0/4 |
+| 4 | Editor Visual | ✅ concluída | 137/137 |
 | 5 | Biblioteca de Mídia | ⬜ não iniciada | 0/5 |
 | 6 | Publicação | ⬜ não iniciada | 0/5 |
 | 7 | Histórico / Backup | ⬜ não iniciada | 0/4 |
@@ -142,7 +142,55 @@ CLI (`php -l` limpo nos 11; mensagens de uso normais ao executar).
 
 ## Próximo passo
 
-FASE 4 — Editor Visual, sobre o Registry agora pronto.
+FASE 5 — Biblioteca de Mídia.
+
+### FASE 4 — concluída (2026-11-16)
+
+**Entrega:** editor visual de três colunas com rascunho por delta e
+pré-visualização em memória.
+
+| Item | Entrega |
+|---|---|
+| 4.1 | Migration `20261116200000_phase4_drafts.php` → `cms_drafts` |
+| 4.2 | `Editor/DraftService.php` — um rascunho `open` por página |
+| 4.3 | `Editor/PreviewRenderer.php` + `PreviewService.php` |
+| 4.4 | UI `/admin/cms-editor.php` — árvore / preview / propriedades |
+| 4.5 | Editores por tipo: texto, imagem, link, background |
+| 4.6 | Viewports desktop / tablet / mobile |
+| 4.7 | 137 verificações novas |
+
+**Garantia central:** o `PreviewRenderer` é o mesmo mecanismo de patch
+que a FASE 6 usará para escrever. O preview mostra exatamente o que
+será publicado — não há dois caminhos que possam divergir.
+
+**Nada toca o disco.** Verificado por teste: após guardar rascunho e
+renderizar preview, o ficheiro continua byte-a-byte igual.
+
+**PatchValidator — tudo ou nada:** um patch com um único campo inválido
+é rejeitado inteiro. Esquemas `javascript:`, `data:` e `vbscript:` são
+bloqueados; texto limitado a 20 000 caracteres.
+
+**Bug encontrado no navegador e corrigido:** o `HtmlAnalyzer` devolvia
+o texto visível como valor de um elemento `link`, então o campo
+"Destino do link" aparecia com `Ver kits` em vez de `/kits`. Corrigido
+para extrair o `href`. Os testes de API não apanhavam porque não
+validavam a semântica do valor.
+
+**Verificado no navegador:** árvore com 6 elementos, edição de texto
+com contador, badge de alterações, guardar rascunho, preview refletindo
+a alteração, descarte, viewports (390/820/100%), imagem com campo de
+caminho, link com campo de destino, CSS bloqueado sem campo de edição.
+
+| Verificação | Resultado |
+|---|---|
+| Suíte completa | **462/462** |
+| Suíte com HTTP | **462/462** |
+| Lint PHP | limpo |
+| `git status` | sem resíduos |
+
+---
+
+## Histórico — FASE 3
 
 ### FASE 3 — concluída (2026-11-16)
 

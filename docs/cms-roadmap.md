@@ -84,13 +84,16 @@ nenhum elemento é marcado `editable` sem adaptador que prove escrita.
 
 | ID | Item | Estado |
 |---|---|---|
-| 4.1 | Migration: `cms_drafts` | [ ] |
-| 4.2 | `DraftService` (patch por elemento) | [ ] |
-| 4.3 | `PreviewRenderer` (memória, sem disco) | [ ] |
-| 4.4 | UI: 3 colunas (árvore / preview / propriedades) | [ ] |
-| 4.5 | Editores por tipo: texto, imagem, botão, fundo | [ ] |
-| 4.6 | Preview desktop / tablet / mobile | [ ] |
-| 4.7 | Testes: edição, rascunho, preview | [ ] |
+| 4.1 | Migration: `cms_drafts` | [x] |
+| 4.2 | `DraftService` (patch por elemento) | [x] |
+| 4.3 | `PreviewRenderer` (memória, sem disco) | [x] |
+| 4.4 | UI: 3 colunas (árvore / preview / propriedades) | [x] |
+| 4.5 | Editores por tipo: texto, imagem, botão, fundo | [x] |
+| 4.6 | Preview desktop / tablet / mobile | [x] |
+| 4.7 | Testes: edição, rascunho, preview | [x] |
+
+**Critério de saída:** editar não escreve no ficheiro; o preview reflete
+o rascunho. ✅ **Cumprido** — 462/462, ver [cms-phase4.md](cms-phase4.md).
 
 ---
 

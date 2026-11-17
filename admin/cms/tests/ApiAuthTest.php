@@ -232,6 +232,45 @@ $r = $anon->request('/admin/api/cms-elements.php?project=' . $idX);
 ok('elementos sem sessão retorna 401', $r['code'] === 401, 'code=' . $r['code']);
 ok('elementos sem sessão não vaza dados', !isset($r['json']['counts']));
 
+echo "\n== Editor visual (FASE 4) ==\n";
+$r = $s->request('/admin/api/cms-editor.php?project=' . $idX . '&page=999999');
+ok('página inexistente retorna 404', $r['code'] === 404, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-editor.php?project=' . $idX);
+ok('sem page retorna 400', $r['code'] === 400, 'code=' . $r['code']);
+
+$r = $anon->request('/admin/api/cms-editor.php?project=' . $idX . '&page=1');
+ok('editor sem sessão retorna 401', $r['code'] === 401, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-editor.php?project=' . $idX . '&page=1&action=save', 'POST', ['patch' => [1 => 'x']]);
+ok('save sem CSRF é rejeitado', $r['code'] === 403, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-editor.php?project=' . $idX . '&page=1&action=save', 'POST', ['patch' => [1 => 'x']], ['X-CSRF-Token: ' . $token]);
+ok('save com CSRF em página inexistente retorna 404', $r['code'] === 404, 'code=' . $r['code']);
+
+$r = $s->request('/admin/api/cms-editor.php?project=' . $idX . '&page=1&action=inventada', 'POST', [], ['X-CSRF-Token: ' . $token]);
+ok('ação inválida em página inexistente retorna 404', $r['code'] === 404, 'code=' . $r['code']);
+
+// Página real do projeto para validar a ação inválida.
+// O projeto de fixture precisa de inventário: dispara a varredura.
+$s->request('/admin/api/cms-pages.php?project=' . $idX . '&action=scan', 'POST', [], ['X-CSRF-Token: ' . $token]);
+$realPage = Db::one('SELECT id FROM cms_pages WHERE project_id = :p LIMIT 1', ['p' => $idX]);
+if ($realPage !== null) {
+    $realPageId = (int) $realPage['id'];
+    $r = $s->request('/admin/api/cms-editor.php?project=' . $idX . '&page=' . $realPageId . '&action=inventada', 'POST', [], ['X-CSRF-Token: ' . $token]);
+    ok('ação inválida retorna 400', $r['code'] === 400, 'code=' . $r['code']);
+
+    $r = $s->request('/admin/api/cms-editor.php?project=' . $idX . '&page=' . $realPageId);
+    ok('GET editor retorna 200', $r['code'] === 200, 'code=' . $r['code']);
+    ok('GET editor devolve elementos', is_array($r['json']['elements'] ?? null));
+    ok('GET editor devolve patch', is_array($r['json']['patch'] ?? null));
+    ok('GET editor devolve csrfToken', strlen((string) ($r['json']['csrfToken'] ?? '')) === 64);
+
+    $r = $s->request('/admin/api/cms-editor.php?project=' . $idX . '&page=' . $realPageId . '&preview=1');
+    ok('preview retorna 200', $r['code'] === 200, 'code=' . $r['code']);
+    ok('preview devolve html', is_string($r['json']['html'] ?? null));
+}
+
 // --- Limpeza ---
 Db::exec('DELETE FROM cms_projects');
 if (Db::tableExists('cms_users_permissions')) {

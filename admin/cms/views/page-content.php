@@ -48,7 +48,7 @@ $pagePath = htmlspecialchars((string) ($pagePath ?? ''), ENT_QUOTES, 'UTF-8');
       <p class="cms-nav-label">Este projeto</p>
       <a href="/admin/cms-project.php?id=<?= (int) $projectId ?>">Páginas</a>
       <a href="#" class="is-active">Conteúdo</a>
-      <a href="#" class="is-disabled" title="FASE 4">Editor</a>
+      <a href="/admin/cms-editor.php?id=<?= (int) $projectId ?>&page=<?= (int) $pageId ?>">Editor</a>
       <a href="#" class="is-disabled" title="FASE 5">Mídia</a>
       <a href="#" class="is-disabled" title="FASE 6">Publicações</a>
     </nav>
