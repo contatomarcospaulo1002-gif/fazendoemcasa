@@ -46,6 +46,7 @@ $projectPath = htmlspecialchars((string) ($projectPath ?? ''), ENT_QUOTES, 'UTF-
 
       <p class="cms-nav-label">Este projeto</p>
       <a href="#" class="is-active">Páginas</a>
+      <a href="/admin/cms-history.php?id=<?= (int) $projectId ?>">Histórico</a>
       <a href="#" class="is-disabled" title="FASE 3">Conteúdo</a>
       <a href="#" class="is-disabled" title="FASE 4">Editor</a>
       <a href="#" class="is-disabled" title="FASE 5">Mídia</a>
@@ -65,6 +66,7 @@ $projectPath = htmlspecialchars((string) ($projectPath ?? ''), ENT_QUOTES, 'UTF-
       </div>
       <div class="cms-top-actions">
         <a class="cms-btn cms-btn-ghost" href="/admin/cms-media.php?id=<?= (int) $projectId ?>">Mídia</a>
+        <a class="cms-btn cms-btn-ghost" href="/admin/cms-history.php?id=<?= (int) $projectId ?>">Histórico</a>
         <button type="button" class="cms-btn cms-btn-primary" id="btn-scan">Analisar projeto</button>
       </div>
     </header>
