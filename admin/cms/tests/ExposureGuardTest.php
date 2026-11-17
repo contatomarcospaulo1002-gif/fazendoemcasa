@@ -191,4 +191,31 @@ foreach ([
     $t->ok('smoke verifica ' . $path, str_contains($smoke, $path));
 }
 
+$t->group('FASE 7 — histórico e auditoria protegidos');
+$historyApi = (string) file_get_contents($root . '/admin/api/cms-history.php');
+$t->ok('cms-history.php exige Auth::check', str_contains($historyApi, 'Auth::check()'));
+$t->ok('cms-history.php exige CSRF no POST', str_contains($historyApi, 'Csrf::requireValid()'));
+$t->ok('cms-history.php valida projeto', str_contains($historyApi, 'find($projectId)'));
+$t->ok('cms-history.php exige permissão de edição', str_contains($historyApi, 'canEditProject'));
+$t->ok('cms-history.php valida backup do projeto', str_contains($historyApi, 'project_id = :p'));
+
+$historyEntry = (string) file_get_contents($root . '/admin/cms-history.php');
+$t->ok('cms-history.php (view) exige Auth::check', str_contains($historyEntry, 'Auth::check()'));
+
+$auditLog = (string) file_get_contents($root . '/admin/cms/History/AuditLog.php');
+$t->ok('AuditLog é append-only (sem UPDATE/DELETE)', !str_contains($auditLog, 'UPDATE') && !str_contains($auditLog, 'DELETE'));
+
+$restoreSvc = (string) file_get_contents($root . '/admin/cms/History/RestoreService.php');
+$t->ok('RestoreService valida caminho dentro do projeto', str_contains($restoreSvc, 'str_starts_with($real, $base'));
+$t->ok('RestoreService faz backup antes de restaurar', str_contains($restoreSvc, 'pre-restore'));
+
+$t->group('FASE 7 — smoke cobre o histórico');
+foreach ([
+    '/admin/cms/History/AuditLog.php',
+    '/admin/cms/views/project-history.php',
+    '/admin/api/cms-history.php',
+] as $path) {
+    $t->ok('smoke verifica ' . $path, str_contains($smoke, $path));
+}
+
 exit($t->summary());

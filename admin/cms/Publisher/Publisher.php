@@ -8,6 +8,8 @@ require_once dirname(__DIR__) . '/_deny-direct.php';
 use FazendoEmCasa\Cms\Core\Db;
 use FazendoEmCasa\Cms\Editor\DraftService;
 use FazendoEmCasa\Cms\Editor\PreviewRenderer;
+use FazendoEmCasa\Cms\History\AuditLog;
+use FazendoEmCasa\Cms\History\VersionLog;
 use FazendoEmCasa\Cms\Projects\ProjectRepository;
 
 /**
@@ -109,7 +111,7 @@ class Publisher
         //    atuais para bloquear níveis que mudaram desde então.
         $elements = [];
         foreach (Db::all(
-            'SELECT id, cms_id, type, editability FROM cms_elements WHERE page_id = :pg',
+            'SELECT id, cms_id, type, editability, value_current FROM cms_elements WHERE page_id = :pg',
             ['pg' => $pageId]
         ) as $row) {
             $elements[(int) $row['id']] = $row;
@@ -186,6 +188,20 @@ class Publisher
                 'changed' => 0,
                 'restored' => $restored,
             ];
+        }
+
+        // Histórico: uma linha por elemento alterado, com o valor que
+        // estava ANTES da publicação. Falha aqui não desfaz a escrita —
+        // o histórico é complementar, não bloqueante.
+        try {
+            VersionLog::recordPublication($publicationId, $projectId, $pageId, $userId, $patch, $elements);
+            AuditLog::record('publish.page', 'page', $pageId, $userId, $projectId, [
+                'publication_id' => $publicationId,
+                'elements_changed' => count($patch),
+                'backup_id' => $backup['id'],
+            ]);
+        } catch (\Throwable) {
+            // ignorado deliberadamente: publicação já confirmada.
         }
 
         // Só depois de escrita e verificação aprovadas o rascunho é

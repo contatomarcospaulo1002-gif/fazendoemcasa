@@ -56,6 +56,7 @@ $suites = [
         'PublisherTest.php',
         'RollbackTest.php',
         'PublishLockTest.php',
+        'HistoryTest.php',
     ],
 ];
 
