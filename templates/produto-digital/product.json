@@ -1,0 +1,11 @@
+{
+  "name": "Novo produto",
+  "slug": "novo-produto",
+  "language": "pt-PT",
+  "template": "digital-product",
+  "price": "",
+  "checkoutProvider": "hotmart",
+  "checkoutUrl": "",
+  "metaPixelId": "",
+  "status": "draft"
+}

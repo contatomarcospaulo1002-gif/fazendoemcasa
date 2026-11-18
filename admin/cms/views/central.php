@@ -40,6 +40,7 @@ require_once dirname(__DIR__) . '/_deny-direct.php';
       <a href="#" class="is-disabled" title="FASE 7">Histórico</a>
       <a href="#" class="is-disabled" title="FASE 6">Publicações</a>
       <a href="#" class="is-disabled" title="FASE 7">Backups</a>
+      <a href="/admin/cms-products.php">Produtos</a>
       <a href="#" class="is-disabled" title="FASE 7">Auditoria</a>
     </nav>
 
