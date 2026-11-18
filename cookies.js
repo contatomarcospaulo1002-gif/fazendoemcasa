@@ -1,6 +1,6 @@
 (function () {
   var KEY = "cookie_consent";
-  var PIXEL_ID = "2111475296169479";
+  var PIXEL_ID = window.__PRODUCT_PIXEL_ID || "2111475296169479";
   var banner = document.getElementById("cookie-banner");
   var btnAccept = document.getElementById("cookie-accept");
   var btnRefuse = document.getElementById("cookie-refuse");

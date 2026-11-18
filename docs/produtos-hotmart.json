@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "products": [
+    {"name":"28 Dias em Casa","path":"/","checkoutProvider":"hotmart","checkoutUrl":"https://pay.hotmart.com/T108490682Y","metaPixelId":"2111475296169479"},
+    {"name":"Kit Activités TEA","path":"/kit-activites-tea/","checkoutProvider":"hotmart","checkoutUrl":"https://pay.hotmart.com/G108507678N","metaPixelId":"4466538613660208"},
+    {"name":"Reliure Artisanale","path":"/reliure-artisanale/","checkoutProvider":"hotmart","checkoutUrl":"https://pay.hotmart.com/T108507485P","metaPixelId":"1617733936769759"}
+  ]
+}

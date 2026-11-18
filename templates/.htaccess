@@ -1,0 +1,6 @@
+# Bloqueia listagem e acesso direto nesta pasta de template.
+Options -Indexes
+
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
